@@ -1,9 +1,23 @@
+/* Admin theme variables */
+:root {
+  --admin-color-background: #F5F5F9;
+  --admin-color-paper: #FFFFFF;
+  --admin-color-text-primary: rgba(50, 71, 92, 0.87);
+  --admin-color-text-secondary: rgba(50, 71, 92, 0.6);
+  --admin-color-text-disabled: rgba(50, 71, 92, 0.38);
+  --admin-color-primary: #696CFF;
+  --admin-color-success: #71DD37;
+  --admin-color-info: #2196F3;
+  --admin-color-chart-bg: #F2F2F2;
+  --admin-shadow-elevation-6: 0px 2px 6px 4px rgba(50, 71, 92, 0.02);
+}
+
 /* Admin-specific input styling */
 .admin-input {
   background: transparent !important;
   border: none !important;
   outline: none !important;
-  font-family: 'Public Sans', sans-serif;
+  font-family: var(--font-public-sans), sans-serif;
   font-size: 16px;
   line-height: 24px;
   letter-spacing: 0.15px;
@@ -38,4 +52,78 @@
 .admin-input::-moz-selection {
   background: rgba(105, 108, 255, 0.1);
   color: rgba(50, 71, 92, 0.75);
+}
+
+/* Admin Dashboard styles */
+.admin-dashboard {
+  background-color: var(--admin-color-background);
+}
+
+.admin-card {
+  background-color: var(--admin-color-paper);
+  border-radius: 0.5rem;
+  box-shadow: var(--admin-shadow-elevation-6);
+}
+
+.admin-text-primary {
+  color: var(--admin-color-text-primary);
+}
+
+.admin-text-secondary {
+  color: var(--admin-color-text-secondary);
+}
+
+.admin-text-disabled {
+  color: var(--admin-color-text-disabled);
+}
+
+.admin-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.admin-badge-primary {
+  background-color: rgba(105, 108, 255, 0.08);
+  color: var(--admin-color-primary);
+}
+
+.admin-badge-info {
+  background-color: rgba(33, 150, 243, 0.08);
+  color: var(--admin-color-info);
+}
+
+.admin-progress-bar {
+  width: 100%;
+  height: 0.5rem;
+  background-color: var(--admin-color-chart-bg);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.admin-progress-bar-fill {
+  height: 100%;
+  background-color: var(--admin-color-primary);
+  border-radius: 9999px;
+  transition: width 0.3s ease;
+}
+
+.admin-action-button {
+  width: 2rem;
+  height: 2rem;
+  background-color: rgba(105, 108, 255, 0.08);
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Font classes */
+.font-inter {
+  font-family: var(--font-inter), sans-serif;
+}
+
+.font-public-sans {
+  font-family: var(--font-public-sans), sans-serif;
 }

@@ -1,0 +1,13 @@
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="bxs-circle">
+<g clip-path="url(#clip0_2061_237)">
+<path id="Vector" d="M8 3C5.243 3 3 5.243 3 8C3 10.757 5.243 13 8 13C10.757 13 13 10.757 13 8C13 5.243 10.757 3 8 3Z" fill="#696CFF"/>
+</g>
+<rect x="1.5" y="1.5" width="13" height="13" rx="6.5" stroke="#696CFF" stroke-opacity="0.16" stroke-width="3"/>
+</g>
+<defs>
+<clipPath id="clip0_2061_237">
+<rect x="3" y="3" width="10" height="10" rx="5" fill="white"/>
+</clipPath>
+</defs>
+</svg>
