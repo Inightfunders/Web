@@ -101,7 +101,7 @@ export default function CustomStartupChart({
                 </span>
               </div>
               <span className="text-[13px] font-Montserrat leading-[15px]">
-                {formatCurrency(availableBalance)}
+                {formatCurrency(totalReturnPaid)}
               </span>
             </div>
             <div className="flex justify-between items-center gap-4">
@@ -121,7 +121,7 @@ export default function CustomStartupChart({
                   Total Funds Available
                 </span>
                 <span className="text-[13px] font-bold font-Montserrat">
-                  {formatCurrency(totalReturnPaid)}
+                  {formatCurrency(availableBalance)}
                 </span>
               </div>
             </div>
