@@ -32,7 +32,7 @@ export default async function Dashboard({
       acc +
       (contract.investment_amount_paid
         ? parseFloat(contract.amount_invested) *
-          ((parseFloat(contract.interest_rate ?? "0") + 100) / 100)
+          (parseFloat(contract.interest_rate ?? "0") / 100)
         : 0),
     0
   );
@@ -40,7 +40,22 @@ export default async function Dashboard({
     (contract) => contract.investment_amount_paid
   ).length;
 
-  console.log({ totalAmountInvested, totalROI, totalStartups });
+  const availableBalance = investorContracts.acceptedContracts?.reduce(
+    (acc, contract) =>
+      acc +
+      (contract.investment_amount_paid && contract.total_return_paid
+        ? parseFloat(contract.amount_invested) -
+          parseFloat(contract.total_return_paid)
+        : 0),
+    0
+  );
+
+  console.log({
+    totalAmountInvested,
+    totalROI,
+    totalStartups,
+    inv: investorContracts.acceptedContracts,
+  });
   const investmentData = [
     {
       name: "Slope AI",
@@ -96,24 +111,30 @@ export default async function Dashboard({
         <div className="flex flex-col justify-between space-y-[20px] min-w-[332px]">
           <InvestorDashboardCard
             title="Total Investment"
-            value={"$20,000,000"}
+            value={`${
+              totalAmountInvested && formatCurrency(totalAmountInvested)
+            }`}
             className="text-center content-center"
           />
           <InvestorDashboardCard
             title="Total Expected Return"
-            value={"$4,000,000"}
+            value={`${totalROI && formatCurrency(totalROI)}`}
             className="text-center content-center"
           />
           <InvestorDashboardCard
             title="Companies Invested"
-            value={"6"}
+            value={Number(totalStartups)}
             className="text-center content-center"
           />
         </div>
 
         {/* Right column with ROI card spanning 2 columns */}
         <div className="w-full">
-          <StartUpsChart totalAmountInvested={totalAmountInvested!} />
+          <StartUpsChart
+            totalAmountInvested={totalAmountInvested!}
+            totalROI={totalROI || 0}
+            availableBalance={availableBalance || 0}
+          />
         </div>
       </div>
 
@@ -125,72 +146,13 @@ export default async function Dashboard({
         />
       </div>
 
-      <div className="overflow-x-auto bg-[#FAFAFA] rounded-lg">
-        <table className="w-full">
-          <thead>
-            <tr className="text-[#1A1A1A] text-sm leading-[15px] text-[12px]">
-              <th className=" text-[12px] text-center p-6 font-medium font-Montserrat">
-                Company Name
-              </th>
-              <th className="text-[12px] text-center p-6 font-medium font-Montserrat">
-                Amount Invested
-              </th>
-              <th className="text-[12px] text-center p-6 px-12 font-medium font-Montserrat">
-                APY
-              </th>
-              <th className="text-[12px] text-center p-6 font-medium font-Montserrat">
-                Term
-              </th>
-              <th className="text-[12px] text-center p-6 font-medium font-Montserrat">
-                Maturity Date
-              </th>
-              <th className="text-[12px] text-center p-6 font-medium font-Montserrat">
-                Due Payment Date
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {investmentData.map((company, index) => (
-              <tr key={index}>
-                <td className={`p-4 bg-[#EAEAEA] font-Montserrat`}>
-                  <div>
-                    <div className="font-medium font-Montserrat text-[13px] leading-[15px]">
-                      {company.name}
-                    </div>
-                    <div className="text-sm text-gray-500 font-Montserrat text-[13px]">
-                      {company.category}
-                    </div>
-                  </div>
-                </td>
-                <td
-                  className={`p-4 bg-white font-Montserrat text-[13px] leading-[15px] text-[#1A1A1A]`}
-                >
-                  ${company.amount.toLocaleString()}
-                </td>
-                <td
-                  className={`p-4 bg-[#EAEAEA] font-Montserrat text-[13px] leading-[15px] text-[#1A1A1A]`}
-                >
-                  {company.apy}
-                </td>
-                <td
-                  className={`p-4 bg-white font-Montserrat text-[13px] leading-[15px] text-[#1A1A1A]`}
-                >
-                  {company.term}
-                </td>
-                <td
-                  className={`p-4 bg-[#EAEAEA] font-Montserrat leading-[15px] text-[#1A1A1A] text-[13px]`}
-                >
-                  {company.maturityDate}
-                </td>
-                <td
-                  className={`p-4 bg-white font-Montserrat leading-[15px] text-[#1A1A1A] text-[13px]`}
-                >
-                  {company.dueDate}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div>
+        {investorContracts.acceptedContracts && (
+          <InvestorsStartups
+            contracts={investorContracts.acceptedContracts}
+            searchParams={searchParams}
+          />
+        )}
       </div>
     </div>
   );

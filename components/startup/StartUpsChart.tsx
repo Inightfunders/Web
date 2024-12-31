@@ -11,43 +11,40 @@ import { Pie, PieChart } from "recharts";
 
 type Props = {
   totalAmountInvested: number;
+  totalROI: number;
+  availableBalance: number;
 };
 
-export default function StartUpsChart({ totalAmountInvested }: Props) {
-  // Calculate actual values and percentages
-  // const fundsUsed = 1500000; // Example value, replace with actual funds used
-  // const availableBalance = totalAmountInvested - fundsUsed;
-  // const total = totalAmountInvested;
+export default function StartUpsChart({
+  totalAmountInvested,
+  totalROI,
+  availableBalance,
+}: Props) {
+  const realizedTotal = totalAmountInvested + totalROI;
+  const total = realizedTotal - totalAmountInvested;
 
-  const fundsUsed = 800000;
-  const total = 4000000;
-  const availableBalance = 3200000;
+  console.log({ totalAmountInvested, totalROI });
 
   const data = [
     {
       name: "Available Balance",
-      value: availableBalance,
-      percentage: total > 0 ? Math.round((availableBalance / total) * 100) : 0,
-      fill: "#5631CC",
+      value: realizedTotal,
+      percentage:
+        totalAmountInvested > 0
+          ? Math.round((realizedTotal / totalAmountInvested) * 100)
+          : 0,
+      fill: "#FF7A00",
     },
     {
       name: "Funds Used",
-      value: fundsUsed,
-      percentage: total > 0 ? Math.round((fundsUsed / total) * 100) : 0,
-      fill: "#FF7A00",
-    },
-  ];
-
-  const defaultData = [
-    {
-      name: "No Data Available",
-      value: 1,
-      percentage: 100,
+      value: totalAmountInvested,
+      percentage:
+        totalAmountInvested > 0
+          ? Math.round((totalAmountInvested / totalAmountInvested) * 100)
+          : 0,
       fill: "#5631CC",
     },
   ];
-
-  // const isAllZero = total === 0;
 
   const chartConfig = {
     availableBalance: {
@@ -109,7 +106,7 @@ export default function StartUpsChart({ totalAmountInvested }: Props) {
                 </span>
               </div>
               <span className="text-[13px] font-Montserrat leading-[15px]">
-                {formatCurrency(fundsUsed)}
+                {formatCurrency(realizedTotal)}
               </span>
             </div>
             <div className="flex justify-between items-center gap-4">
@@ -140,26 +137,4 @@ export default function StartUpsChart({ totalAmountInvested }: Props) {
       </CardContent>
     </Card>
   );
-}
-
-{
-  /* <div className="bg-white  h-full flex flex-col items-center justify-center text-left p-8 gap-12 rounded-[8px] shadow-lg">
-      <p className="text-black font-normal  mr-auto">Total Funds Available</p>
-      <div className="flex w-full gap-12">
-        <DonutChart
-          data={isAllZero ? defaultData : data}
-          category="value"
-          index="name"
-          valueFormatter={valueFormatter}
-          colors={colors}
-          className="w-40 textWhite"
-          showLabel={false}
-        />
-        <Legend
-          categories={["Available Balance", "Funds Used"]}
-          colors={["orange", "#212121"]}
-          className="max-w-xs text-white"
-        />
-      </div>
-    </div> */
 }
