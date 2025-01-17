@@ -16,7 +16,7 @@ type Props = {
       | "Registered Investment Advisor (RIA)"
       | null;
     user: {
-      first_name: string;
+      first_name: string | null;
       last_name: string | null;
     };
   };
