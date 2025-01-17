@@ -259,7 +259,7 @@ export const users = pgTable(
       .default(sql`auth.uid()`)
       .primaryKey()
       .notNull(),
-    first_name: text("first_name").notNull(),
+    first_name: text("first_name"),
     last_name: text("last_name"),
     role: user_role("role"),
     dwolla_customer_url: text("dwolla_customer_url"),
