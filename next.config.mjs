@@ -5,11 +5,13 @@ const nextConfig = {
       return [
         {
           source: "/api/:path*",
-          destination: "https://api.insightfunders.com/api/:path*", // Forward to backend
+          destination: "https://api.insightfunders.com/:path*", // Forward to backend
         },
       ];
     },
   };
+
+  
   
 export default withSentryConfig(nextConfig, {
 // For all available options, see:
