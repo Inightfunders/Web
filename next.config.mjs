@@ -1,7 +1,16 @@
 import {withSentryConfig} from '@sentry/nextjs';
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
-
+const nextConfig = {
+    async rewrites() {
+      return [
+        {
+          source: "/api/:path*",
+          destination: "https://api.insightfunders.com/api/:path*", // Forward to backend
+        },
+      ];
+    },
+  };
+  
 export default withSentryConfig(nextConfig, {
 // For all available options, see:
 // https://github.com/getsentry/sentry-webpack-plugin#options
