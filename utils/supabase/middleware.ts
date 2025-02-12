@@ -3,53 +3,19 @@ import { type NextRequest, NextResponse } from "next/server";
 
 export const updateSession = async (request: NextRequest) => {
   try {
-    let response = NextResponse.next({
-      request: {
-        headers: request.headers,
-      },
-    });
+    const response = NextResponse.next();
 
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
       {
         cookies: {
-          get(name: string) {
-            return request.cookies.get(name)?.value;
+          get: (name) => request.cookies.get(name)?.value,
+          set: (name, value, options) => {
+            response.cookies.set(name, value, options);
           },
-          set(name: string, value: string, options: CookieOptions) {
-            request.cookies.set({
-              name,
-              value,
-              ...options,
-            });
-            response = NextResponse.next({
-              request: {
-                headers: request.headers,
-              },
-            });
-            response.cookies.set({
-              name,
-              value,
-              ...options,
-            });
-          },
-          remove(name: string, options: CookieOptions) {
-            request.cookies.set({
-              name,
-              value: "",
-              ...options,
-            });
-            response = NextResponse.next({
-              request: {
-                headers: request.headers,
-              },
-            });
-            response.cookies.set({
-              name,
-              value: "",
-              ...options,
-            });
+          remove: (name, options) => {
+            response.cookies.set(name, "", { ...options, maxAge: 0 });
           },
         },
       }
@@ -58,11 +24,8 @@ export const updateSession = async (request: NextRequest) => {
     await supabase.auth.getUser();
 
     return response;
-  } catch (e) {
-    return NextResponse.next({
-      request: {
-        headers: request.headers,
-      },
-    });
+  } catch (error) {
+    console.error("Session Update Error:", error);
+    return NextResponse.next();
   }
 };
