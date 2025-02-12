@@ -50,9 +50,9 @@ const Shareable = () => {
           </button>
         </div>
         <div className="flex gap-[12px]">
-          {socialIcons.map((_el) => (
-            <div className="flex items-center bg-[#FF7A0014] p-[13px] rounded-[12px]">
-              <img src={_el.iconPath} />
+          {socialIcons.map((_el, index) => (
+            <div key={index} className="flex items-center bg-[#FF7A0014] p-[13px] rounded-[12px]">
+              <img src={_el.iconPath} alt="social icon" />
             </div>
           ))}
         </div>
