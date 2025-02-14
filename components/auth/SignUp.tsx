@@ -67,7 +67,7 @@ export default function SignIn() {
       }
 
       if (result.success) {
-        router.push("/");
+        router.push("/personal-details");
       }
     } catch (error) {
       console.error(error);
