@@ -22,7 +22,7 @@ export default function Header() {
           </PopoverContent>
         </Popover>
       </div>
-      <Link href="/" className="font-IntegralCF font-medium uppercase text-xs">
+      <Link href="https://www.insightfunders.com" className="font-IntegralCF font-medium uppercase text-xs">
         <Image src="/images/logo.png" alt="logo" width={153} height={35} />
       </Link>
 
