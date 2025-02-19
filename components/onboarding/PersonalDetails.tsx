@@ -1,22 +1,22 @@
-"use client";
+'use client';
 
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { personalDetailsSchema } from "@/lib/validations/authSchema";
-import { useEffect, useState } from "react";
-import { updatePersonalDetails } from "@/lib/actions/onboarding";
-import { useRouter } from "next/navigation";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { UserType } from "@/lib/types/user";
+  FormMessage
+} from '@/components/ui/form';
+import { personalDetailsSchema } from '@/lib/validations/authSchema';
+import { useEffect, useState } from 'react';
+import { updatePersonalDetails } from '@/lib/actions/onboarding';
+import { useRouter } from 'next/navigation';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
+import { UserType } from '@/lib/types/user';
 
 type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
@@ -25,10 +25,10 @@ type Props = {
 
 export default function PersonalDetails({ searchParams, user }: Props) {
   const [isPending, setIsPending] = useState(false);
-  const [ssn, setSSN] = useState<string>(""); // Explicitly define ssn type as string
+  const [ssn, setSSN] = useState<string>(''); // Explicitly define ssn type as string
 
   const error =
-    typeof searchParams.error === "string" ? searchParams.error : undefined;
+    typeof searchParams.error === 'string' ? searchParams.error : undefined;
 
   const [open, setOpen] = useState(false);
 
@@ -45,7 +45,7 @@ export default function PersonalDetails({ searchParams, user }: Props) {
   // Define the type of 'value' as string
   const formatSSN = (value: string): string => {
     // Remove all non-numeric characters
-    value = value.replace(/\D/g, "");
+    value = value.replace(/\D/g, '');
 
     // Add dashes after 3rd and 5th digits
     if (value.length > 5) {
@@ -65,19 +65,19 @@ export default function PersonalDetails({ searchParams, user }: Props) {
     setSSN(formattedSSN);
 
     // Sync the formatted value back to the form field
-    form.setValue("ssn", formattedSSN);
+    form.setValue('ssn', formattedSSN);
   };
 
   const form = useForm<z.infer<typeof personalDetailsSchema>>({
     resolver: zodResolver(personalDetailsSchema),
     defaultValues: {
-      address1: "",
-      city: "",
-      state: "",
-      postalCode: "",
-      ssn: "",
-      dateOfBirth: "",
-    },
+      address1: '',
+      city: '',
+      state: '',
+      postalCode: '',
+      ssn: '',
+      dateOfBirth: ''
+    }
   });
 
   const onSubmit = async (values: z.infer<typeof personalDetailsSchema>) => {
@@ -93,35 +93,35 @@ export default function PersonalDetails({ searchParams, user }: Props) {
         user?.userInfo?.dwolla_customer_url &&
         user?.userInfo?.plaid_id
       ) {
-        if (user.userInfo.role === "startup") {
-          return router.push("/startup-details");
-        } else if (user.userInfo.role === "investor") {
-          return router.push("/investor-details");
+        if (user.userInfo.role === 'startup') {
+          return router.push('/startup-details');
+        } else if (user.userInfo.role === 'investor') {
+          return router.push('/investor-details');
         } else {
-          return router.push("/investor-details");
+          return router.push('/investor-details');
         }
       }
     }
   };
 
-  const dof = form.watch("dateOfBirth");
+  const dof = form.watch('dateOfBirth');
 
   useEffect(() => {
-    let value = dof?.replace(/\D/g, ""); // Remove non-digits
-    let formattedValue = "";
+    let value = dof?.replace(/\D/g, ''); // Remove non-digits
+    let formattedValue = '';
 
     if (value?.length > 0) {
       // Format month
       formattedValue = value.substring(0, 2);
       if (value.length > 2) {
-        formattedValue += "/" + value.substring(2, 4);
+        formattedValue += '/' + value.substring(2, 4);
       }
       if (value.length > 4) {
-        formattedValue += "/" + value.substring(4, 8);
+        formattedValue += '/' + value.substring(4, 8);
       }
     }
 
-    form.setValue("dateOfBirth", formattedValue);
+    form.setValue('dateOfBirth', formattedValue);
   }, [dof]);
 
   return (
@@ -297,13 +297,13 @@ export default function PersonalDetails({ searchParams, user }: Props) {
             className="w-full !mt-8 bg-[#FF7A00] text-white font-bold rounded-[8px] mx-auto py-3.5 text-sm px-4 max-w-[216px] disabled:opacity-70"
             type="submit"
           >
-            {isPending ? "Submitting..." : "Submit"}
+            {isPending ? 'Submitting...' : 'Submit'}
           </button>
         </form>
       </Form>
       <button
         onClick={() => {
-          router.push("/sign-up");
+          router.push('/sign-up');
         }}
         className="text-white text-[13px py-2 px-4 bg-transparent font-Montserrat mt-2"
       >

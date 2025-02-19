@@ -22,7 +22,7 @@ export const signUpSchema = z
   })
   .superRefine((data, ctx) => {
     console.log({ data });
-    if (data.role === "partner") {
+/*    if (data.role === "partner") {
       // Only validate confirmPassword if role is partner
       if (!data.confirmPassword) {
         ctx.addIssue({
@@ -37,7 +37,7 @@ export const signUpSchema = z
           path: ["confirmPassword"],
         });
       }
-    }
+    } */
   });
 
 // export const personalDetailsSchema = z.object({

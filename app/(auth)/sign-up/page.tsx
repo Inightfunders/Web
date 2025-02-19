@@ -1,9 +1,9 @@
-"use client";
-import SignUp from "@/components/auth/SignUp";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import Image from "next/image";
-import Link from "next/link";
-import { useEffect, useState } from "react";
+'use client';
+import SignUp from '@/components/auth/SignUp';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
@@ -11,11 +11,11 @@ type Props = {
 
 export default function SignUpPage({ searchParams }: Props) {
   const error =
-    typeof searchParams.error === "string" ? searchParams.error : undefined;
+    typeof searchParams.error === 'string' ? searchParams.error : undefined;
   const message =
-    typeof searchParams.message === "string" ? searchParams.message : undefined;
+    typeof searchParams.message === 'string' ? searchParams.message : undefined;
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
 
   useEffect(() => {
     if (error) {
