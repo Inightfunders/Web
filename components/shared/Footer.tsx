@@ -13,7 +13,7 @@ export default function Footer()
             </div>
             <div className='flex flex-col gap-4'>
                 <div className='flex justify-between text-sm lg:text-base items-center bg-white text-black gap-2 lg:gap-4 font-semibold max-lg:flex-col'>
-                    <Link href='/' className='font-IntegralCF font-medium uppercase text-xs'>
+                    <Link href='https://www.insightfunders.com' className='font-IntegralCF font-medium uppercase text-xs'>
                         Insight Funders
                     </Link>
 
