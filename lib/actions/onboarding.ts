@@ -239,8 +239,6 @@ export const updatePersonalDetails = async (data: z.infer<typeof personalDetails
     .set({ dwolla_customer_id: dwollaCustomerId, dwolla_customer_url: dwollaCustomerUrl })
     .where(eq(users.id, user.user.id!));
 
-  revalidatePath("/personal-details");
-
   return { success: true };
 };
 

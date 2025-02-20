@@ -1,10 +1,10 @@
-"use client";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Dialog, DialogClose, DialogContent } from "@/components/ui/dialog";
-import { submitApplication } from "@/lib/actions/onboarding";
-import { Loader2, X } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+'use client';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Dialog, DialogClose, DialogContent } from '@/components/ui/dialog';
+import { submitApplication } from '@/lib/actions/onboarding';
+import { Loader2, X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function StartUpSubmitApplication() {
   const router = useRouter();
@@ -12,7 +12,7 @@ export default function StartUpSubmitApplication() {
   const [checked, setChecked] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [open, setOpen] = useState(false);
+  //  const [open, setOpen] = useState(false);
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
@@ -37,18 +37,17 @@ export default function StartUpSubmitApplication() {
           htmlFor="terms"
           className="text-sm text-white font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         >
-          I agree to the{" "}
-          <span onClick={() => setOpen(true)} className="underline">
+          I agree to the{' '}
+          <a
+            href="/Non-Circumvention and Confidentiality Agreement.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline"
+          >
             Mutual Non-Disclosure Agreement
-          </span>
+          </a>
         </label>
       </div>
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="flex items-center justify-center bg-white border-none shadow-none outline-none">
-          <h2>Non Disclosure Agreement</h2>
-        </DialogContent>
-        <DialogClose />
-      </Dialog>
       <button
         onClick={handleSubmit}
         disabled={!checked}
@@ -57,7 +56,7 @@ export default function StartUpSubmitApplication() {
         {isSubmitting ? (
           <Loader2 stroke="#fff" className="animate-spin mx-auto" />
         ) : (
-          "Submit Application"
+          'Submit Application'
         )}
       </button>
       {error && (

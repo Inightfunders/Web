@@ -1,10 +1,10 @@
-import Image from "next/image";
-import Link from "next/link";
-import StartUpSubmitApplication from "./submitapplication";
-import SignOutBtn from "@/components/startup/SignOutBtn";
-import { getUser } from "@/lib/actions/auth";
-import { redirect } from "next/navigation";
-import { unstable_noStore } from "next/cache";
+import Image from 'next/image';
+import Link from 'next/link';
+import StartUpSubmitApplication from './submitapplication';
+import SignOutBtn from '@/components/startup/SignOutBtn';
+import { getUser } from '@/lib/actions/auth';
+import { redirect } from 'next/navigation';
+import { unstable_noStore } from 'next/cache';
 
 export default async function SubmitStartUpDetailsPage() {
   // unstable_noStore()
@@ -12,16 +12,16 @@ export default async function SubmitStartUpDetailsPage() {
   const user = await getUser();
   console.log(user);
 
-  if (!user) return redirect("/");
+  if (!user) return redirect('/');
 
   if (
     !user.userInfo.dwolla_customer_id &&
     !user.userInfo.dwolla_customer_url &&
     !user.userInfo.plaid_id
   )
-    return redirect("/personal-details");
+    return redirect('/personal-details');
 
-  if (user.userInfo.role === "startup") {
+  if (user.userInfo.role === 'startup') {
     console.log(user.userStartUp?.stage);
     // user?.userStartUpOwners?.length === 0 ||
     if (
@@ -33,11 +33,11 @@ export default async function SubmitStartUpDetailsPage() {
       !user?.userStartUp?.email ||
       !user?.userStartUp?.phone_number
     ) {
-      return redirect("/startup-details");
+      return redirect('/startup-details');
     } else if (!user.userStartUp.stage || !user.userStartUp.recent_raise)
-      return redirect("/startup-details/financial");
-    else if (user.userStartUp.submitted) return redirect("/");
-  } else return redirect("/");
+      return redirect('/startup-details/financial');
+    else if (user.userStartUp.submitted) return redirect('/');
+  } else return redirect('/');
 
   return (
     <section className="w-full flex flex-col bg-[#1A1A1A] min-h-screen">
@@ -48,7 +48,6 @@ export default async function SubmitStartUpDetailsPage() {
         >
           <Image src="/images/iflogo.png" alt="logo" width={153} height={35} />
         </Link>
-        <SignOutBtn />
       </header>
       <div className="flex flex-col items-center justify-center gap-16 my-12">
         <div className="flex flex-col items-center justify-center gap-4 mt-8 max-w-[640px]">

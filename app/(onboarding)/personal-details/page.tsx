@@ -1,10 +1,10 @@
-import PersonalDetails from "@/components/onboarding/PersonalDetails";
-import SignOutBtn from "@/components/startup/SignOutBtn";
-import { getUser } from "@/lib/actions/auth";
+import PersonalDetails from '@/components/onboarding/PersonalDetails';
+import SignOutBtn from '@/components/startup/SignOutBtn';
+import { getUser } from '@/lib/actions/auth';
 // import { Montserrat } from "next/font/google";
-import Image from "next/image";
-import Link from "next/link";
-import { redirect } from "next/navigation";
+import Image from 'next/image';
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
 // Import Montserrat font
 // const inter = Montserrat({ subsets: ["latin"] });
@@ -16,7 +16,7 @@ type Props = {
 export default async function PersonalDetailsPage({ searchParams }: Props) {
   const user = await getUser();
 
-  if (!user) return redirect("/");
+  if (!user) return redirect('/');
 
   // if (
   //   user.userInfo.dwolla_customer_id &&
@@ -38,7 +38,6 @@ export default async function PersonalDetailsPage({ searchParams }: Props) {
         >
           <Image src="/images/iflogo.png" alt="logo" width={153} height={35} />
         </Link>
-        <SignOutBtn />
       </header>
       <div className="flex flex-col items-center justify-center gap-8 my-12">
         <div className="flex flex-col items-center justify-center gap-4 mt-8">

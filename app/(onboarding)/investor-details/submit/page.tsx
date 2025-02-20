@@ -1,31 +1,31 @@
-import SignOutBtn from "@/components/startup/SignOutBtn";
-import { getUser } from "@/lib/actions/auth";
-import { getBankAccount } from "@/lib/actions/user";
-import Image from "next/image";
-import Link from "next/link";
-import { redirect } from "next/navigation";
-import InvestorSubmitApplication from "./submitapplication";
+import SignOutBtn from '@/components/startup/SignOutBtn';
+import { getUser } from '@/lib/actions/auth';
+import { getBankAccount } from '@/lib/actions/user';
+import Image from 'next/image';
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
+import InvestorSubmitApplication from './submitapplication';
 
 export default async function SubmitStartUpDetailsPage() {
   // unstable_noStore()
 
   const user = await getUser();
 
-  if (!user) return redirect("/");
+  if (!user) return redirect('/');
 
   if (
     !user.userInfo.dwolla_customer_id &&
     !user.userInfo.dwolla_customer_url &&
     !user.userInfo.plaid_id
   )
-    return redirect("/personal-details");
+    return redirect('/personal-details');
 
-  if (user.userInfo.role === "investor") {
+  if (user.userInfo.role === 'investor') {
     const bankConnected = await getBankAccount(user.user.id);
 
     if (
       !user?.userInvestor?.investor_type ||
-      (user?.userInvestor?.investor_type === "Institution" &&
+      (user?.userInvestor?.investor_type === 'Institution' &&
         (!user?.userInvestor.company_email ||
           !user?.userInvestor.company_name ||
           !user?.userInvestor.company_email ||
@@ -36,14 +36,14 @@ export default async function SubmitStartUpDetailsPage() {
           !user?.userInvestor.products_offered ||
           !user.userInvestor.future_investment_amount ||
           !user.userInvestor.institution_type)) ||
-      (user?.userInvestor?.investor_type === "Individual" &&
+      (user?.userInvestor?.investor_type === 'Individual' &&
         (!user?.userInvestor.future_investment_amount ||
           !user?.userInvestor.accreditation))
     ) {
-      return redirect("/investor-details");
-    } else if (!bankConnected) return redirect("/investor-details/financial");
-    else if (user?.userInvestor?.submitted) return redirect("/");
-  } else return redirect("/");
+      return redirect('/investor-details');
+    } else if (!bankConnected) return redirect('/investor-details/financial');
+    else if (user?.userInvestor?.submitted) return redirect('/');
+  } else return redirect('/');
 
   return (
     <section className="w-full flex flex-col bg-[#1A1A1A] min-h-screen">
@@ -54,7 +54,6 @@ export default async function SubmitStartUpDetailsPage() {
         >
           <Image src="/images/iflogo.png" alt="logo" width={153} height={35} />
         </Link>
-        <SignOutBtn />
       </header>
       <div className="flex flex-col items-center justify-center gap-16 my-12">
         <div className="flex flex-col items-center justify-center gap-4 mt-8 max-w-[640px]">
