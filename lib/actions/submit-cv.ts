@@ -11,7 +11,6 @@ export async function submitCV(formData: FormData) {
     console.log("CV File Type:", typeof cvFile);
     console.log("CV File Content:", cvFile);
 
-    // ✅ Ensure cvFile is a File object
     if (!(cvFile instanceof File)) {
         console.error("❌ Error: cvFile is not recognized as a File", { cvFile });
         return { success: false, error: "Invalid file upload" };
@@ -22,7 +21,13 @@ export async function submitCV(formData: FormData) {
         return { error: "Missing required fields" };
     }
 
-    // ✅ Convert File to Buffer
+    console.log("✅ CV File Validated:", {
+        name: cvFile.name,
+        size: cvFile.size,
+        type: cvFile.type,
+        lastModified: cvFile.lastModified,
+    });
+
     const fileArrayBuffer = await cvFile.arrayBuffer();
     const fileBuffer = Buffer.from(new Uint8Array(fileArrayBuffer)); // Ensure proper conversion
 
