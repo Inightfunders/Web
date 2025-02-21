@@ -10,7 +10,12 @@ export async function submitCV(formData: FormData) {
         return { error: "Missing required fields" };
     }
 
-    const resend = new Resend(process.env.RESEND_API_KEY); // Use your API Key
+    if (!(cvFile instanceof File)) {
+        console.error("Error: cvFile is not recognized as a File", { cvFile });
+        return { success: false, error: "Invalid file upload" };
+    }
+
+    const resend = new Resend(process.env.RESEND_API_KEY); 
 
     try {
         const response = await resend.emails.send({
