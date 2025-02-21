@@ -15,17 +15,19 @@ export async function submitCV(formData: FormData) {
         return { error: "Missing required fields" };
     }
 
-    // 🔥 **Force Convert to File (if not already a File)**
-    if (!(cvFile instanceof File)) {
-        console.warn("⚠️ cvFile is not a File, manually converting...");
-
-        // Convert to a `File` manually using `Blob`
-        cvFile = new File(
-            [await (cvFile as Blob).arrayBuffer()], // Convert Blob to Buffer
-            (cvFile as Blob & { name: string }).name, // Use filename
-            { type: (cvFile as Blob).type } // Keep original MIME type
-        );
+    // 🔥 **Ensure cvFile is a Blob before conversion**
+    if (!(cvFile instanceof Blob)) {
+        console.warn("⚠️ cvFile is not a Blob, skipping conversion...");
+        return { success: false, error: "Invalid file upload" };
     }
+
+    // ✅ **Manually Convert Blob to File**
+    const fileName = (cvFile as any).name ?? "uploaded_cv.pdf"; // Default if name is missing
+    cvFile = new File(
+        [await cvFile.arrayBuffer()], // Convert Blob to Buffer
+        fileName, // Use provided or default filename
+        { type: cvFile.type } // Keep original MIME type
+    );
 
     console.log("✅ CV File Validated:", {
         name: cvFile.name,
