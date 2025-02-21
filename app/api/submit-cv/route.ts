@@ -9,6 +9,10 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: "Method Not Allowed" }, { status: 405 });
     }
 
+    if (!req.headers.get("content-type")?.includes("multipart/form-data")) {
+        return NextResponse.json({ error: "Invalid content type. Expected multipart/form-data" }, { status: 400 });
+    }
+
     try {
         const formData = await req.formData();
         const result = await submitCV(formData);
