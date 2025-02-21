@@ -10,7 +10,7 @@ export async function submitCV(formData: FormData) {
         return { error: "Missing required fields" };
     }
 
-    const resend = new Resend("re_ATUTuMzg_BMxYS9iqHuUjnG7jVMP868is"); // Use your API Key
+    const resend = new Resend(process.env.RESEND_API_KEY); // Use your API Key
 
     try {
         const response = await resend.emails.send({
