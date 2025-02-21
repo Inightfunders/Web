@@ -6,23 +6,25 @@ export async function submitCV(formData: FormData) {
     const name = formData.get("name") as string;
     const email = formData.get("email") as string;
     const jobPosition = formData.get("jobPosition") as string;
-    const cvFile = formData.get("cv") as File;
+    const cvFile = formData.get("cv");
 
     console.log("CV File Type:", typeof cvFile);
     console.log("CV File Content:", cvFile);
+
+    // ✅ Ensure cvFile is a File object
+    if (!(cvFile instanceof File)) {
+        console.error("❌ Error: cvFile is not recognized as a File", { cvFile });
+        return { success: false, error: "Invalid file upload" };
+    }
 
     if (!name || !email || !jobPosition || !cvFile) {
         console.error("❌ Missing fields:", { name, email, jobPosition, cvFile });
         return { error: "Missing required fields" };
     }
 
-    if (!(cvFile instanceof File)) {
-        console.error("❌ Error: cvFile is not recognized as a File", { cvFile });
-        return { success: false, error: "Invalid file upload" };
-    }
-
-    // Convert File to Buffer
-    const fileBuffer = Buffer.from(await cvFile.arrayBuffer());
+    // ✅ Convert File to Buffer
+    const fileArrayBuffer = await cvFile.arrayBuffer();
+    const fileBuffer = Buffer.from(new Uint8Array(fileArrayBuffer)); // Ensure proper conversion
 
     const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -35,7 +37,7 @@ export async function submitCV(formData: FormData) {
             attachments: [
                 {
                     filename: cvFile.name,
-                    content: fileBuffer.toString("base64"), 
+                    content: fileBuffer.toString("base64"), // Correct conversion to Base64
                 },
             ],
         });
