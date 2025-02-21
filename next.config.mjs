@@ -1,15 +1,6 @@
 import {withSentryConfig} from '@sentry/nextjs';
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-    async rewrites() {
-      return [
-        {
-          source: "/api/:path*",
-          destination: "https://api.insightfunders.com/:path*", // Forward to backend
-        },
-      ];
-    },
-  };
+const nextConfig = {};
 
   
   
