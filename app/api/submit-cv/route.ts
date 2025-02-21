@@ -9,25 +9,29 @@ export async function POST(req: Request) {
         const formData = await req.formData();
         const result = await submitCV(formData);
 
-        const response = NextResponse.json({ success: true, data: result });
-
-        response.headers.set("Access-Control-Allow-Origin", "https://insightfunders.com");
-        response.headers.set("Access-Control-Allow-Methods", "POST, OPTIONS");
-        response.headers.set("Access-Control-Allow-Headers", "Content-Type");
-
-        return response;
+        return new NextResponse(
+            JSON.stringify({ success: true, data: result }),
+            {
+                status: 200,
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "POST, OPTIONS",
+                    "Access-Control-Allow-Headers": "Content-Type",
+                }
+            }
+        );
     } catch (error) {
-        return NextResponse.json({ success: false, error: (error as Error).message }, { status: 500 });
+        return new NextResponse(
+            JSON.stringify({ success: false, error: (error as Error).message }),
+            {
+                status: 500,
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "POST, OPTIONS",
+                    "Access-Control-Allow-Headers": "Content-Type",
+                }
+            }
+        );
     }
 }
 
-// Handle CORS preflight request
-export function OPTIONS() {
-    const response = NextResponse.json({}, { status: 200 });
-
-    response.headers.set("Access-Control-Allow-Origin", "https://insightfunders.com");
-    response.headers.set("Access-Control-Allow-Methods", "POST, OPTIONS");
-    response.headers.set("Access-Control-Allow-Headers", "Content-Type");
-
-    return response;
-}
