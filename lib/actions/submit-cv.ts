@@ -10,6 +10,9 @@ export async function submitCV(formData: FormData) {
 
     console.log("📄 CV File Raw Data:", cvFile);
 
+    console.log("cvFile instanceof File:", cvFile instanceof File);
+    console.log("cvFile instanceof Blob:", cvFile instanceof Blob);
+
     if (!name || !email || !jobPosition || !cvFile) {
         console.error("❌ Missing required fields", { name, email, jobPosition, cvFile });
         return { error: "Missing required fields" };
