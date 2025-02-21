@@ -1,10 +1,14 @@
 import { Resend } from "resend";
 
 export async function submitCV(formData: FormData) {
+    console.log("Received FormData:", formData);
     const name = formData.get("name") as string;
     const email = formData.get("email") as string;
     const jobPosition = formData.get("jobPosition") as string;
     const cvFile = formData.get("cv") as File;
+
+    console.log("CV File Raw Data:", cvFile);
+
 
     if (!name || !email || !jobPosition || !cvFile) {
         return { error: "Missing required fields" };
