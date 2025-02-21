@@ -21,6 +21,9 @@ export async function submitCV(formData: FormData) {
         return { success: false, error: "Invalid file upload" };
     }
 
+    // Convert File to Buffer
+    const fileBuffer = Buffer.from(await cvFile.arrayBuffer());
+
     const resend = new Resend(process.env.RESEND_API_KEY);
 
     try {
@@ -32,7 +35,7 @@ export async function submitCV(formData: FormData) {
             attachments: [
                 {
                     filename: cvFile.name,
-                    content: Buffer.from(await cvFile.arrayBuffer()).toString("base64"),
+                    content: fileBuffer.toString("base64"), 
                 },
             ],
         });
