@@ -8,7 +8,7 @@ export async function POST(req: Request) {
 
         const response = NextResponse.json({ success: true, data: result });
 
-        response.headers.set("Access-Control-Allow-Origin", "*"); 
+        response.headers.set("Access-Control-Allow-Origin", "https://insightfunders.com");
         response.headers.set("Access-Control-Allow-Methods", "POST, OPTIONS");
         response.headers.set("Access-Control-Allow-Headers", "Content-Type");
 
@@ -22,7 +22,7 @@ export async function POST(req: Request) {
 export function OPTIONS() {
     const response = NextResponse.json({}, { status: 200 });
 
-    response.headers.set("Access-Control-Allow-Origin", "*");
+    response.headers.set("Access-Control-Allow-Origin", "https://insightfunders.com");
     response.headers.set("Access-Control-Allow-Methods", "POST, OPTIONS");
     response.headers.set("Access-Control-Allow-Headers", "Content-Type");
 
