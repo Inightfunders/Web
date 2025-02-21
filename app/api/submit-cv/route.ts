@@ -5,6 +5,10 @@ import { NextResponse } from "next/server";
 import { submitCV } from "@/lib/actions/submit-cv";
 
 export async function POST(req: Request) {
+    if (req.method !== "POST") {
+        return NextResponse.json({ error: "Method Not Allowed" }, { status: 405 });
+    }
+
     try {
         const formData = await req.formData();
         const result = await submitCV(formData);
@@ -14,6 +18,7 @@ export async function POST(req: Request) {
             {
                 status: 200,
                 headers: {
+                    "Content-Type": "application/json",
                     "Access-Control-Allow-Origin": "*",
                     "Access-Control-Allow-Methods": "POST, OPTIONS",
                     "Access-Control-Allow-Headers": "Content-Type",
@@ -26,6 +31,7 @@ export async function POST(req: Request) {
             {
                 status: 500,
                 headers: {
+                    "Content-Type": "application/json",
                     "Access-Control-Allow-Origin": "*",
                     "Access-Control-Allow-Methods": "POST, OPTIONS",
                     "Access-Control-Allow-Headers": "Content-Type",
@@ -45,4 +51,3 @@ export function OPTIONS() {
         },
     });
 }
-
