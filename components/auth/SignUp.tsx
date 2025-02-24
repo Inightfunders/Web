@@ -60,17 +60,19 @@ export default function SignIn() {
       setLastAttempt(now);
       const result = await signUp(values);
 
-      console.log('Signup result: ', { result });
-
       if (result.error) {
-        console.log('this is error');
         setError(result.error);
         return;
       }
 
       if (result.success) {
+        const role = values.role;
+        if(role === 'partner'){
+          router.push('/upload-profilepicture');
+        }
+        else{
         router.push('/personal-details');
-      }
+      }}
     } catch (error) {
       console.error('error', error);
     }

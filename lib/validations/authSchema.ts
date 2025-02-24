@@ -7,6 +7,23 @@ export const signInSchema = z.object({
   }),
 });
 
+export const moreAboutDetailsSchema = z.object({
+  occupation: z
+    .string({
+      required_error: "Address is required",
+      invalid_type_error: "Please enter a valid address",
+    })
+    .min(6, "Address must be at least 6 characters")
+    .max(50, "Address must be at most 50 characters"),
+  companyName: z
+    .string({
+      required_error: "City is required",
+      invalid_type_error: "Please enter a valid city",
+    })
+    .min(2, "City must be at least 2 characters")
+    .max(50, "City must be at most 50 characters"),
+});
+
 export const signUpSchema = z
   .object({
     firstName: z.string().optional(),
