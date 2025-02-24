@@ -67,12 +67,12 @@ export default function SignIn() {
 
       if (result.success) {
         const role = values.role;
-        if(role === 'partner'){
-          router.push('/upload-profilepicture');
+        if (role === 'partner') {
+          router.push('/upload-profile-picture');
+        } else {
+          router.push('/personal-details');
         }
-        else{
-        router.push('/personal-details');
-      }}
+      }
     } catch (error) {
       console.error('error', error);
     }

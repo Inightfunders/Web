@@ -1,79 +1,77 @@
 'use client';
 
-import { useEffect, useState, useRef } from "react";
-import Link from 'next/link';
+import React, { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import '../../app/globals.css';
 import { useRouter } from 'next/navigation';
 
-export default function UploadProfilePicture() {
+import { UploadForm } from '@/components/ui/upload-form';
+import { cn } from '@/lib/utils';
+
+export function UploadProfilePicture() {
   const router = useRouter();
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null); // Create a reference to the file input
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    // Add any necessary side effects here
-  }, []);
+    handleFile(imageFile);
+  }, [imageFile]);
 
-  const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]; // Get the selected file
+  const handleUpload = async () => {};
 
+  async function handleFile(file: File | null) {
     if (file) {
       const fileSize = file.size / 1024 / 1024; // Convert size to MB
 
       // Check if the file is of valid type (JPG, PNG) and under 1MB
-      if (fileSize <= 1 && (file.type === "image/jpeg" || file.type === "image/png")) {
-        // Handle the file upload logic here, e.g., upload to a server or set it in state
-        console.log("File is valid: ", file);
-
-        // Example: You could set the file in state to preview it
-        setError(null); // Reset error
-        // Optionally, you could show a preview of the image
+      if (
+        fileSize <= 1 &&
+        (file.type === 'image/jpeg' || file.type === 'image/png')
+      ) {
         const reader = new FileReader();
         reader.onloadend = () => {
-          // Do something with the file data (e.g., set image preview)
-          console.log(reader.result); // This will be the base64 image data
-          setPreviewImage(reader.result as string);
+          setImageUrl(reader.result as string);
         };
         reader.readAsDataURL(file);
-      } else {
-        setError("Invalid file. Please upload a JPG or PNG file under 1MB.");
       }
     }
-  };
+  }
 
   return (
     <div className="upload-container flex flex-col items-center justify-center max-w-[90vw] mx-auto py-8">
-      <h1 className="font-montserrat font-bold text-[24px] leading-[29.26px] text-center text-white mb-4">Upload Profile Picture</h1>
-      <p className="font-montserrat font-normal text-[16px] leading-[19.5px] text-center text-white mb-8">A picture can increase the chance of getting funds.</p>
+      <h1 className="font-montserrat font-bold text-[24px] leading-[29.26px] text-center text-white mb-4">
+        Upload Profile Picture
+      </h1>
+      <p className="font-montserrat font-normal text-[16px] leading-[19.5px] text-center text-white mb-8">
+        A picture can increase the chance of getting funds.
+      </p>
 
       <div className="image-upload-container mb-6 relative rounded-full">
-        <Image
-          src={previewImage || "/images/profile-placeholder.svg"} // Replace with the image URL you want
-          alt="Upload Profile Picture"
-          width={120}
-          height={120}
-          className="rounded-full"
-        />
-      </div>
-
-      <div className="file-upload-section mb-8 flex flex-col justify-center items-center">
-        <input
-          type="file"
-          accept=".jpg,.png"
-          ref={fileInputRef} // Attach ref to input element
-          className="hidden"
-          onChange={handleUpload}
-        />
-        <span
-          className="cursor-pointer font-montserrat text-[14px] leading-[17.07px] tracking-[0%] text-[#FF7A00] py-2 rounded-md"
-          onClick={() => fileInputRef.current?.click()} // Trigger file input click on text click
+        <UploadForm
+          className="flex flex-col items-center"
+          fileType="image"
+          fileUrl={imageUrl}
+          onChange={(value) => handleFile(value)}
         >
-          Browse
-        </span>
-        <p className="text-xs text-gray-500 mt-2">JPG, PNG files only. Max size: 1MB.</p>
+          <Image
+            className={cn(
+              'rounded-full w-[120px] h-[120px] object-cover',
+              imageUrl ? 'border-[4px] border-[#FF7A00]' : ''
+            )}
+            width={120}
+            height={120}
+            src={imageUrl || '/images/profile-placeholder.svg'} // Replace with the image URL you want
+            alt="Upload Profile Picture"
+          />
+          <span className="font-montserrat text-[14px] leading-[17.07px] tracking-[0%] text-[#FF7A00] py-2 rounded-md">
+            {imageUrl ? 'Re-upload' : 'Browse'}
+          </span>
+          <p className="text-xs text-gray-500 mt-2">
+            Jpg, png and must be under 1 MB
+          </p>
+        </UploadForm>
       </div>
 
       {error && <p className="text-red-600 text-sm">{error}</p>}
@@ -85,7 +83,10 @@ export default function UploadProfilePicture() {
         >
           Upload
         </button>
-        <p className="font-montserrat font-normal text-[13px] leading-[15.85px] tracking-[0%] text-gray-500" onClick={() => router.push('/moreabout-details')}>
+        <p
+          className="font-montserrat font-normal text-[13px] leading-[15.85px] tracking-[0%] text-gray-500"
+          onClick={() => router.push('/moreabout-details')}
+        >
           Skip for now
         </p>
       </div>

@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import UploadProfilePicture from '@/components/auth/UploadProfilePicture';
+import { UploadProfilePicture } from '@/components/auth/UploadProfilePicture';
 
 type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
@@ -34,8 +34,7 @@ export default function SignUpPage({ searchParams }: Props) {
           <Image src="/images/iflogo.png" alt="logo" width={153} height={35} />
         </Link>
       </header>
-      <div className="flex flex-col items-center justify-center gap-1 mt-24">
-      </div>
+      <div className="flex flex-col items-center justify-center gap-1 mt-24"></div>
       <UploadProfilePicture />
     </section>
   );
