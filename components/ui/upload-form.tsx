@@ -65,8 +65,6 @@ export const UploadForm: React.FC<Props> = ({
       ) {
         const reader = new FileReader();
         reader.onloadend = () => {
-          // Do something with the file data (e.g., set image preview)
-          console.log(reader.result); // This will be the base64 image data
           setImage(reader.result as string);
         };
         reader.readAsDataURL(file);
