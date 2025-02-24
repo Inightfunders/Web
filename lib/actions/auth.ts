@@ -102,7 +102,7 @@ export const getUser = cache(async () => {
   const { data, error } = await supabase.auth.getUser();
   const user = data?.user;
 
-  console.log({ supabaseUser: user, supabase, error });
+  // console.log({ supabaseUser: user, supabase, error });
   if (!user) return null;
 
   const userInfo = await db.query.users.findFirst({
@@ -110,6 +110,7 @@ export const getUser = cache(async () => {
       role: true,
       first_name: true,
       last_name: true,
+      profile_img: true,
       plaid_id: true,
       dwolla_customer_id: true,
       dwolla_customer_url: true,
@@ -117,7 +118,7 @@ export const getUser = cache(async () => {
     where: (table, { eq }) => eq(table.id, user?.id!),
   });
 
-  console.log({ userInfo });
+  // console.log({ userInfo });
 
   if (userInfo?.role === "startup") {
     const userStartUpData = await db.query.startups.findFirst({

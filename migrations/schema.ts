@@ -261,6 +261,7 @@ export const users = pgTable(
       .notNull(),
     first_name: text("first_name"),
     last_name: text("last_name"),
+    profile_img: text("profile_img"),
     role: user_role("role"),
     dwolla_customer_url: text("dwolla_customer_url"),
     dwolla_customer_id: text("dwolla_customer_id"),

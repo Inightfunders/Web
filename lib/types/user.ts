@@ -7,6 +7,7 @@ export type UserType = {
         role: "startup" | "investor" | 'partner' | null;
         first_name: string | null;
         last_name: string | null;
+        profile_img: string | null;
         plaid_id: string | null;
         dwolla_customer_id: string | null;
         dwolla_customer_url: string | null;

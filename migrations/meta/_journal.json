@@ -15,6 +15,13 @@
       "when": 1737090392495,
       "tag": "0001_thankful_wasp",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1740373473863,
+      "tag": "0002_add_profile_img_to_users",
+      "breakpoints": true
     }
   ]
 }
