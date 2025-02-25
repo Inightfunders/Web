@@ -36,6 +36,8 @@
     "embla-carousel-react": "^8.2.1",
     "formidable": "^3.5.2",
     "framer-motion": "^11.3.28",
+    "highcharts": "^12.1.2",
+    "highcharts-react-official": "^3.2.1",
     "lenis": "^1.1.13",
     "lucide-react": "^0.395.0",
     "nanoid": "^5.0.7",
