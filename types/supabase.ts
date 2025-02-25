@@ -700,6 +700,7 @@ export type Database = {
           first_name: string | null
           id: string
           last_name: string | null
+          profile_img: string | null
           plaid_id: string | null
           role: Database["public"]["Enums"]["user_role"] | null
         }
@@ -709,6 +710,7 @@ export type Database = {
           first_name?: string | null
           id?: string
           last_name?: string | null
+          profile_img?: string | null
           plaid_id?: string | null
           role?: Database["public"]["Enums"]["user_role"] | null
         }
@@ -718,6 +720,7 @@ export type Database = {
           first_name?: string | null
           id?: string
           last_name?: string | null
+          profile_img?: string | null
           plaid_id?: string | null
           role?: Database["public"]["Enums"]["user_role"] | null
         }
