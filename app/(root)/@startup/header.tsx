@@ -9,6 +9,7 @@ import Hamburger from "./hamburger";
 export default async function HeaderStartUp() {
   const user = await getUser();
   const notifications = await getNotifications(user?.user.id!);
+console.log("getUser:", user);
 
   return (
     <div className="ml-auto flex sticky items-center top-0 z-30 justify-end h-fit px-12 py-6 bg-[#212121] text-white w-full gap-3 shadow-lg navbarmobilemenu">
@@ -19,7 +20,7 @@ export default async function HeaderStartUp() {
           className="flex items-center justify-center gap-3"
         >
           <Avatar className="bg-[#F1F5F9] text-black border border-custom-gray">
-            <AvatarImage src="" alt="company" />
+            <AvatarImage src={user?.userInfo?.profile_img || ""} alt="company" />
             <AvatarFallback className="">
               {user?.userStartUp?.company_name?.slice(0, 1)}
             </AvatarFallback>
