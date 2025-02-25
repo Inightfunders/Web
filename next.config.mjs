@@ -2,7 +2,6 @@ import { withSentryConfig } from '@sentry/nextjs';
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['zaizjasuduohwngmlxil.supabase.co'],
     remotePatterns: [
       {
         protocol: 'https',

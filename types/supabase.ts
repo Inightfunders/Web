@@ -732,6 +732,7 @@ export type Database = {
           last_name: string | null
           plaid_id: string | null
           role: Database["public"]["Enums"]["user_role"] | null
+          profile_img: string | null
         }
         Insert: {
           dwolla_customer_id?: string | null
@@ -741,6 +742,7 @@ export type Database = {
           last_name?: string | null
           plaid_id?: string | null
           role?: Database["public"]["Enums"]["user_role"] | null
+          profile_img?: string | null
         }
         Update: {
           dwolla_customer_id?: string | null
@@ -750,6 +752,7 @@ export type Database = {
           last_name?: string | null
           plaid_id?: string | null
           role?: Database["public"]["Enums"]["user_role"] | null
+          profile_img?: string | null
         }
         Relationships: [
           {

@@ -10,6 +10,11 @@ import { UploadForm } from '@/components/ui/upload-form';
 import { cn } from '@/lib/utils';
 import { createClient } from '@/utils/supabase/client';
 import Link from 'next/link';
+import {
+  getProfileImageUrl,
+  getUser,
+  updateProfileImage
+} from '@/lib/actions/auth';
 
 export function UploadProfilePicture() {
   const router = useRouter();
@@ -46,6 +51,12 @@ export function UploadProfilePicture() {
       return;
     }
 
+    const currentUser = await getUser();
+    if (!currentUser) {
+      router.push('/');
+      return;
+    }
+
     const supabase = createClient();
 
     const fileExtension = imageFile.name.split('.').pop();
@@ -60,17 +71,12 @@ export function UploadProfilePicture() {
       return;
     }
 
-    const { error, data } = await supabase.storage
-      .from('profileImg')
-      .createSignedUrl(fileName, 10);
-
-    if (error) {
-      console.log(error);
-      return;
-    }
+    await updateProfileImage(currentUser.user.id, fileName);
 
     setUploaded(true);
-    setImageUrl(data.signedUrl);
+
+    const imageUrl = await getProfileImageUrl(fileName);
+    setImageUrl(imageUrl);
   };
 
   return (

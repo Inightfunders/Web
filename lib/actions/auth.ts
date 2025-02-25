@@ -2,13 +2,14 @@
 
 import 'server-only';
 import { z } from 'zod';
+import { nanoid } from 'nanoid';
 import { signInSchema, signUpSchema } from '../validations/authSchema';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { cache } from 'react';
 import { db } from '@/db';
-import { nanoid } from 'nanoid';
+import { users } from "@/migrations/schema"
 
 export const signUp = async (values: z.infer<typeof signUpSchema>) => {
   const supabase = createClient();
@@ -57,15 +58,7 @@ export const signUp = async (values: z.infer<typeof signUpSchema>) => {
     }
 
     if (role === 'partner') {
-      const { error } = await supabase.from('partners').insert({
-        user_id: data.user.id
-      });
-
-      if (error) {
-        return {
-          error: error.message
-        };
-      }
+      await upsertPartner({userId: data.user.id})
     }
 
     return {
@@ -86,9 +79,8 @@ export const signIn = async (values: z.infer<typeof signInSchema>) => {
     password: values.password
   });
 
-  console.log({ error });
-
   if (error) {
+    console.error({ error });
     return { error: { message: error.message, code: error.code } };
   }
 
@@ -175,6 +167,36 @@ export const getUser = cache(async () => {
   }
 });
 
+export const updateProfileImage = async (userId: string, fileName: string) => {
+  const supabase = createClient();
+
+  const { error } = await supabase.from('users').update({
+    profile_img: fileName
+  }).eq('id', userId);
+
+  if (error) {
+    console.error(error)
+    return { error: error.message }
+  }
+
+  return { success: true }
+}
+
+export const getProfileImageUrl = async (fileName: string, expiresIn: number = 10) => {
+  const supabase = createClient();
+
+  const { error, data } = await supabase.storage
+    .from('profileImg')
+    .createSignedUrl(fileName, 10);
+
+  if (error) {
+    console.error(error)
+    return null
+  }
+
+  return data.signedUrl
+}
+
 export const createBankAccount = async ({
   userId,
   bankId,
@@ -216,14 +238,14 @@ export const upsertPartner = async ({
   companyName
 }: {
   userId: string;
-  occupation: string;
-  companyName: string;
+  occupation?: string;
+  companyName?: string;
 }) => {
   const supabase = createClient();
 
   const { error } = await supabase
     .from('partners')
-    .upsert({ occupation: occupation, company_name: companyName })
+    .upsert({ user_id: userId, occupation: occupation, company_name: companyName })
     .eq('user_id', userId);
 
   if (error) {

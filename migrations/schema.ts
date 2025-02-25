@@ -449,25 +449,6 @@ export const partners = pgTable("partners", {
   }
 );
 
-export const affiliate_links = pgTable("affiliate_links", {
-    id: uuid("id")
-      .default(sql`auth.uid()`)
-      .primaryKey()
-      .notNull(),
-    user_id: uuid("user_id")
-      .default(sql`auth.uid()`)
-      .notNull()
-      .references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
-    url: text("url"),
-    affiliate_code: text("affiliate_code")
-  },
-  (table) => {
-    return {
-      affiliate_links_id_key: unique("affiliate_links_id_key").on(table.id),
-    };
-  }
-);
-
 export const financial_statements = pgTable("financial_statements", {
   // You can use { mode: "bigint" } if numbers are exceeding js number limitations
   id: bigint("id", { mode: "number" }).primaryKey().notNull(),
