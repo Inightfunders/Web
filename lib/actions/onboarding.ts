@@ -137,7 +137,8 @@ export const saveInvestorDetails = async (investor_id: number, data: z.infer<typ
         accreditation: data.accreditation ?? null,
         future_investment_amount: !!futureInvestmentAmount ? futureInvestmentAmount : null,
         investor_type: data.investorType ?? null,
-        institution_type: !!institutionType ? institutionType : null,
+      institution_type: !!institutionType ? institutionType : null,
+        submitted: true,
         // legal_entity_type: !!legalEntityType ? legalEntityType : null
     })
     .eq('id', investor_id)
