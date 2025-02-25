@@ -45,7 +45,7 @@ export default function MoreAboutDetails({ searchParams, user }: Props) {
     resolver: zodResolver(moreAboutDetailsSchema),
     defaultValues: {
       occupation: '',
-      companyname: '',
+      companyName: '',
     }
   });
 
@@ -73,7 +73,7 @@ export default function MoreAboutDetails({ searchParams, user }: Props) {
           <FormField
             control={form.control}
             disabled={isPending}
-            name="companyname"
+            name="companyName"
             render={({ field }) => (
               <FormItem className="relative flex flex-col gap-1 !mt-0 max-w-[450px]">
                 <FormControl>
