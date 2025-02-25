@@ -16,6 +16,7 @@ import ViewBtn from "./view-btn";
 export default async function CapTable() {
   const CapTable = await getCapTable();
 
+
   return (
     <section className="flex w-full flex-col gap-4 mt-12">
       <div className="flex items-center justify-between gap-4">

@@ -60,7 +60,7 @@ export default function SignIn() {
       setLastAttempt(now);
       const result = await signUp(values);
 
-      console.log('Signup result: ', { result });
+      // console.log('Signup result: ', { result });
 
       if (result.error) {
         console.log('this is error');

@@ -12,7 +12,7 @@ type Props = {
 export default function ActionButtons({ user, requestId }: Props) {
   const [loading, setLoading] = useState(false);
 
-  console.log({ user, requestId });
+  // console.log({ user, requestId });
 
   const handleAccept = async () => {
     setLoading(true);

@@ -26,8 +26,8 @@ export default async function StartUpFinancialDetails() {
 
   if (user.userInfo.role === "startup") {
     const bankConnected = await getBankAccount(user.user.id);
-    console.log(bankConnected);
-    console.log(user.userStartUp);
+    // console.log(bankConnected);
+    // console.log(user.userStartUp);
     // user?.userStartUpOwners?.length === 0 ||
     if (
       !user?.userStartUp?.EIN ||

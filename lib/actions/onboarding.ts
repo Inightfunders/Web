@@ -26,7 +26,7 @@ export const saveStartUpDetails = async (startup_id: number, data: z.infer<typeo
         return acc
     }, {} as any)
 
-    console.log(partialData)
+    // console.log(partialData)
 
     let partialDataShape = Object.keys(partialData).reduce((acc, key) => {
         acc[key] = true

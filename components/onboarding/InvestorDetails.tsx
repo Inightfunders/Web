@@ -95,7 +95,7 @@ export default function InvestorDetails({ investorDetails }: Props) {
   form.watch("geographiesServed");
   form.watch("productsOffered");
 
-  console.log(form.getValues());
+  // console.log(form.getValues());
 
   const onSubmit = async (values: z.infer<typeof investorDetailsSchema>) => {
     setIsPending(true);
@@ -138,7 +138,7 @@ export default function InvestorDetails({ investorDetails }: Props) {
   const investorTypeWatch = form.watch("investorType");
 
   useEffect(() => {
-    console.log(investorType);
+    // console.log(investorType);
     form.setValue("investorType", investorType);
   }, [investorType, accreditationWatch, accreditedInvestorPage]);
 
@@ -146,7 +146,7 @@ export default function InvestorDetails({ investorDetails }: Props) {
     form.setValue("accreditation", accreditation);
   }, [accreditation, investorTypeWatch]);
 
-  console.log(form.getValues());
+  // console.log(form.getValues());
 
   // console.log(investorType);
   // console.log(accreditation);

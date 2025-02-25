@@ -231,7 +231,7 @@ export const updateOwner = cache(async (id: number, name: string, share: number)
     if(ownerInserted.length !== 1) return { error: 'Failed to update owner', success: false }
 
     return { success: true, error: undefined }
-})
+}) 
 
 export const createCapTable = cache(async ({ name, document_link }: { name: string, document_link: string }) => {
     const user = await getUser()

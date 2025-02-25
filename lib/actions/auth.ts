@@ -102,7 +102,7 @@ export const getUser = cache(async () => {
   const { data, error } = await supabase.auth.getUser();
   const user = data?.user;
 
-  console.log({ supabaseUser: user, supabase, error });
+  // console.log({ supabaseUser: user, supabase, error });
   if (!user) return null;
 
   const userInfo = await db.query.users.findFirst({
@@ -117,7 +117,7 @@ export const getUser = cache(async () => {
     where: (table, { eq }) => eq(table.id, user?.id!),
   });
 
-  console.log({ userInfo });
+  // console.log({ userInfo });
 
   if (userInfo?.role === "startup") {
     const userStartUpData = await db.query.startups.findFirst({
@@ -165,7 +165,7 @@ export const getUser = cache(async () => {
 
 export const createBankAccount = async ({
   userId,
-  bankId,
+  bankId,    
   accountId,
   accessToken,
   fundingSourceUrl,

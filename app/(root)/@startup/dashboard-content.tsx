@@ -29,7 +29,7 @@ export default async function DashboardContent({
       (contract.investment_amount_paid && contract.total_return_paid
         ? parseFloat(contract.total_return_paid)
         : 0),
-    0
+    0                                                                                                 
   );
 
   const availableBalance = startupContracts.acceptedContracts?.reduce(

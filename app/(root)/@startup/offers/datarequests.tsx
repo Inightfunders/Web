@@ -6,7 +6,9 @@ import Image from "next/image";
 
 export default async function DataRequests() {
   const user = await getUser();
+  // console.log(user);
   const requests = await getDataRequests(user?.userStartUp?.id!);
+  // console.log("requestsssss",requests);
 
   return (
     <section className="flex flex-1 items-start justify-between gap-6 h-screen py-12 px-12 flex-wrap">

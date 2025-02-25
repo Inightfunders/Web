@@ -22,7 +22,7 @@ export default async function SubmitStartUpDetailsPage() {
     return redirect("/personal-details");
 
   if (user.userInfo.role === "startup") {
-    console.log(user.userStartUp?.stage);
+    // console.log(user.userStartUp?.stage);
     // user?.userStartUpOwners?.length === 0 ||
     if (
       !user?.userStartUp?.EIN ||

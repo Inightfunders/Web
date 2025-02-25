@@ -12,7 +12,7 @@ export default async function Dashboard({
   searchParams: { page?: string };
 }) {
   const user = await getUser();
-  console.log(user);
+  // console.log(user);
   const investorContracts = await getContracts(user?.userInvestor?.id!);
 
   // await new Promise(resolve => setTimeout(resolve, 10000))
@@ -40,7 +40,7 @@ export default async function Dashboard({
     (contract) => contract.investment_amount_paid
   ).length;
 
-  console.log({ totalAmountInvested, totalROI, totalStartups });
+  // console.log({ totalAmountInvested, totalROI, totalStartups });
   const investmentData = [
     {
       name: "Slope AI",

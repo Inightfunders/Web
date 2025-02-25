@@ -21,7 +21,7 @@ export const signUpSchema = z
     role: z.enum(["startup", "investor", "partner"]),
   })
   .superRefine((data, ctx) => {
-    console.log({ data });
+    // console.log({ data });
 /*    if (data.role === "partner") {
       // Only validate confirmPassword if role is partner
       if (!data.confirmPassword) {

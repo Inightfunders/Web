@@ -60,8 +60,8 @@ export default async function StartUpsInvestors({
   contracts,
   searchParams,
 }: Props) {
-  console.log(contracts);
-  console.log(searchParams);
+  // console.log(contracts);
+  // console.log(searchParams);
   const contractsWithInvestors = await Promise.all(
     contracts.map(async (contract) => {
       const investor = await getInvestor(contract.investor_id);
@@ -72,7 +72,7 @@ export default async function StartUpsInvestors({
   const formatCurrency = (value: number) =>
     `$${Intl.NumberFormat("us").format(value)}`;
 
-  console.log({ contractsWithInvestors, contracts });
+  // console.log({ contractsWithInvestors, contracts });
 
   const page = searchParams?.page ? parseInt(searchParams.page) : 1;
 
