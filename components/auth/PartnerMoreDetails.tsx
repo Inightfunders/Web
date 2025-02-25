@@ -11,20 +11,19 @@ import {
   FormLabel,
   FormMessage
 } from '@/components/ui/form';
-import { moreAboutDetailsSchema } from '@/lib/validations/authSchema';
+import { partnerMoreDetailsSchema } from '@/lib/validations/authSchema';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { UserType } from '@/lib/types/user';
-import { getUser } from '@/lib/actions/auth';
+import { getUser, upsertPartner } from '@/lib/actions/auth';
 
 type Props = {
-    searchParams: { [key: string]: string | string[] | undefined };
-    user: UserType;
+  searchParams: { [key: string]: string | string[] | undefined };
+  user: UserType;
 };
 
 export default function MoreAboutDetails({ searchParams, user }: Props) {
-
   const error =
     typeof searchParams.error === 'string' ? searchParams.error : undefined;
 
@@ -41,18 +40,44 @@ export default function MoreAboutDetails({ searchParams, user }: Props) {
 
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof moreAboutDetailsSchema>>({
-    resolver: zodResolver(moreAboutDetailsSchema),
+  const form = useForm<z.infer<typeof partnerMoreDetailsSchema>>({
+    resolver: zodResolver(partnerMoreDetailsSchema),
     defaultValues: {
       occupation: '',
-      companyName: '',
+      companyName: ''
     }
   });
+
+  const onSubmit = async (values: z.infer<typeof partnerMoreDetailsSchema>) => {
+    const { occupation, companyName } = values;
+    try {
+      const currentUser = await getUser();
+      if (!currentUser) {
+        router.push('/');
+        return;
+      }
+
+      const { success } = await upsertPartner({
+        userId: currentUser.user.id,
+        occupation,
+        companyName
+      });
+
+      if (success) {
+        router.push('/');
+      }
+    } catch (error) {
+      console.error('error', error);
+    }
+  };
 
   return (
     <>
       <Form {...form}>
-        <form className="space-y-8 max-w-[90vw] flex flex-col gap-4 pb-8 ipfield">
+        <form
+          className="space-y-8 max-w-[90vw] flex flex-col gap-4 pb-8 ipfield"
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
           <FormField
             control={form.control}
             disabled={isPending}

@@ -429,19 +429,41 @@ export const investors = pgTable(
   }
 );
 
-export const partners = pgTable(
-  "partners",
-  {
-    id: bigint("id", { mode: "number" }).primaryKey().notNull(),
+export const partners = pgTable("partners", {
+    id: uuid("id")
+      .default(sql`auth.uid()`)
+      .primaryKey()
+      .notNull(),
     user_id: uuid("user_id")
       .default(sql`auth.uid()`)
       .notNull()
       .references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
     partner_name: text("partner_name"),
+    occupation: text("occupation"),
+    company_name: text("company_name"),
   },
   (table) => {
     return {
       partners_id_key: unique("partners_id_key").on(table.id),
+    };
+  }
+);
+
+export const affiliate_links = pgTable("affiliate_links", {
+    id: uuid("id")
+      .default(sql`auth.uid()`)
+      .primaryKey()
+      .notNull(),
+    user_id: uuid("user_id")
+      .default(sql`auth.uid()`)
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
+    url: text("url"),
+    affiliate_code: text("affiliate_code")
+  },
+  (table) => {
+    return {
+      affiliate_links_id_key: unique("affiliate_links_id_key").on(table.id),
     };
   }
 );
