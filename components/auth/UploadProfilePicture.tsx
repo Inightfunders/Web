@@ -71,6 +71,7 @@ export function UploadProfilePicture() {
 
     setUploaded(true);
     setImageUrl(data.signedUrl);
+    
   };
 
   return (
