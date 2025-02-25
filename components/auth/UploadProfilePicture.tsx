@@ -99,7 +99,7 @@ export function UploadProfilePicture() {
             src={imageUrl || '/images/profile-placeholder.svg'} // Replace with the image URL you want
             alt="Upload Profile Picture"
           />
-          <span className="font-montserrat text-[14px] leading-[17.07px] tracking-[0%] text-[#FF7A00] py-2 rounded-md">
+          <span className="font-montserrat text-[14px] leading-[17.07px] tracking-[0%] text-[#FF7A00] py-2 rounded-md mt-[25px]">
             {imageUrl ? 'Re-upload' : 'Browse'}
           </span>
           <p className="text-xs text-gray-500 mt-2">
@@ -112,13 +112,13 @@ export function UploadProfilePicture() {
 
       <div className="action-buttons flex gap-4 mt-6 flex-col justify-center items-center">
         <button
-          className="w-[216px] h-[48px] gap-[10px] rounded-[8px] pt-[12px] pr-[81px] pb-[12px] pl-[81px] bg-[#FF7A00] text-white font-semibold"
+          className="w-[216px] h-[48px] gap-[10px] rounded-[8px] pt-[12px] pr-[81px] pb-[12px] pl-[81px] bg-[#FF7A00] text-white font-semibold font-montserrat text-[14px] leading-[17.07px]"
           onClick={() => handleUpload()}
         >
           {isUploaded ? 'Continue' : 'Upload'}
         </button>
         <Link
-          className="font-montserrat font-normal text-[13px] leading-[15.85px] tracking-[0%] text-gray-500"
+          className="font-montserrat font-normal text-[13px] leading-[15.85px] tracking-[0%] text-gray-500 mt-[20px]"
           href="/more-details"
         >
           Skip for now
