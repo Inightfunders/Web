@@ -23,7 +23,7 @@ type Props = {
   user: UserType;
 };
 
-export default function MoreAboutDetails({ searchParams, user }: Props) {
+export default function PartnerMoreDetails({ searchParams, user }: Props) {
   const error =
     typeof searchParams.error === 'string' ? searchParams.error : undefined;
 

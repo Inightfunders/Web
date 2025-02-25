@@ -47,7 +47,7 @@ export function UploadProfilePicture() {
     if (!imageFile) return;
 
     if (isUploaded) {
-      router.push('/more-details');
+      router.push('/sign-up/partner/more-details');
       return;
     }
 
