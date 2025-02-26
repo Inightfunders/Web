@@ -1,10 +1,13 @@
 'use client';
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Loader2, X } from 'lucide-react';
+
 import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogClose, DialogContent } from '@/components/ui/dialog';
 import { submitApplication } from '@/lib/actions/onboarding';
-import { Loader2, X } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { PdfViewer } from '@/components/ui';
 
 export default function StartUpSubmitApplication() {
   const router = useRouter();
@@ -74,12 +77,7 @@ export default function StartUpSubmitApplication() {
             <DialogClose className="absolute top-2 right-2 text-gray-700">
               <X size={24} />
             </DialogClose>
-            <embed
-              src={pdfUrl}
-              type="application/pdf"
-              width="100%"
-              height="800px"
-            />
+            <PdfViewer className="w-full h-[800px]" src={pdfUrl} />
           </div>
         </DialogContent>
       </Dialog>
