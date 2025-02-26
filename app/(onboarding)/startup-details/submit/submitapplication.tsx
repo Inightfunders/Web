@@ -22,6 +22,11 @@ export default function StartUpSubmitApplication() {
   //  const [open, setOpen] = useState(false);
 
   const handleSubmit = async () => {
+    if (!checked) {
+      setError('You must agree to the Mutual NDA.');
+      return;
+    }
+
     setIsSubmitting(true);
     const { error } = await submitApplication();
 
@@ -37,7 +42,10 @@ export default function StartUpSubmitApplication() {
         <Checkbox
           className="rounded-[4px] border-white checked:!text-white"
           checked={checked}
-          onCheckedChange={(value) => setChecked(value ? true : false)}
+          onCheckedChange={(value) => {
+            setChecked(value ? true : false);
+            setError(null);
+          }}
           id="terms"
         />
         <label
@@ -55,7 +63,6 @@ export default function StartUpSubmitApplication() {
       </div>
       <button
         onClick={handleSubmit}
-        disabled={!checked}
         className="w-full bg-[#FF7A00] text-white font-bold rounded-[2px] py-5 text-sm px-4"
       >
         {isSubmitting ? (
@@ -64,10 +71,11 @@ export default function StartUpSubmitApplication() {
           'Submit Application'
         )}
       </button>
+
       {error && (
-        <div className="border-2 border-[#F86C6C] gap-4 rounded-[8px] bg-[#FEF2F2] flex items-center justify-center px-12 py-6">
-          <X size={24} className="text-[#F86C6C]" />
-          <p className="text-black font-semibold">{error}</p>
+        <div className="w-full border-2 border-[#F86C6C] gap-4 rounded-[8px] bg-[#FEF2F2] flex items-center justify-center px-6 py-3 mt-1">
+          <X size={18} className="text-[#F86C6C]" />
+          <p className="text-black text-[12px]">{error}</p>
         </div>
       )}
 
@@ -81,6 +89,15 @@ export default function StartUpSubmitApplication() {
           </div>
         </DialogContent>
       </Dialog>
+
+      <button
+        onClick={() => {
+          router.push('/startup-details/financial');
+        }}
+        className="text-white text-[13px py-2 px-4 bg-transparent font-Montserrat mt-2"
+      >
+        Go back
+      </button>
     </div>
   );
 }

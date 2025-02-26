@@ -87,6 +87,7 @@ export default function PersonalDetails({ searchParams, user }: Props) {
     setIsPending(false);
 
     if (response.error) {
+      console.log('personal details error: ', error);
       setOpen(true);
     } else {
       const user = await getUser();
