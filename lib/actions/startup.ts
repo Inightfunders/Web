@@ -2,7 +2,7 @@
 
 import 'server-only'
 import { db } from "@/db"
-import { cap_tables, contracts, financial_details_requests, financial_rounds, financial_statements, legal_documents, notifications, pitch_decks, startups_owners, tax_returns } from "@/migrations/schema"
+import { cap_tables, contracts, financial_details_requests, financial_rounds, financial_statements, legal_documents, other_documents, notifications, pitch_decks, startups_owners, tax_returns } from "@/migrations/schema"
 import { and, eq, sql } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 import { cache } from "react"
@@ -183,6 +183,15 @@ export const getLegalDocuments = cache(async () => {
     })
 })
 
+export const getOtherDocuments = cache(async () => {
+    const user = await getUser()
+
+    if(!user?.userStartUp?.id) return
+
+    return await db.query.other_documents.findMany({
+        where: (table, { eq }) => eq(table.startup_id, user?.userStartUp?.id),
+    })
+})
 
 export const createFinancialRound = cache(async (data: { investor: string[], round: "Pre-seed" | "Seed" | "Series A" | "Series B" | "Series C" | "Series D" | "Series E" | "Series F" | "Public", date: string, amount: string }) => {
     const user = await getUser()
@@ -332,6 +341,27 @@ export const createLegalDocuments = cache(async ({ name, document_link }: { name
     })
 
     if(legalDocumentsInserted.length !== 1) return { error: 'Failed to create cap table', success: false }
+
+    return { success: true, error: undefined }
+})
+
+export const createOtherDocuments = cache(async ({ name, document_link }: { name: string, document_link: string }) => {
+    const user = await getUser()
+
+    if(!user?.userStartUp?.id) return
+
+    const otherDocumentsInserted = await db.insert(other_documents).values({
+        id: sql`DEFAULT`,
+        startup_id: user?.userStartUp?.id,
+        name,
+        document_link,
+        created_at: sql`DEFAULT`,
+        updated_at: sql`DEFAULT`,
+    }).returning({
+        id: other_documents.id
+    })
+
+    if(otherDocumentsInserted.length !== 1) return { error: 'Failed to create others table', success: false }
 
     return { success: true, error: undefined }
 })

@@ -12,12 +12,19 @@ import { createTransfer } from "./dwolla"
 export const getContracts = cache(async (investorId: number, startupId?: number) => {
     if(!startupId) {
         const allContracts = await db.query.contracts.findMany({
-            where: (table, { eq }) => eq(table.investor_id, investorId)
-        })
+            where: (table, { eq }) => eq(table.investor_id, investorId),
+            with: {
+                startup: true
+            }
+        });
+
+        const formattedContracts = allContracts.map(contract => ({
+            ...contract, company_name: contract.startup?.company_name ?? null, industry_sector: contract.startup?.industry_sector ?? null
+        }));
     
-        const acceptedContracts = allContracts.filter(contract => contract.accepted)
+        const acceptedContracts = formattedContracts.filter(contract => contract.accepted)
     
-        return { allContracts, acceptedContracts }
+        return { allContracts: formattedContracts, acceptedContracts }
     }
     else {
         const contract = await db.query.contracts.findFirst({
@@ -55,6 +62,11 @@ export const getFinancialDetailsRequests = cache(async (investorId: number) => {
     })
 })
 
+export const cancelFinancialDetailsRequests = cache(async (investorId: number, requestId: number) => {
+    await db.delete(financial_details_requests)
+    .where(and(eq(financial_details_requests.id, requestId), eq(financial_details_requests.investor_id, investorId)))
+})
+
 export const getAllRequests = cache(async (investorId: number, select: 'startups' | 'contracts' | 'financial_details_requests' | 'all' = 'all') => {
     
     return await db
@@ -65,7 +77,7 @@ export const getAllRequests = cache(async (investorId: number, select: 'startups
                 })
                 .from(startups)
                 .leftJoin(contracts, and(eq(contracts.investor_id, investorId), eq(contracts.startup_id, startups.id), or(eq(contracts.accepted, false), isNull(contracts.accepted))))
-                .leftJoin(financial_details_requests, and(eq(financial_details_requests.investor_id, investorId), eq(financial_details_requests.startup_id, startups.id), or(eq(financial_details_requests.accepted, false), isNull(financial_details_requests.accepted))))
+                .leftJoin(financial_details_requests, and(eq(financial_details_requests.investor_id, investorId), eq(financial_details_requests.startup_id, startups.id)))
                 .where(or(
                     isNotNull(contracts.startup_id),
                     isNotNull(financial_details_requests.startup_id)
@@ -214,3 +226,45 @@ export const payContractAmount = async (contractId: number) => {
 
     revalidatePath('/')
 }
+
+export const getCapTable = cache(async (startupId: number) => {
+
+    return await db.query.cap_tables.findMany({
+        where: (table, { eq }) => eq(table.startup_id, startupId),
+    })
+})
+
+export const getPitchDeck = cache(async (startupId: number) => {
+
+    return await db.query.pitch_decks.findMany({
+        where: (table, { eq }) => eq(table.startup_id, startupId),
+    })
+})
+
+export const getTaxReturns = cache(async (startupId: number) => {
+
+    return await db.query.tax_returns.findMany({
+        where: (table, { eq }) => eq(table.startup_id, startupId),
+    })
+})
+
+export const getFinancialStatements = cache(async (startupId: number) => {
+
+    return await db.query.financial_statements.findMany({
+        where: (table, { eq }) => eq(table.startup_id, startupId),
+    })
+})
+
+export const getLegalDocuments = cache(async (startupId: number) => {
+
+    return await db.query.legal_documents.findMany({
+        where: (table, { eq }) => eq(table.startup_id,  startupId),
+    })
+})
+
+export const getOthersDocuments = cache(async (startupId: number) => {
+
+    return await db.query.other_documents.findMany({
+        where: (table, { eq }) => eq(table.startup_id,  startupId),
+    })
+})

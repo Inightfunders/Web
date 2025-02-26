@@ -28,7 +28,7 @@ export default async function ExplorePage({ searchParams }: Props) {
     stage,
   });
 
-  console.log({ test: JSON.stringify(exploreStartups) });
+  // console.log({ test: JSON.stringify(exploreStartups) });
 
   return (
     <div className="w-full mx-auto space-y-6 my-23 max-w-[90%] py-[40px]">
