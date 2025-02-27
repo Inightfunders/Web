@@ -1,6 +1,6 @@
 'use client';
 
-import { z } from 'zod';
+import { string, z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import {
@@ -16,6 +16,7 @@ import { useEffect, useState } from 'react';
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
+import { useSearchParams } from "next/navigation";
 import {
   ArrowLeft,
   CheckCircle2,
@@ -37,7 +38,9 @@ export default function SignIn() {
   const [isPending, setIsPending] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
+  const searchParams = useSearchParams();
+  const value = searchParams.get("key");
+ 
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -45,7 +48,8 @@ export default function SignIn() {
       lastName: '',
       email: '',
       password: '',
-      role: 'startup'
+      role: 'startup',
+      ref: value ?? undefined,
     }
   });
 
@@ -59,8 +63,8 @@ export default function SignIn() {
     try {
       setLastAttempt(now);
       const result = await signUp(values);
+     
 
-      // console.log('Signup result: ', { result });
 
       if (result.error) {
         console.log('this is error');

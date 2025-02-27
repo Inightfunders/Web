@@ -265,6 +265,7 @@ export const users = pgTable(
     dwolla_customer_url: text("dwolla_customer_url"),
     dwolla_customer_id: text("dwolla_customer_id"),
     plaid_id: text("plaid_id"),
+    ref: text("ref"),
   },
   (table) => {
     return {
@@ -320,6 +321,7 @@ export const startups = pgTable(
     submitted: boolean("submitted").default(false).notNull(),
     recent_raise: numeric("recent_raise"),
     stage: company_stage("stage"),
+    ref: text("ref"),
   },
   (table) => {
     return {

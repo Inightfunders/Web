@@ -7,12 +7,13 @@ import { useState } from "react";
 type Props = {
   user: UserType;
   requestId: number;
+  accepted?: boolean | null;
 };
 
-export default function ActionButtons({ user, requestId }: Props) {
+export default function ActionButtons({ user, requestId, accepted }: Props) {
   const [loading, setLoading] = useState(false);
 
-  // console.log({ user, requestId });
+  console.log("yoyo",{ user, requestId , accepted});
 
   const handleAccept = async () => {
     setLoading(true);
@@ -28,19 +29,25 @@ export default function ActionButtons({ user, requestId }: Props) {
 
   return (
     <div className={cn("flex gap-4", loading && "opacity-50")}>
+      {!accepted && (
       <button
-        onMouseDown={handleReject}
-        disabled={loading}
-        className="bg-black rounded-[8px] w-24 h-10 text-white font-semibold text-sm"
-      >
-        Decline
-      </button>
+      onMouseDown={handleReject}
+      disabled={!!accepted}
+      className="bg-black rounded-[8px] w-24 h-10 text-white font-semibold text-sm"
+    >
+      Decline
+    </button>
+      )}
+      
       <button
         onMouseDown={handleAccept}
-        disabled={loading}
-        className="bg-[#FF7A00] rounded-[8px] w-24 h-10 text-white font-semibold text-sm"
+        disabled={!!accepted}
+        className={cn(
+          "rounded-[8px] w-24 h-10 text-white font-semibold text-sm", 
+          accepted ? "bg-green-500" : "bg-[#FF7A00]" 
+        )}
       >
-        Accept
+        {accepted ? "Accepted" : "Accept"}
       </button>
     </div>
   );

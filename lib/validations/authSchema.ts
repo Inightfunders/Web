@@ -19,6 +19,7 @@ export const signUpSchema = z
     }),
     confirmPassword: z.string().optional(),
     role: z.enum(["startup", "investor", "partner"]),
+    ref : z.string().optional(),
   })
   .superRefine((data, ctx) => {
     // console.log({ data });

@@ -9,6 +9,7 @@ import StartUpsChart from "@/components/startup/StartUpsChart";
 import { SearchInput } from "@/components/lenders/SearchInput";
 import { Search } from "lucide-react";
 import { CustomSearch } from "@/components/lenders/CustomSearch";
+import { getReferredUsers } from "@/lib/actions/auth";
 import CustomStartupChart from "@/components/startup/CustomStartupChart";
 import Shareable from "./Shareable";
 import DashboardCard from "./DashboardCard";
@@ -71,6 +72,11 @@ export default async function DashboardContent({
     },
   ];
 
+  const userData = await getUser();
+  const users = await getReferredUsers(userData?.user?.user_metadata?.sub );
+  const refUser = users.statuses ?? [];
+  console.log("users", users.statuses );
+
   return (
     <div
       className="w-full mx-auto space-y-6 my-8
@@ -87,7 +93,7 @@ export default async function DashboardContent({
         <div className="flex flex-col justify-between space-y-[20px] min-w-[332px]">
           <DashboardCard
             title="Invites"
-            value={`1200`}
+            value={refUser.length}
             className="h-[calc(50%-12px)] text-center content-center"
           />
           <div
@@ -146,38 +152,36 @@ export default async function DashboardContent({
             </tr>
           </thead>
           <tbody>
-            {lendersData.map((lender, index) => (
+            {refUser.map((user, index) => (
               <tr key={index}>
                 <td
                   className={`p-[22px] bg-[#EAEAEA] font-Montserrat text-center text-[13px]`}
                 >
-                  {lender.serial_number}
+                  {index + 1}
                 </td>
                 <td
                   className={`p-[22px] bg-[#FEFFFE] font-Montserrat text-left text-[12px]`}
                 >
-                  {lender.company}
+                  {user?.company_name}
                 </td>
                 <td
                   className={`p-[22px] bg-[#EAEAEA] font-Montserrat text-left text-[13px]`}
                 >
-                  {lender.registered === "Yes" && (
+                  {user?.status === "Registered" && (
                     <div className="bg-[#008802] w-fit py-[4px] px-[8px] rounded-[42px] text-[#ffffff] text-[12px]">
-                      {lender.registered}
+                      {user?.status}
                     </div>
                   )}
-                  {lender.registered === "Pending" && (
+                  {user?.status === "Pending" && (
                     <div className="bg-[#CC9900] w-fit py-[4px] px-[8px] rounded-[42px] text-[#ffffff] text-[12px]">
-                      {lender.registered}
+                      {user?.status}
                     </div>
                   )}
-                  {lender.registered === "NO" && (
-                    <div className="bg-[#D80000] w-fit py-[4px] px-[8px] rounded-[42px] text-[#ffffff] text-[12px]">
-                      {lender.registered}
-                    </div>
-                  )}
+                  
                 </td>
-                <td
+                <td className={`p-[22px] bg-[#FEFFFE] font-Montserrat text-left text-[13px]`}>-</td>
+                <td className={`p-[22px] bg-[#EAEAEA] font-Montserrat text-left text-[13px]`}>-</td>
+                {/* <td
                   className={`p-[22px] bg-[#FEFFFE] font-Montserrat text-left text-[13px]`}
                 >
                   {lender.funding_status === "Completed" && (
@@ -200,7 +204,7 @@ export default async function DashboardContent({
                   className={`p-[22px] bg-[#EAEAEA] font-Montserrat text-left text-[13px]`}
                 >
                   {lender.earnings}
-                </td>
+                </td> */}
               </tr>
             ))}
           </tbody>

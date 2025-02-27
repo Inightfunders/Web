@@ -9,11 +9,12 @@ import { revalidatePath } from "next/cache";
 import { cache } from "react";
 import { db } from "@/db";
 import { nanoid } from "nanoid";
+import { truncateSync } from "fs";
 
 export const signUp = async (values: z.infer<typeof signUpSchema>) => {
   const supabase = createClient();
 
-  const { email, password, firstName, lastName, role } = values;
+  const { email, password, firstName, lastName, role, ref } = values;
 
   try {
     // Perform sign up without email verification
@@ -25,10 +26,12 @@ export const signUp = async (values: z.infer<typeof signUpSchema>) => {
           first_name: firstName,
           last_name: lastName,
           role,
+         
         },
       },
+      
     });
-
+    console.log("user" , data)
     if (signUpError) {
       return {
         error: signUpError.message,
@@ -47,6 +50,7 @@ export const signUp = async (values: z.infer<typeof signUpSchema>) => {
       first_name: firstName || null,
       last_name: lastName,
       role,
+      ref: ref,
       plaid_id: nanoid(30),
     });
 
@@ -162,6 +166,59 @@ export const getUser = cache(async () => {
     return { user, userInfo, userPartners };
   }
 });
+
+export const getReferredUsers = cache(async (id: string) => {
+  const supabase = createClient();
+  console.log("id",id);
+  // Fetch users whose "ref" field matches the provided ID
+  const referredUsers = await db.query.users.findMany({
+    columns: {
+      id: true,
+      role: true,
+      first_name: true,
+      last_name: true,
+      plaid_id: true,
+      dwolla_customer_id: true,
+      dwolla_customer_url: true,
+      ref: true,  
+    },
+    where: (table, { eq }) => eq(table.ref, id),
+  });
+
+  const referredUserIds = referredUsers.map((user) => user.id);
+ 
+  
+  if (referredUserIds.length === 0) {
+    return { referredUsers, referredStartups: [] }; // No referred users found
+  }
+
+  // Fetch startups where `user_id` matches any of the referred user IDs
+  const referredStartups = await db.query.startups.findMany({
+    where: (table, { inArray }) => inArray(table.user_id, referredUserIds),
+  });
+
+  const referredInvestors = await db.query.investors.findMany({
+    where: (table, { inArray }) => inArray(table.user_id, referredUserIds),
+  });
+  const statuses = referredUsers.map((user) => {
+    const isStartup = referredStartups.some(startup => startup.user_id === user.id && startup.accepted=== true);
+    const isInvestor = referredInvestors.some(investor => investor.user_id === user.id && investor.accepted=== true);
+
+    return {
+      user_id: user.id,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      status: isStartup || isInvestor ? "Registered" : "Pending",
+      company_name: referredStartups.find(startup => startup.user_id === user.id)?.company_name 
+      || referredInvestors.find(investor => investor.user_id === user.id)?.company_name 
+      || user.first_name
+      || null,
+    };
+  });
+
+  return { referredUsers, referredStartups, referredInvestors, statuses };
+});
+
 
 export const createBankAccount = async ({
   userId,

@@ -1,10 +1,10 @@
-"use client";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { submitInvestorApplication } from "@/lib/actions/onboarding";
-import { Loader2, X } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+'use client';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
+import { submitInvestorApplication } from '@/lib/actions/onboarding';
+import { Loader2, X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function InvestorSubmitApplication() {
   const router = useRouter();
@@ -38,7 +38,7 @@ export default function InvestorSubmitApplication() {
           htmlFor="terms"
           className="text-sm text-white font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         >
-          I agree to the{" "}
+          I agree to the{' '}
           <span
             onClick={() => setOpen(true)}
             className="underline cursor-pointer"
@@ -62,7 +62,7 @@ export default function InvestorSubmitApplication() {
         {isSubmitting ? (
           <Loader2 stroke="#fff" className="animate-spin mx-auto" />
         ) : (
-          "Submit Application"
+          'Submit Application'
         )}
       </button>
       {error && (

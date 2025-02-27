@@ -34,6 +34,7 @@ export default async function BasicInfo() {
           <h4 className="text-lg text-white font-Montserrat mb-5">
             Brand logo
           </h4>
+          
           <Avatar className="bg-[#F1F5F9] text-black border-4 border-[#FF7A00]">
             <AvatarImage src="" alt="company" />
             <AvatarFallback className="">

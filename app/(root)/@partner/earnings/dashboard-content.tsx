@@ -94,7 +94,7 @@ export default async function DashboardContent({
             className={`p-4 bg-[#212121] rounded-[8px] h-[calc(50%-12px)] text-center content-center items-center`}
           >
             <p className="text-white text-xs mb-[12px] font-Montserrat leading-[14px]">
-              Earnings
+              Earnings 
             </p>
             <p className="text-white text-xl font-[700] font-Montserrat leading-[22px] mt-3 pb-[12px]">
               $6,500
