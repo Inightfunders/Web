@@ -17,6 +17,7 @@ import { updatePersonalDetails } from '@/lib/actions/onboarding';
 import { useRouter } from 'next/navigation';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { UserType } from '@/lib/types/user';
+import { getUser } from '@/lib/actions/auth';
 
 type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
@@ -88,6 +89,7 @@ export default function PersonalDetails({ searchParams, user }: Props) {
     if (response.error) {
       setOpen(true);
     } else {
+      const user = await getUser();
       if (
         user?.userInfo?.dwolla_customer_id &&
         user?.userInfo?.dwolla_customer_url &&

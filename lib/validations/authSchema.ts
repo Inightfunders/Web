@@ -7,6 +7,23 @@ export const signInSchema = z.object({
   }),
 });
 
+export const partnerMoreDetailsSchema = z.object({
+  occupation: z
+    .string({
+      required_error: "Occupation is required",
+      invalid_type_error: "Please enter a valid occupation",
+    })
+    .min(6, "Occupation must be at least 6 characters")
+    .max(50, "Occupation must be at most 50 characters"),
+  companyName: z
+    .string({
+      required_error: "Company name is required",
+      invalid_type_error: "Please enter a valid Company name",
+    })
+    .min(2, "Company name must be at least 2 characters")
+    .max(50, "Company name must be at most 50 characters"),
+});
+
 export const signUpSchema = z
   .object({
     firstName: z.string().optional(),

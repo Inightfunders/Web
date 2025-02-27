@@ -137,7 +137,8 @@ export const saveInvestorDetails = async (investor_id: number, data: z.infer<typ
         accreditation: data.accreditation ?? null,
         future_investment_amount: !!futureInvestmentAmount ? futureInvestmentAmount : null,
         investor_type: data.investorType ?? null,
-        institution_type: !!institutionType ? institutionType : null,
+      institution_type: !!institutionType ? institutionType : null,
+        submitted: true,
         // legal_entity_type: !!legalEntityType ? legalEntityType : null
     })
     .eq('id', investor_id)
@@ -238,8 +239,6 @@ export const updatePersonalDetails = async (data: z.infer<typeof personalDetails
     .update(users)
     .set({ dwolla_customer_id: dwollaCustomerId, dwolla_customer_url: dwollaCustomerUrl })
     .where(eq(users.id, user.user.id!));
-
-  revalidatePath("/personal-details");
 
   return { success: true };
 };

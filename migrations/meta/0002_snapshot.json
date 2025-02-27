@@ -1,5 +1,5 @@
 {
-  "id": "b42fc33d-b7fd-4f7b-9cfc-6e178e4defb8",
+  "id": "b9479046-09a8-4d3d-bf1d-50d376ab5a03",
   "prevId": "08829307-be4c-4b5b-8b04-32132bbcda47",
   "version": "7",
   "dialect": "postgresql",
@@ -732,9 +732,10 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "bigint",
+          "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "auth.uid()"
         },
         "user_id": {
           "name": "user_id",
@@ -745,6 +746,18 @@
         },
         "partner_name": {
           "name": "partner_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "occupation": {
+          "name": "occupation",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "company_name": {
+          "name": "company_name",
           "type": "text",
           "primaryKey": false,
           "notNull": false
@@ -1220,12 +1233,6 @@
         },
         "last_name": {
           "name": "last_name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "profile_img": {
-          "name": "profile_img",
           "type": "text",
           "primaryKey": false,
           "notNull": false
