@@ -89,7 +89,7 @@ export default function CustomStartupChart({
         </CardTitle>
       </CardHeader>
       <CardContent className="pt-6">
-        <div className="flex items-center gap-12">
+        <div className="flex items-center gap-12 data-room-pieChart">
           <div className="w-[250px] h-[250px]">
             <HighchartsReact highcharts={Highcharts} options={options} />
           </div>

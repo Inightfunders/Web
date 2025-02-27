@@ -82,14 +82,16 @@ export default async function DashboardContent({
       4xl:max-w-[1800px]"
     >
       {/* Top Section */}
-      <div className="flex gap-[21px]">
+      <div className="flex gap-[21px] md:flex-wrap">
         {/* Left Stats */}
         <div className="flex flex-col justify-between space-y-[20px] min-w-[332px]">
+          <div>
           <DashboardCard
             title="Invites"
             value={`1200`}
             className="h-[calc(50%-12px)] text-center content-center"
           />
+          </div>
           <div
             className={`p-4 bg-[#212121] rounded-[8px] h-[calc(50%-12px)] text-center content-center items-center`}
           >
@@ -115,7 +117,7 @@ export default async function DashboardContent({
         </div>
       </div>
 
-      <div className="mt-[30px] flex items-center justify-between">
+      <div className="mt-[30px] flex items-center justify-between md:mx-4">
         <p className="text-[#ffffff] font-normal text-[20px] ">
           Recent referral status
         </p>
