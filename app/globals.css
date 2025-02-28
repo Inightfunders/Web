@@ -230,6 +230,7 @@ input {
 
 /* Add more weights and styles as needed */
 /* PDF Viewer */
+/*
 .rpv-core__viewer {
   width: 100%;
   height: 100%;
@@ -305,3 +306,4 @@ input {
   height: 100% !important;
   object-fit: contain;
 }
+*/

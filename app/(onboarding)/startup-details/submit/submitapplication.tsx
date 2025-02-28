@@ -7,7 +7,10 @@ import { Loader2, X } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogClose, DialogContent } from '@/components/ui/dialog';
 import { submitApplication } from '@/lib/actions/onboarding';
-import { PdfViewer } from '@/components/ui';
+import { Worker, Viewer } from '@react-pdf-viewer/core';
+import '@react-pdf-viewer/core/lib/styles/index.css';
+import '@react-pdf-viewer/default-layout/lib/styles/index.css';
+import '../../../../styles/global.css';
 
 export default function StartUpSubmitApplication() {
   const router = useRouter();
@@ -16,9 +19,7 @@ export default function StartUpSubmitApplication() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [pdfUrl] = useState(
-    '/Non-Circumvention and Confidentiality Agreement.pdf'
-  );
+  const pdfUrl = '/NDA.pdf';
   //  const [open, setOpen] = useState(false);
 
   const handleSubmit = async () => {
@@ -35,6 +36,13 @@ export default function StartUpSubmitApplication() {
 
     router.refresh();
   };
+
+  const docs = [
+    {
+      uri: '/Non-Circumvention and Confidentiality Agreement.pdf',
+      fileType: 'pdf'
+    }
+  ];
 
   return (
     <div className="flex flex-col gap-8">
@@ -54,7 +62,7 @@ export default function StartUpSubmitApplication() {
         >
           I agree to the{' '}
           <button
-            onClick={() => setIsDialogOpen(true)} // Open the dialog when clicked
+            onClick={() => setIsDialogOpen(true)}
             className="underline text-[#FF7A00]"
           >
             Mutual Non-Disclosure Agreement
@@ -80,12 +88,16 @@ export default function StartUpSubmitApplication() {
       )}
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-4xl w-full p-0">
-          <div className="relative">
+        <DialogContent className="max-w-4xl w-full p-0 border-0 bg-transparent">
+          <div className="relative h-[80vh] overflow-y-auto">
             <DialogClose className="absolute top-2 right-2 text-gray-700">
               <X size={24} />
             </DialogClose>
-            <PdfViewer className="w-full h-[800px]" src={pdfUrl} />
+            <div className="w-full h-full">
+              <Worker workerUrl="/pdfjs/pdf.worker.min.js">
+                <Viewer fileUrl={pdfUrl} />
+              </Worker>
+            </div>
           </div>
         </DialogContent>
       </Dialog>
