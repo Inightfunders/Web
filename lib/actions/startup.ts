@@ -2,7 +2,8 @@
 
 import 'server-only'
 import { db } from "@/db"
-import { cap_tables, contracts, financial_details_requests, financial_rounds, financial_statements, legal_documents, other_documents, notifications, pitch_decks, startups_owners, tax_returns } from "@/migrations/schema"
+import { cap_tables, contracts, financial_details_requests, financial_rounds, financial_statements, legal_documents, other_documents,
+    financial_projection, bank_statements, nda, notifications, pitch_decks, startups_owners, tax_returns } from "@/migrations/schema"
 import { and, eq, sql } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 import { cache } from "react"
@@ -193,6 +194,36 @@ export const getOtherDocuments = cache(async () => {
     })
 })
 
+export const getFinancialProjection = cache(async () => {
+    const user = await getUser()
+
+    if(!user?.userStartUp?.id) return
+
+    return await db.query.financial_projection.findMany({
+        where: (table, { eq }) => eq(table.startup_id, user?.userStartUp?.id),
+    })
+})
+
+export const getBankStatements = cache(async () => {
+    const user = await getUser()
+
+    if(!user?.userStartUp?.id) return
+
+    return await db.query.bank_statements.findMany({
+        where: (table, { eq }) => eq(table.startup_id, user?.userStartUp?.id),
+    })
+})
+
+export const getNda = cache(async () => {
+    const user = await getUser()
+
+    if(!user?.userStartUp?.id) return
+
+    return await db.query.nda.findMany({
+        where: (table, { eq }) => eq(table.startup_id, user?.userStartUp?.id),
+    })
+})
+
 export const createFinancialRound = cache(async (data: { investor: string[], round: "Pre-seed" | "Seed" | "Series A" | "Series B" | "Series C" | "Series D" | "Series E" | "Series F" | "Public", date: string, amount: string }) => {
     const user = await getUser()
 
@@ -362,6 +393,69 @@ export const createOtherDocuments = cache(async ({ name, document_link }: { name
     })
 
     if(otherDocumentsInserted.length !== 1) return { error: 'Failed to create others table', success: false }
+
+    return { success: true, error: undefined }
+})
+
+export const createFinancialProjection = cache(async ({ name, document_link }: { name: string, document_link: string }) => {
+    const user = await getUser()
+
+    if(!user?.userStartUp?.id) return
+
+    const financialProjectionInserted = await db.insert(financial_projection).values({
+        id: sql`DEFAULT`,
+        startup_id: user?.userStartUp?.id,
+        name,
+        document_link,
+        created_at: sql`DEFAULT`,
+        updated_at: sql`DEFAULT`,
+    }).returning({
+        id: financial_projection.id
+    })
+
+    if(financialProjectionInserted.length !== 1) return { error: 'Failed to create financialProjection table', success: false }
+
+    return { success: true, error: undefined }
+})
+
+export const createBankStatements = cache(async ({ name, document_link }: { name: string, document_link: string }) => {
+    const user = await getUser()
+
+    if(!user?.userStartUp?.id) return
+
+    const bankStatementsInserted = await db.insert(bank_statements).values({
+        id: sql`DEFAULT`,
+        startup_id: user?.userStartUp?.id,
+        name,
+        document_link,
+        created_at: sql`DEFAULT`,
+        updated_at: sql`DEFAULT`,
+    }).returning({
+        id: bank_statements.id
+    })
+
+    if(bankStatementsInserted.length !== 1) return { error: 'Failed to create bankStatements table', success: false }
+
+    return { success: true, error: undefined }
+})
+
+export const createNda = cache(async ({ name, document_link }: { name: string, document_link: string }) => {
+    const user = await getUser()
+
+    if(!user?.userStartUp?.id) return
+
+    const ndaInserted = await db.insert(nda).values({
+        id: sql`DEFAULT`,
+        startup_id: user?.userStartUp?.id,
+        name,
+        document_link,
+        created_at: sql`DEFAULT`,
+        updated_at: sql`DEFAULT`,
+    }).returning({
+        id: bank_statements.id
+    })
+
+    if(ndaInserted.length !== 1) return { error: 'Failed to create nda table', success: false }
 
     return { success: true, error: undefined }
 })

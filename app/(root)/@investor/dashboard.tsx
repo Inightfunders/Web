@@ -2,9 +2,11 @@ import InvestorsChart from "@/components/investors/InvestorsChart";
 import InvestorsStartups from "@/components/investors/InvestorsStartups";
 import { getUser } from "@/lib/actions/auth";
 import { getContracts } from "@/lib/actions/investor";
-import StartUpsChart from "@/components/startup/StartUpsChart";
+// import StartUpsChart from "@/components/startup/StartUpsChart";
 import { CustomSearch } from "@/components/lenders/CustomSearch";
 import InvestorDashboardCard from "@/components/investors/investorDashboardCard";
+import PayNow from "@/components/investors/PayNow";
+import { getNextDueDate } from "@/lib/utils";
 
 export default async function Dashboard({
   searchParams,
@@ -67,7 +69,7 @@ export default async function Dashboard({
 
         {/* Right column with ROI card spanning 2 columns */}
         <div className="w-full">
-          <StartUpsChart totalAmountInvested={totalAmountInvested!} totalROI={totalROI!} totalStartups={totalStartups!} />
+          <InvestorsChart contracts={investorContracts.acceptedContracts!} totalROI={totalROI!} />
         </div>
       </div>
 
@@ -118,8 +120,8 @@ export default async function Dashboard({
                 </td>
                 <td
                   className={`p-4 bg-white font-Montserrat text-[13px] leading-[15px] text-[#1A1A1A]`}
-                >
-                  ${parseFloat(company.amount_invested).toLocaleString()}
+                >         
+                  {company.investment_amount_paid ? `${parseFloat(company.amount_invested).toLocaleString()}` : <PayNow contractId={company.id} />}
                 </td>
                 <td
                   className={`p-4 bg-[#EAEAEA] font-Montserrat text-[13px] leading-[15px] text-[#1A1A1A]`}
@@ -139,7 +141,7 @@ export default async function Dashboard({
                 <td
                   className={`p-4 bg-white font-Montserrat leading-[15px] text-[#1A1A1A] text-[13px]`}
                 >
-                  {company.maturity_date}
+                  {getNextDueDate(new Date(company.createdAt!), company.payment_interval!).toDateString()}
                 </td>
               </tr>
             ))}

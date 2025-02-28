@@ -2,7 +2,9 @@
 
 import 'server-only'
 import { db } from "@/db"
-import { contracts, financial_details_requests, notifications, startups, transactions } from "@/migrations/schema"
+import { contracts, financial_details_requests, notifications, startups, transactions, cap_tables, pitch_decks,
+    tax_returns, financial_statements, legal_documents, other_documents, 
+ } from "@/migrations/schema"
 import { eq, sql, and, isNull, ilike, or, isNotNull } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 import { cache } from "react"
@@ -77,7 +79,7 @@ export const getAllRequests = cache(async (investorId: number, select: 'startups
                 })
                 .from(startups)
                 .leftJoin(contracts, and(eq(contracts.investor_id, investorId), eq(contracts.startup_id, startups.id), or(eq(contracts.accepted, false), isNull(contracts.accepted))))
-                .leftJoin(financial_details_requests, and(eq(financial_details_requests.investor_id, investorId), eq(financial_details_requests.startup_id, startups.id)))
+                .leftJoin(financial_details_requests, and(eq(financial_details_requests.investor_id, investorId), eq(financial_details_requests.startup_id, startups.id), or(eq(financial_details_requests.accepted, false), isNull(financial_details_requests.accepted))))
                 .where(or(
                     isNotNull(contracts.startup_id),
                     isNotNull(financial_details_requests.startup_id)
@@ -266,5 +268,33 @@ export const getOthersDocuments = cache(async (startupId: number) => {
 
     return await db.query.other_documents.findMany({
         where: (table, { eq }) => eq(table.startup_id,  startupId),
+    })
+})
+
+export const getFinancialProjection = cache(async (startupId: number) => {
+
+    return await db.query.financial_projection.findMany({
+        where: (table, { eq }) => eq(table.startup_id,  startupId),
+    })
+})
+
+export const getBankStatements = cache(async (startupId: number) => {
+
+    return await db.query.bank_statements.findMany({
+        where: (table, { eq }) => eq(table.startup_id,  startupId),
+    })
+})
+
+export const getNda = cache(async (startupId: number) => {
+
+    return await db.query.nda.findMany({
+        where: (table, { eq }) => eq(table.startup_id,  startupId),
+    })
+})
+
+export const getBankDetails = cache(async (investorId: string) => {
+
+    return await db.query.bank_accounts.findMany({
+        where: (table, { eq }) => eq(table.user_id, investorId)
     })
 })

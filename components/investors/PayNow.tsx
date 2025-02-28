@@ -22,10 +22,10 @@ export default function PayNow({ contractId }: Props)
 
     return (
         <>
-            <button onMouseDown={handlePayContractAmount} className='text-xs text-black font-light rounded-[2px] px-2 py-1 bg-white'>Pay Now</button>
+            <button onMouseDown={handlePayContractAmount} className='text-sm text-white font-normal rounded-xl px-2 py-1 bg-amber-500'>Pay Now</button>
             <Dialog open={loading}>
                 <DialogContent className='flex items-center justify-center bg-transparent border-none shadow-none outline-none'>
-                    <Loader2 className='animate-spin' size={42} color="#000" />
+                    <Loader2 className='animate-spin' size={42} color="#ffffff" />
                 </DialogContent>
             </Dialog>
         </>
