@@ -12,6 +12,10 @@ export default function StartUpSubmitApplication() {
   const [checked, setChecked] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [pdfUrl] = useState(
+    '/Non-Circumvention and Confidentiality Agreement.pdf'
+  );
   //  const [open, setOpen] = useState(false);
 
   const handleSubmit = async () => {
@@ -38,14 +42,12 @@ export default function StartUpSubmitApplication() {
           className="text-sm text-white font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         >
           I agree to the{' '}
-          <a
-            href="/Non-Circumvention and Confidentiality Agreement.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline"
+          <button
+            onClick={() => setIsDialogOpen(true)} // Open the dialog when clicked
+            className="underline text-[#FF7A00]"
           >
             Mutual Non-Disclosure Agreement
-          </a>
+          </button>
         </label>
       </div>
       <button
@@ -65,6 +67,22 @@ export default function StartUpSubmitApplication() {
           <p className="text-black font-semibold">{error}</p>
         </div>
       )}
+
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="max-w-4xl w-full p-0">
+          <div className="relative">
+            <DialogClose className="absolute top-2 right-2 text-gray-700">
+              <X size={24} />
+            </DialogClose>
+            <embed
+              src={pdfUrl}
+              type="application/pdf"
+              width="100%"
+              height="800px"
+            />
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -40,7 +40,7 @@ export default function CustomStartupChart({
       text: "",
     },
     credits: {
-      enabled: false, // ✅ Disables the Highcharts watermark
+      enabled: false, 
     },
     plotOptions: {
       pie: {
@@ -49,12 +49,12 @@ export default function CustomStartupChart({
         depth: 50, // 3D depth
         size: "100%",
         dataLabels: {
-          enabled: true, // ✅ Keep percentage but remove lines
+          enabled: true, 
           format: "<b>{point.percentage:.0f}%</b>",
-          distance: -50, // ✅ Move labels inside the chart
+          distance: -50, 
           style: {
             color: "#fff",
-            textShadow: "2px 2px 4px rgba(199, 196, 196, 0.8)", // ✅ Added Shadow Effect
+            textShadow: "2px 2px 4px rgba(199, 196, 196, 0.8)", 
             fontSize: "16px",
             fontWeight: "bold",
           },

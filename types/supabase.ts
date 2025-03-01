@@ -379,6 +379,36 @@ export type Database = {
           },
         ]
       }
+      partners: {
+        Row: {
+          id: string
+          user_id: string
+          partner_name: string | null
+          occupation: string | null
+          company_name: string | null
+        }
+        Insert: {
+          partner_name?: string | null
+          occupation?: string | null
+          company_name?: string | null
+          user_id?: string
+        }
+        Update: {
+          partner_name?: string | null
+          occupation?: string | null
+          company_name?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "partners_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       legal_documents: {
         Row: {
           created_at: string
@@ -702,6 +732,7 @@ export type Database = {
           last_name: string | null
           plaid_id: string | null
           role: Database["public"]["Enums"]["user_role"] | null
+          profile_img: string | null
         }
         Insert: {
           dwolla_customer_id?: string | null
@@ -711,6 +742,7 @@ export type Database = {
           last_name?: string | null
           plaid_id?: string | null
           role?: Database["public"]["Enums"]["user_role"] | null
+          profile_img?: string | null
         }
         Update: {
           dwolla_customer_id?: string | null
@@ -720,6 +752,7 @@ export type Database = {
           last_name?: string | null
           plaid_id?: string | null
           role?: Database["public"]["Enums"]["user_role"] | null
+          profile_img?: string | null
         }
         Relationships: [
           {

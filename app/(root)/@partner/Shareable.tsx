@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect } from "react";
 import { getUser } from "@/lib/actions/auth";
-import { getReferredUsers } from "@/lib/actions/auth";
+
 import { FacebookShareButton, LinkedinShareButton, WhatsappShareButton, EmailShareButton, TwitterShareButton,} from "react-share";
 
 
@@ -49,19 +49,19 @@ const Shareable = () => {
         </p>
 
         {/* Referral Link with Copy Button */}
-        <div className="flex gap-4 pb-6">
+        <div className="flex gap-4 pb-6  flex-col md:flex-row">
           <input
             ref={inputRef}
             value={referralLink}
             readOnly
-            className="w-[70%] py-3 px-4 text-xs border border-[#EAEAEA] rounded-[8px] bg-transparent"
+            className="w-[90%]  py-3 px-4 text-xs border border-[#EAEAEA] rounded-[8px] bg-transparent"
           />
           <button
             type="button"
             onClick={handleCopy}
-            className="flex rounded-[8px] items-center gap-2 bg-[#FF7A00] text-white px-4 py-3"
+            className="flex rounded-[8px] w-[100px] sm:w-[90px] md:w-[130px] lg:w-[140px] xl:w-[150px] items-center gap-2 bg-[#FF7A00] text-white px-4 py-3"
           >
-            <img src="/images/copy.svg" alt="Copy icon" className="w-4" />
+            <img src="/images/copy.svg" alt="Copy icon" className="w-4 md:w-3" />
             <span className="text-sm font-semibold">Copy</span>
           </button>
         </div>

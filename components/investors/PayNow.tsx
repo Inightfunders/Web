@@ -22,6 +22,7 @@ export default function PayNow({ contractId }: Props)
 
     return (
         <>
+            Shubham
             <button onMouseDown={handlePayContractAmount} className='text-xs text-black font-light rounded-[2px] px-2 py-1 bg-white'>Pay Now</button>
             <Dialog open={loading}>
                 <DialogContent className='flex items-center justify-center bg-transparent border-none shadow-none outline-none'>

@@ -280,6 +280,14 @@ export const users = pgTable(
     };
   }
 );
+ 
+export const referrals = pgTable("referrals", {
+  id: uuid("id").default(sql`gen_random_uuid()`).primaryKey().notNull(),
+  partner_id: bigint("partner_id", { mode: "number" }).notNull(), 
+  referred_user_id: uuid("referred_user_id").default(sql`NULL`), 
+  earnings: numeric("earnings").notNull(),
+  created_at: timestamp("created_at").defaultNow(),
+});
 
 export const cap_tables = pgTable("cap_tables", {
   // You can use { mode: "bigint" } if numbers are exceeding js number limitations
@@ -431,15 +439,18 @@ export const investors = pgTable(
   }
 );
 
-export const partners = pgTable(
-  "partners",
-  {
-    id: bigint("id", { mode: "number" }).primaryKey().notNull(),
+export const partners = pgTable("partners", {
+    id: uuid("id")
+      .default(sql`auth.uid()`)
+      .primaryKey()
+      .notNull(),
     user_id: uuid("user_id")
       .default(sql`auth.uid()`)
       .notNull()
       .references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
     partner_name: text("partner_name"),
+    occupation: text("occupation"),
+    company_name: text("company_name"),
   },
   (table) => {
     return {

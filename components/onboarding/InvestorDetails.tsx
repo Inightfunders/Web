@@ -1,33 +1,34 @@
-"use client";
+'use client';
 
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+  AccordionTrigger
+} from '@/components/ui/accordion';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { saveInvestorDetails } from "@/lib/actions/onboarding";
-import { cn } from "@/lib/utils";
-import { investorDetailsSchema } from "@/lib/validations/onBoardingSchema";
-import { Database } from "@/types/supabase";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { CheckCircle2, Circle, Loader2, X } from "lucide-react";
-import { Montserrat } from "next/font/google";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { Checkbox } from "../ui/checkbox";
-import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
-const inter = Montserrat({ subsets: ["latin"] });
+  FormMessage
+} from '@/components/ui/form';
+import { saveInvestorDetails } from '@/lib/actions/onboarding';
+import { cn } from '@/lib/utils';
+import { investorDetailsSchema } from '@/lib/validations/onBoardingSchema';
+import { Database } from '@/types/supabase';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { CheckCircle2, Circle, Loader2, X } from 'lucide-react';
+import { Montserrat } from 'next/font/google';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { Checkbox } from '../ui/checkbox';
+import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
+import { revalidatePath } from 'next/cache';
+const inter = Montserrat({ subsets: ['latin'] });
 
 type Props = {
   investorDetails: {
@@ -36,22 +37,22 @@ type Props = {
     company_name: string | null;
     company_website: string | null;
     geographies_served:
-      | Database["public"]["Enums"]["geographies_served"][]
+      | Database['public']['Enums']['geographies_served'][]
       | null;
     id: number;
-    max_facility_size: Database["public"]["Enums"]["max_facility_size"] | null;
+    max_facility_size: Database['public']['Enums']['max_facility_size'] | null;
     minimum_revenue_requirement:
-      | Database["public"]["Enums"]["minimum_revenue_requirement"]
+      | Database['public']['Enums']['minimum_revenue_requirement']
       | null;
-    products_offered: Database["public"]["Enums"]["products_offered"][] | null;
+    products_offered: Database['public']['Enums']['products_offered'][] | null;
     submitted: boolean | null;
     user_id: string;
-    investor_type: Database["public"]["Enums"]["investor_type"] | null;
+    investor_type: Database['public']['Enums']['investor_type'] | null;
     accreditation: string | null;
     future_investment_amount:
-      | Database["public"]["Enums"]["future_investment_amounts"]
+      | Database['public']['Enums']['future_investment_amounts']
       | null;
-    institution_type: Database["public"]["Enums"]["institution_types"] | null;
+    institution_type: Database['public']['Enums']['institution_types'] | null;
     // legalEntityType: Database["public"]["Enums"]["legal_entity_type"] | null;
   };
 };
@@ -63,11 +64,11 @@ export default function InvestorDetails({ investorDetails }: Props) {
   const [typePage, setTypePage] = useState(!investorDetails.investor_type);
   const [accreditedInvestorPage, setAccreditedInvestorPage] = useState(true);
   const [investorType, setInvestorType] = useState(
-    investorDetails.investor_type ?? "Individual"
+    investorDetails.investor_type ?? 'Individual'
   );
   const [accreditation, setAccreditation] = useState(
     investorDetails.accreditation ??
-      "I earn $200k+ yearly (or $300k+ if filing jointly)"
+      'I earn $200k+ yearly (or $300k+ if filing jointly)'
   );
   const [notAccredited, setNotAccredited] = useState(false);
 
@@ -76,24 +77,24 @@ export default function InvestorDetails({ investorDetails }: Props) {
   const form = useForm<z.infer<typeof investorDetailsSchema>>({
     resolver: zodResolver(investorDetailsSchema),
     defaultValues: {
-      companyName: investorDetails.company_name ?? "",
-      companyEmail: investorDetails.company_email ?? "",
-      companyWebsite: investorDetails.company_website ?? "",
+      companyName: investorDetails.company_name ?? '',
+      companyEmail: investorDetails.company_email ?? '',
+      companyWebsite: investorDetails.company_website ?? '',
       minimumRevenueRequirement:
-        investorDetails.minimum_revenue_requirement ?? "N/A",
-      maxFacilitySize: investorDetails.max_facility_size ?? "N/A",
+        investorDetails.minimum_revenue_requirement ?? 'N/A',
+      maxFacilitySize: investorDetails.max_facility_size ?? 'N/A',
       geographiesServed: investorDetails.geographies_served ?? [],
       productsOffered: investorDetails.products_offered ?? [],
-      investorType: investorDetails.investor_type ?? "Individual",
-      accreditation: investorDetails.accreditation ?? "",
-      futureInvestmentAmount: investorDetails.future_investment_amount ?? "",
-      institutionType: investorDetails.institution_type ?? "",
+      investorType: investorDetails.investor_type ?? 'Individual',
+      accreditation: investorDetails.accreditation ?? '',
+      futureInvestmentAmount: investorDetails.future_investment_amount ?? '',
+      institutionType: investorDetails.institution_type ?? ''
       // legalEntityType: investorDetails.legalEntityType ?? "",
-    },
+    }
   });
 
-  form.watch("geographiesServed");
-  form.watch("productsOffered");
+  form.watch('geographiesServed');
+  form.watch('productsOffered');
 
   // console.log(form.getValues());
 
@@ -107,7 +108,7 @@ export default function InvestorDetails({ investorDetails }: Props) {
     if (error) setError(error);
     else setSaveSuccess(true);
 
-    router.push("/investor-details/submit");
+    router.push('/investor-details/submit');
 
     setIsPending(false);
   };
@@ -134,8 +135,8 @@ export default function InvestorDetails({ investorDetails }: Props) {
     if (error) setTimeout(() => setError(null), 5000);
   }, [error]);
 
-  const accreditationWatch = form.watch("accreditation");
-  const investorTypeWatch = form.watch("investorType");
+  const accreditationWatch = form.watch('accreditation');
+  const investorTypeWatch = form.watch('investorType');
 
   useEffect(() => {
     // console.log(investorType);
@@ -143,7 +144,7 @@ export default function InvestorDetails({ investorDetails }: Props) {
   }, [investorType, accreditationWatch, accreditedInvestorPage]);
 
   useEffect(() => {
-    form.setValue("accreditation", accreditation);
+    form.setValue('accreditation', accreditation);
   }, [accreditation, investorTypeWatch]);
 
   // console.log(form.getValues());
@@ -153,7 +154,7 @@ export default function InvestorDetails({ investorDetails }: Props) {
   // if accreditation === "None of the above. I am not accredited" then redirect
 
   useEffect(() => {
-    if (accreditationWatch === "None of the above. I am not accredited") {
+    if (accreditationWatch === 'None of the above. I am not accredited') {
       setNotAccredited(true);
     } else {
       setNotAccredited(false);
@@ -184,7 +185,7 @@ export default function InvestorDetails({ investorDetails }: Props) {
           </p>
           <div className="flex flex-col gap-10 mt-10">
             <button
-              onClick={() => router.push("/")}
+              onClick={() => router.push('/')}
               className="w-full !mt-8 bg-[#FF7A00] text-white font-bold rounded-[8px] mx-auto py-3.5 text-sm px-4 max-w-[216px] disabled:opacity-70 font-Montserrat"
             >
               Go to insightfunders.com
@@ -193,7 +194,7 @@ export default function InvestorDetails({ investorDetails }: Props) {
             <button
               onClick={() => {
                 setNotAccredited(false);
-                setAccreditation("");
+                setAccreditation('');
               }}
               className="text-white text-[13px py-2 px-4 bg-transparent font-Montserrat"
             >
@@ -211,11 +212,11 @@ export default function InvestorDetails({ investorDetails }: Props) {
         className={`flex flex-col items-center justify-center gap-2 mt-8 ${inter.className}`}
       >
         <h1 className="text-2xl font-semibold text-white text-center">
-          {investorType === "Individual" ? "Individual" : "Company"} information
+          {investorType === 'Individual' ? 'Individual' : 'Company'} information
         </h1>
         <h2 className="text-base text-center font-light text-white">
-          Give us details information about{" "}
-          {investorType === "Individual" ? "yourself" : "your company"}
+          Give us details information about{' '}
+          {investorType === 'Individual' ? 'yourself' : 'your company'}
         </h2>
       </div>
       <Form {...form}>
@@ -242,16 +243,16 @@ export default function InvestorDetails({ investorDetails }: Props) {
                       >
                         <FormItem
                           className={cn(
-                            "flex justify-between items-center pt-4 pl-4 pr-2 pb-6 gap-4  border-2 rounded-[12px] bg-white",
-                            form.getValues().investorType === "Individual"
-                              ? "border-[#FF7A00]"
-                              : "border-white"
+                            'flex justify-between items-center pt-4 pl-4 pr-2 pb-6 gap-4  border-2 rounded-[12px] bg-white',
+                            form.getValues().investorType === 'Individual'
+                              ? 'border-[#FF7A00]'
+                              : 'border-white'
                           )}
                         >
                           <FormLabel className="font-normal">
                             <div className="flex gap-4 pl-2 items-center justify-between cursor-pointer">
                               {form.getValues().investorType !==
-                              "Individual" ? (
+                              'Individual' ? (
                                 <Circle
                                   size={24}
                                   fill="#fff"
@@ -284,26 +285,26 @@ export default function InvestorDetails({ investorDetails }: Props) {
                               defaultChecked={true}
                               value="Individual"
                               className={cn(
-                                "mt-0imp opacity-0",
-                                form.getValues().investorType === "Individual"
-                                  ? "bg-main-purple"
-                                  : "bg-white"
+                                'mt-0imp opacity-0',
+                                form.getValues().investorType === 'Individual'
+                                  ? 'bg-main-purple'
+                                  : 'bg-white'
                               )}
                             />
                           </FormControl>
                         </FormItem>
                         <FormItem
                           className={cn(
-                            "flex justify-between items-center pt-4 pl-4 pr-2 pb-6 gap-4  border-2 rounded-[12px] bg-white",
-                            form.getValues().investorType === "Institution"
-                              ? "border-[#FF7A00]"
-                              : "border-white"
+                            'flex justify-between items-center pt-4 pl-4 pr-2 pb-6 gap-4  border-2 rounded-[12px] bg-white',
+                            form.getValues().investorType === 'Institution'
+                              ? 'border-[#FF7A00]'
+                              : 'border-white'
                           )}
                         >
                           <FormLabel className="font-normal">
                             <div className="flex gap-4 pl-2 items-center justify-between cursor-pointer">
                               {form.getValues().investorType !==
-                              "Institution" ? (
+                              'Institution' ? (
                                 <Circle
                                   size={24}
                                   fill="#fff"
@@ -334,10 +335,10 @@ export default function InvestorDetails({ investorDetails }: Props) {
                             <RadioGroupItem
                               value="Institution"
                               className={cn(
-                                "mt-0imp opacity-0",
-                                form.getValues().investorType === "Institution"
-                                  ? "bg-main-purple"
-                                  : "bg-white"
+                                'mt-0imp opacity-0',
+                                form.getValues().investorType === 'Institution'
+                                  ? 'bg-main-purple'
+                                  : 'bg-white'
                               )}
                             />
                           </FormControl>
@@ -350,7 +351,7 @@ export default function InvestorDetails({ investorDetails }: Props) {
               />
               <button
                 onMouseDown={() => {
-                  setInvestorType(form.getValues("investorType"));
+                  setInvestorType(form.getValues('investorType'));
                   setTypePage(false);
                 }}
                 type="button"
@@ -360,14 +361,14 @@ export default function InvestorDetails({ investorDetails }: Props) {
               </button>
               <button
                 onClick={() => {
-                  router.push("/personal-details");
+                  router.push('/personal-details');
                 }}
                 className="text-white text-[13px py-2 px-4 bg-transparent font-Montserrat mt-2"
               >
                 Go back
               </button>
             </>
-          ) : form.getValues("investorType") === "Individual" &&
+          ) : form.getValues('investorType') === 'Individual' &&
             accreditedInvestorPage ? (
             <>
               <p className="font-light text-white text-center">
@@ -387,17 +388,17 @@ export default function InvestorDetails({ investorDetails }: Props) {
                       >
                         <FormItem
                           className={cn(
-                            "flex justify-between items-center pt-4 pl-2 pr-2 pb-4 gap-4  border-2 rounded-[12px] bg-white",
+                            'flex justify-between items-center pt-4 pl-2 pr-2 pb-4 gap-4  border-2 rounded-[12px] bg-white',
                             form.getValues().accreditation ===
-                              "I earn $200k+ yearly (or $300k+ if filing jointly)"
-                              ? "border-[#FF7A00]"
-                              : "border-white"
+                              'I earn $200k+ yearly (or $300k+ if filing jointly)'
+                              ? 'border-[#FF7A00]'
+                              : 'border-white'
                           )}
                         >
                           <FormLabel className="font-normal">
                             <div className="flex gap-4 pl-2 items-center justify-between cursor-pointer">
                               {form.getValues().accreditation !==
-                              "I earn $200k+ yearly (or $300k+ if filing jointly)" ? (
+                              'I earn $200k+ yearly (or $300k+ if filing jointly)' ? (
                                 <Circle
                                   size={24}
                                   fill="#fff"
@@ -425,27 +426,27 @@ export default function InvestorDetails({ investorDetails }: Props) {
                               defaultChecked={true}
                               value="I earn $200k+ yearly (or $300k+ if filing jointly)"
                               className={cn(
-                                "mt-0imp opacity-0",
-                                form.getValues().accreditation === "Individual"
-                                  ? "bg-main-purple"
-                                  : "bg-white"
+                                'mt-0imp opacity-0',
+                                form.getValues().accreditation === 'Individual'
+                                  ? 'bg-main-purple'
+                                  : 'bg-white'
                               )}
                             />
                           </FormControl>
                         </FormItem>
                         <FormItem
                           className={cn(
-                            "flex justify-between items-center pt-4 pl-2 pr-2 pb-4 gap-4  border-2 rounded-[12px] bg-white",
+                            'flex justify-between items-center pt-4 pl-2 pr-2 pb-4 gap-4  border-2 rounded-[12px] bg-white',
                             form.getValues().accreditation ===
-                              "I have $1M+ in assets, excl. primary residence"
-                              ? "border-[#FF7A00]"
-                              : "border-white"
+                              'I have $1M+ in assets, excl. primary residence'
+                              ? 'border-[#FF7A00]'
+                              : 'border-white'
                           )}
                         >
                           <FormLabel className="font-normal">
                             <div className="flex gap-4 pl-2 items-center justify-between cursor-pointer">
                               {form.getValues().accreditation !==
-                              "I have $1M+ in assets, excl. primary residence" ? (
+                              'I have $1M+ in assets, excl. primary residence' ? (
                                 <Circle
                                   size={24}
                                   fill="#fff"
@@ -471,28 +472,28 @@ export default function InvestorDetails({ investorDetails }: Props) {
                             <RadioGroupItem
                               value="I have $1M+ in assets, excl. primary residence"
                               className={cn(
-                                "mt-0imp opacity-0",
+                                'mt-0imp opacity-0',
                                 form.getValues().accreditation ===
-                                  "I have $1M+ in assets, excl. primary residence"
-                                  ? "bg-main-purple"
-                                  : "bg-white"
+                                  'I have $1M+ in assets, excl. primary residence'
+                                  ? 'bg-main-purple'
+                                  : 'bg-white'
                               )}
                             />
                           </FormControl>
                         </FormItem>
                         <FormItem
                           className={cn(
-                            "flex justify-between items-center pt-4 pl-2 pr-2 pb-4 gap-4  border-2 rounded-[12px] bg-white",
+                            'flex justify-between items-center pt-4 pl-2 pr-2 pb-4 gap-4  border-2 rounded-[12px] bg-white',
                             form.getValues().accreditation ===
-                              "I hold a current Series 7, 65 or 82 license"
-                              ? "border-[#FF7A00]"
-                              : "border-white"
+                              'I hold a current Series 7, 65 or 82 license'
+                              ? 'border-[#FF7A00]'
+                              : 'border-white'
                           )}
                         >
                           <FormLabel className="font-normal">
                             <div className="flex gap-4 pl-2 items-center justify-between cursor-pointer">
                               {form.getValues().accreditation !==
-                              "I hold a current Series 7, 65 or 82 license" ? (
+                              'I hold a current Series 7, 65 or 82 license' ? (
                                 <Circle
                                   size={24}
                                   fill="#fff"
@@ -518,28 +519,28 @@ export default function InvestorDetails({ investorDetails }: Props) {
                             <RadioGroupItem
                               value="I hold a current Series 7, 65 or 82 license"
                               className={cn(
-                                "mt-0imp opacity-0",
+                                'mt-0imp opacity-0',
                                 form.getValues().accreditation ===
-                                  "I hold a current Series 7, 65 or 82 license"
-                                  ? "bg-main-purple"
-                                  : "bg-white"
+                                  'I hold a current Series 7, 65 or 82 license'
+                                  ? 'bg-main-purple'
+                                  : 'bg-white'
                               )}
                             />
                           </FormControl>
                         </FormItem>
                         <FormItem
                           className={cn(
-                            "flex justify-between items-center pt-4 pl-2 pr-2 pb-4 gap-4  border-2 rounded-[12px] bg-white",
+                            'flex justify-between items-center pt-4 pl-2 pr-2 pb-4 gap-4  border-2 rounded-[12px] bg-white',
                             form.getValues().accreditation ===
-                              "I am accredited in another way"
-                              ? "border-[#FF7A00]"
-                              : "border-white"
+                              'I am accredited in another way'
+                              ? 'border-[#FF7A00]'
+                              : 'border-white'
                           )}
                         >
                           <FormLabel className="font-normal">
                             <div className="flex gap-4 pl-2 items-center justify-between cursor-pointer">
                               {form.getValues().accreditation !==
-                              "I am accredited in another way" ? (
+                              'I am accredited in another way' ? (
                                 <Circle
                                   size={24}
                                   fill="#fff"
@@ -565,28 +566,28 @@ export default function InvestorDetails({ investorDetails }: Props) {
                             <RadioGroupItem
                               value="I am accredited in another way"
                               className={cn(
-                                "mt-0imp opacity-0",
+                                'mt-0imp opacity-0',
                                 form.getValues().accreditation ===
-                                  "I am accredited in another way"
-                                  ? "bg-main-purple"
-                                  : "bg-white"
+                                  'I am accredited in another way'
+                                  ? 'bg-main-purple'
+                                  : 'bg-white'
                               )}
                             />
                           </FormControl>
                         </FormItem>
                         <FormItem
                           className={cn(
-                            "flex justify-between items-center pt-4 pl-2     pr-2 pb-4 gap-4  border-2 rounded-[12px] bg-white",
+                            'flex justify-between items-center pt-4 pl-2     pr-2 pb-4 gap-4  border-2 rounded-[12px] bg-white',
                             form.getValues().accreditation ===
-                              "None of the above. I am not accredited"
-                              ? "border-[#FF7A00]"
-                              : "border-white"
+                              'None of the above. I am not accredited'
+                              ? 'border-[#FF7A00]'
+                              : 'border-white'
                           )}
                         >
                           <FormLabel className="font-normal">
                             <div className="flex gap-4 pl-2 items-center justify-between cursor-pointer">
                               {form.getValues().accreditation !==
-                              "None of the above. I am not accredited" ? (
+                              'None of the above. I am not accredited' ? (
                                 <Circle
                                   size={24}
                                   fill="#fff"
@@ -612,11 +613,11 @@ export default function InvestorDetails({ investorDetails }: Props) {
                             <RadioGroupItem
                               value="None of the above. I am not accredited"
                               className={cn(
-                                "mt-0imp opacity-0",
+                                'mt-0imp opacity-0',
                                 form.getValues().accreditation ===
-                                  "None of the above. I am not accredited"
-                                  ? "bg-main-purple"
-                                  : "bg-white"
+                                  'None of the above. I am not accredited'
+                                  ? 'bg-main-purple'
+                                  : 'bg-white'
                               )}
                             />
                           </FormControl>
@@ -634,7 +635,7 @@ export default function InvestorDetails({ investorDetails }: Props) {
                   setAccreditedInvestorPage(false);
                   setAccreditation(form.getValues().accreditation!);
                   setInvestorType((prev) =>
-                    prev === "Individual" ? "Individual" : "Institution"
+                    prev === 'Individual' ? 'Individual' : 'Institution'
                   );
                 }}
                 className="w-full !mt-8 bg-[#FF7A00] text-white font-bold rounded-[8px] mx-auto py-3.5 text-sm px-4 max-w-[216px] disabled:opacity-70"
@@ -642,7 +643,7 @@ export default function InvestorDetails({ investorDetails }: Props) {
                 {isPending ? (
                   <Loader2 stroke="#fff" className="animate-spin mx-auto" />
                 ) : (
-                  "Continue"
+                  'Continue'
                 )}
               </button>
               <button
@@ -673,7 +674,7 @@ export default function InvestorDetails({ investorDetails }: Props) {
                 disabled={isPending}
                 name="companyName"
                 render={({ field }) =>
-                  form.getValues("investorType") === "Institution" ? (
+                  form.getValues('investorType') === 'Institution' ? (
                     <FormItem className="relative flex flex-col gap-1 w-screen max-w-[450px]">
                       <FormControl>
                         <input
@@ -694,7 +695,7 @@ export default function InvestorDetails({ investorDetails }: Props) {
                 disabled={isPending}
                 name="companyEmail"
                 render={({ field }) =>
-                  form.getValues("investorType") === "Institution" ? (
+                  form.getValues('investorType') === 'Institution' ? (
                     <FormItem className="relative flex flex-col gap-1 w-screen max-w-[450px]">
                       <FormControl>
                         <input
@@ -716,7 +717,7 @@ export default function InvestorDetails({ investorDetails }: Props) {
                 disabled={isPending}
                 name="companyWebsite"
                 render={({ field }) =>
-                  form.getValues("investorType") === "Institution" ? (
+                  form.getValues('investorType') === 'Institution' ? (
                     <FormItem className="relative flex flex-col gap-1 w-screen max-w-[450px]">
                       <FormControl>
                         <input
@@ -738,7 +739,7 @@ export default function InvestorDetails({ investorDetails }: Props) {
                 disabled={isPending}
                 name="institutionType"
                 render={({ field }) =>
-                  form.getValues("investorType") === "Institution" ? (
+                  form.getValues('investorType') === 'Institution' ? (
                     <FormItem className="relative flex flex-col gap-1 w-screen max-w-[450px]">
                       <FormControl>
                         <select
@@ -749,13 +750,13 @@ export default function InvestorDetails({ investorDetails }: Props) {
                             What is the type of your institution?
                           </option>
                           {[
-                            "Corporation",
-                            "Family Office",
-                            "Fund",
-                            "Registered Investment Advisor (RIA)",
-                            "Other",
+                            'Corporation',
+                            'Family Office',
+                            'Fund',
+                            'Registered Investment Advisor (RIA)',
+                            'Other'
                           ]
-                            .filter((item) => item !== "")
+                            .filter((item) => item !== '')
                             .map((item, index) => (
                               <option key={index} value={item}>
                                 {item}
@@ -809,7 +810,7 @@ export default function InvestorDetails({ investorDetails }: Props) {
                 }
               /> */}
 
-              {form.getValues("investorType") === "Institution" ? (
+              {form.getValues('investorType') === 'Institution' ? (
                 <FormField
                   control={form.control}
                   disabled={isPending}
@@ -825,11 +826,11 @@ export default function InvestorDetails({ investorDetails }: Props) {
                             Minimum revenue requirement
                           </option>
                           {[
-                            "<$1M",
-                            "$1-10M",
-                            "$10-50M",
-                            "$50-100M",
-                            "$100M+",
+                            '<$1M',
+                            '$1-10M',
+                            '$10-50M',
+                            '$50-100M',
+                            '$100M+'
                           ].map((item, index) => (
                             <option key={index} value={item}>
                               {item}
@@ -850,7 +851,7 @@ export default function InvestorDetails({ investorDetails }: Props) {
                 disabled={isPending}
                 name="maxFacilitySize"
                 render={({ field }) =>
-                  form.getValues("investorType") === "Institution" ? (
+                  form.getValues('investorType') === 'Institution' ? (
                     <FormItem className="relative flex flex-col gap-1 w-screen max-w-[450px]">
                       <FormControl>
                         <select
@@ -860,8 +861,8 @@ export default function InvestorDetails({ investorDetails }: Props) {
                           <option disabled value="N/A">
                             Maximum facility size
                           </option>
-                          {["<$1M", "$1-10M", "$10-50M", "$50-100M", "$100M+"]
-                            .filter((item) => item !== "")
+                          {['<$1M', '$1-10M', '$10-50M', '$50-100M', '$100M+']
+                            .filter((item) => item !== '')
                             .map((item, index) => (
                               <option key={index} value={item}>
                                 {item}
@@ -882,7 +883,7 @@ export default function InvestorDetails({ investorDetails }: Props) {
                 disabled={isPending}
                 name="productsOffered"
                 render={({ field }) =>
-                  form.getValues("investorType") === "Institution" ? (
+                  form.getValues('investorType') === 'Institution' ? (
                     <FormItem className="relative flex flex-col gap-1 w-screen max-w-[450px]">
                       <FormControl>
                         <Accordion type="single" collapsible className="w-full">
@@ -892,86 +893,86 @@ export default function InvestorDetails({ investorDetails }: Props) {
                             </AccordionTrigger>
                             <AccordionContent className="text-main-gray flex flex-col gap-4 items-start justify-center py-4">
                               {[
-                                "Venture Debt",
-                                "Asset-Based Lending",
-                                "Warehouse Lending",
-                                "Invoice and Contract Factoring",
-                                "Revenue-Based Financing",
-                                "Equipment Leasing",
-                                "M&A",
-                                "Recapitalizations and Refinancing",
-                                "Buyouts",
-                                "Bridge Loans",
-                                "Other",
+                                'Venture Debt',
+                                'Asset-Based Lending',
+                                'Warehouse Lending',
+                                'Invoice and Contract Factoring',
+                                'Revenue-Based Financing',
+                                'Equipment Leasing',
+                                'M&A',
+                                'Recapitalizations and Refinancing',
+                                'Buyouts',
+                                'Bridge Loans',
+                                'Other'
                               ].map((product, index) => (
                                 <div className="flex gap-2 items-center justify-start w-full">
                                   <Checkbox
                                     key={index}
                                     className="rounded-[4px] border-white"
                                     checked={form
-                                      .getValues("productsOffered")
+                                      .getValues('productsOffered')
                                       ?.includes(
                                         product as
-                                          | "Venture Debt"
-                                          | "Asset-Based Lending"
-                                          | "Warehouse Lending"
-                                          | "Invoice and Contract Factoring"
-                                          | "Revenue-Based Financing"
-                                          | "Equipment Leasing"
-                                          | "M&A"
-                                          | "Recapitalizations and Refinancing"
-                                          | "Buyouts"
-                                          | "Bridge Loans"
-                                          | "Other"
+                                          | 'Venture Debt'
+                                          | 'Asset-Based Lending'
+                                          | 'Warehouse Lending'
+                                          | 'Invoice and Contract Factoring'
+                                          | 'Revenue-Based Financing'
+                                          | 'Equipment Leasing'
+                                          | 'M&A'
+                                          | 'Recapitalizations and Refinancing'
+                                          | 'Buyouts'
+                                          | 'Bridge Loans'
+                                          | 'Other'
                                       )}
                                     onCheckedChange={(value) => {
                                       if (value)
                                         form
-                                          .getValues("productsOffered")
+                                          .getValues('productsOffered')
                                           ?.includes(
                                             product as
-                                              | "Venture Debt"
-                                              | "Asset-Based Lending"
-                                              | "Warehouse Lending"
-                                              | "Invoice and Contract Factoring"
-                                              | "Revenue-Based Financing"
-                                              | "Equipment Leasing"
-                                              | "M&A"
-                                              | "Recapitalizations and Refinancing"
-                                              | "Buyouts"
-                                              | "Bridge Loans"
-                                              | "Other"
+                                              | 'Venture Debt'
+                                              | 'Asset-Based Lending'
+                                              | 'Warehouse Lending'
+                                              | 'Invoice and Contract Factoring'
+                                              | 'Revenue-Based Financing'
+                                              | 'Equipment Leasing'
+                                              | 'M&A'
+                                              | 'Recapitalizations and Refinancing'
+                                              | 'Buyouts'
+                                              | 'Bridge Loans'
+                                              | 'Other'
                                           )
                                           ? form.setValue(
-                                              "productsOffered",
+                                              'productsOffered',
                                               form
-                                                .getValues("productsOffered")
+                                                .getValues('productsOffered')
                                                 ?.filter(
                                                   (item) => item !== product
                                                 )
                                             )
-                                          : form.setValue("productsOffered", [
+                                          : form.setValue('productsOffered', [
                                               ...(form.getValues(
-                                                "productsOffered"
+                                                'productsOffered'
                                               ) ?? []),
                                               product as
-                                                | "Venture Debt"
-                                                | "Asset-Based Lending"
-                                                | "Warehouse Lending"
-                                                | "Invoice and Contract Factoring"
-                                                | "Revenue-Based Financing"
-                                                | "Equipment Leasing"
-                                                | "M&A"
-                                                | "Recapitalizations and Refinancing"
-                                                | "Buyouts"
-                                                | "Bridge Loans"
-                                                | "Other",
+                                                | 'Venture Debt'
+                                                | 'Asset-Based Lending'
+                                                | 'Warehouse Lending'
+                                                | 'Invoice and Contract Factoring'
+                                                | 'Revenue-Based Financing'
+                                                | 'Equipment Leasing'
+                                                | 'M&A'
+                                                | 'Recapitalizations and Refinancing'
+                                                | 'Buyouts'
+                                                | 'Bridge Loans'
+                                                | 'Other'
                                             ]);
                                       else
                                         form.setValue(
-                                          "productsOffered",
+                                          'productsOffered',
                                           form
-                                            .getValues("productsOffered")
+                                            .getValues('productsOffered')
                                             ?.filter((item) => item !== product)
                                         );
                                     }}
@@ -1069,7 +1070,7 @@ export default function InvestorDetails({ investorDetails }: Props) {
                 disabled={isPending}
                 name="geographiesServed"
                 render={({ field }) =>
-                  form.getValues("investorType") === "Institution" ? (
+                  form.getValues('investorType') === 'Institution' ? (
                     <FormItem className="relative flex flex-col gap-1 w-screen max-w-[450px]">
                       <FormControl>
                         <Accordion type="single" collapsible className="w-full">
@@ -1079,56 +1080,56 @@ export default function InvestorDetails({ investorDetails }: Props) {
                             </AccordionTrigger>
                             <AccordionContent className="text-main-gray flex flex-col gap-4 items-start justify-center py-4">
                               {[
-                                "United States",
-                                "Canada",
-                                "Mexico",
-                                "United Kingdom",
-                                "Other",
+                                'United States',
+                                'Canada',
+                                'Mexico',
+                                'United Kingdom',
+                                'Other'
                               ].map((product, index) => (
                                 <div className="flex gap-2 items-center justify-start w-full">
                                   <Checkbox
                                     key={index}
                                     className="rounded-[4px]"
                                     checked={form
-                                      .getValues("geographiesServed")
+                                      .getValues('geographiesServed')
                                       ?.includes(
                                         product as
-                                          | "United States"
-                                          | "Canada"
-                                          | "Mexico"
-                                          | "United Kingdom"
-                                          | "Other"
+                                          | 'United States'
+                                          | 'Canada'
+                                          | 'Mexico'
+                                          | 'United Kingdom'
+                                          | 'Other'
                                       )}
                                     onCheckedChange={(value) => {
                                       if (value)
                                         if (
                                           !form
-                                            .getValues("geographiesServed")
+                                            .getValues('geographiesServed')
                                             ?.includes(
                                               product as
-                                                | "United States"
-                                                | "Canada"
-                                                | "Mexico"
-                                                | "United Kingdom"
-                                                | "Other"
+                                                | 'United States'
+                                                | 'Canada'
+                                                | 'Mexico'
+                                                | 'United Kingdom'
+                                                | 'Other'
                                             )
                                         )
-                                          form.setValue("geographiesServed", [
+                                          form.setValue('geographiesServed', [
                                             ...(form.getValues(
-                                              "geographiesServed"
+                                              'geographiesServed'
                                             ) ?? []),
                                             product as
-                                              | "United States"
-                                              | "Canada"
-                                              | "Mexico"
-                                              | "United Kingdom"
-                                              | "Other",
+                                              | 'United States'
+                                              | 'Canada'
+                                              | 'Mexico'
+                                              | 'United Kingdom'
+                                              | 'Other'
                                           ]);
                                         else
                                           form.setValue(
-                                            "geographiesServed",
+                                            'geographiesServed',
                                             form
-                                              .getValues("geographiesServed")
+                                              .getValues('geographiesServed')
                                               ?.filter(
                                                 (item) => item !== product
                                               )
@@ -1171,11 +1172,11 @@ export default function InvestorDetails({ investorDetails }: Props) {
                           Amount that can be invested over the next 12 months
                         </option>
                         {[
-                          "Less than $250K",
-                          "$250K - $1M",
-                          "S1M - $5M",
-                          "$5M+",
-                          "Not sure",
+                          'Less than $250K',
+                          '$250K - $1M',
+                          'S1M - $5M',
+                          '$5M+',
+                          'Not sure'
                         ].map((item, index) => (
                           <option key={index} value={item}>
                             {item}
@@ -1189,26 +1190,31 @@ export default function InvestorDetails({ investorDetails }: Props) {
               />
               <div className="flex items-center justify-center gap-2 w-full">
                 <button
-                  onClick={handleSaveInvestorDetails}
+                  onClick={() => {
+                    handleSaveInvestorDetails();
+                    if (form.getValues('investorType') !== 'Institution') {
+                      router.push('/');
+                    }
+                  }}
                   disabled={isPending}
                   className="w-full !mt-8 bg-[#FF7A00] text-white font-bold rounded-[8px] mx-auto py-3.5 text-sm px-4 max-w-[216px] disabled:opacity-70"
                   type="button"
                 >
                   {isPending ? (
                     <Loader2 stroke="#fff" className="animate-spin mx-auto" />
-                  ) : form.getValues("investorType") === "Institution" ? (
-                    "Save"
+                  ) : form.getValues('investorType') === 'Institution' ? (
+                    'Save'
                   ) : (
-                    "Continue"
+                    'Continue'
                   )}
                 </button>
-                {form.getValues("investorType") === "Institution" && (
+                {form.getValues('investorType') === 'Institution' && (
                   <button
                     disabled={
                       isPending ||
-                      !form.getValues("futureInvestmentAmount") ||
-                      (form.getValues("investorType") === "Institution"
-                        ? !form.getValues("institutionType")
+                      !form.getValues('futureInvestmentAmount') ||
+                      (form.getValues('investorType') === 'Institution'
+                        ? !form.getValues('institutionType')
                         : false)
                     }
                     className="w-full !mt-8 bg-[#FF7A00] text-white font-bold rounded-[8px] mx-auto py-3.5 text-sm px-4 max-w-[216px] disabled:opacity-70"
@@ -1217,7 +1223,7 @@ export default function InvestorDetails({ investorDetails }: Props) {
                     {isPending ? (
                       <Loader2 stroke="#fff" className="animate-spin mx-auto" />
                     ) : (
-                      "Continue"
+                      'Continue'
                     )}
                   </button>
                 )}
