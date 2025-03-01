@@ -28,12 +28,12 @@ export default async function StartupSideBar() {
   return (
     <aside className="bg-[#212121] h-screen flex w-[250px] flex-col items-center justify-between py-6 sidebardashboard ">
       <div className="flex flex-col items-center justify-between w-full gap-12 sidebardashboard">
-        <Link
-          href="/"
-          className="font-IntegralCF font-medium uppercase text-xs text-white logoDiv"
-        >
-          <Image src="/images/logo.png" width={130} height={30} alt="logo" />
-        </Link>
+        {/* Hide Sidebar Logo on Medium Screens */}
+        <div className="hidden lg:block">
+          <Link href="/">
+            <Image src="/images/logo.png" width={130} height={30} alt="logo" />
+          </Link>
+        </div>
         <StartupSideBarLinks
           pitchDeck={pitchDeck}
           capTable={capTable}

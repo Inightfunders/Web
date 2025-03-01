@@ -3,6 +3,7 @@ import { getUser } from "@/lib/actions/auth";
 import { getNotifications } from "@/lib/actions/user";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
+import Image from "next/image";
 
 export default async function HeaderStartUp() {
   const user = await getUser();
@@ -10,7 +11,14 @@ export default async function HeaderStartUp() {
 
   return (
     <div className="ml-auto flex sticky items-center top-0 z-30 justify-end h-fit px-12 py-6 bg-[#212121] text-white w-full gap-3 shadow-lg navbarmobilemenu">
-      <div className="flex gap-3">
+          {/* Logo for Small and Medium Screens */}
+    <div className="md:block lg:hidden">
+      <Link href="/">
+        <Image src="/images/logo.png" width={120} height={30} alt="logo" />
+      </Link>
+    </div>
+      
+    <div className="flex items-center gap-4 ml-auto">
         <Notifications user={user!} notifications={notifications!} />
         <Link
           href="/profile"
