@@ -93,6 +93,9 @@ input {
     perspective-origin: center;
     position: relative;
   }
+  .dashboarmaincontiner .data_room_section .data_room_section_1{
+    margin-top: 1rem;
+    }
 }
 
 /* signinipfield */
@@ -144,6 +147,7 @@ input {
   }
   .dashboarmaincontiner .data_room_section .data_room_section_1{
     flex-direction: column !important;
+    margin-top: 1rem;
     }
     .data-room-pieChart{
       flex-direction: column !important;
@@ -209,6 +213,7 @@ input {
 @media (max-width: 768px) {
   .dashboarmaincontiner .data_room_section .data_room_section_1{
     flex-direction: column !important;
+    margin-top: 1rem;
     }
 }
 @media (max-width: 1440px) {
