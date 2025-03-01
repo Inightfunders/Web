@@ -19,6 +19,7 @@ export default function SignUpPage({ searchParams }: Props) {
 
   useEffect(() => {
     if (error) {
+      console.log('error: ', error);
       setOpen(true);
     } else {
       setOpen(false);

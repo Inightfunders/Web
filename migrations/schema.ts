@@ -430,15 +430,18 @@ export const investors = pgTable(
   }
 );
 
-export const partners = pgTable(
-  "partners",
-  {
-    id: bigint("id", { mode: "number" }).primaryKey().notNull(),
+export const partners = pgTable("partners", {
+    id: uuid("id")
+      .default(sql`auth.uid()`)
+      .primaryKey()
+      .notNull(),
     user_id: uuid("user_id")
       .default(sql`auth.uid()`)
       .notNull()
       .references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
     partner_name: text("partner_name"),
+    occupation: text("occupation"),
+    company_name: text("company_name"),
   },
   (table) => {
     return {
@@ -470,6 +473,74 @@ export const legal_documents = pgTable("legal_documents", {
   // You can use { mode: "bigint" } if numbers are exceeding js number limitations
   id: bigint("id", { mode: "number" }).primaryKey().notNull(),
   // You can use { mode: "bigint" } if numbers are exceeding js number limitations
+  startup_id: bigint("startup_id", { mode: "number" }).references(
+    () => startups.id,
+    { onDelete: "cascade", onUpdate: "cascade" }
+  ),
+  name: text("name"),
+  document_link: text("document_link"),
+  created_at: timestamp("created_at", { withTimezone: true, mode: "string" })
+    .defaultNow()
+    .notNull(),
+  updated_at: timestamp("updated_at", {
+    withTimezone: true,
+    mode: "string",
+  }).defaultNow(),
+});
+
+export const other_documents = pgTable("other_documents", {
+  id: bigint("id", { mode: "number" }).primaryKey().notNull(),
+  startup_id: bigint("startup_id", { mode: "number" }).references(
+    () => startups.id,
+    { onDelete: "cascade", onUpdate: "cascade" }
+  ),
+  name: text("name"),
+  document_link: text("document_link"),
+  created_at: timestamp("created_at", { withTimezone: true, mode: "string" })
+    .defaultNow()
+    .notNull(),
+  updated_at: timestamp("updated_at", {
+    withTimezone: true,
+    mode: "string",
+  }).defaultNow(),
+});
+
+export const financial_projection = pgTable("financial_projection", {
+  id: bigint("id", { mode: "number" }).primaryKey().notNull(),
+  startup_id: bigint("startup_id", { mode: "number" }).references(
+    () => startups.id,
+    { onDelete: "cascade", onUpdate: "cascade" }
+  ),
+  name: text("name"),
+  document_link: text("document_link"),
+  created_at: timestamp("created_at", { withTimezone: true, mode: "string" })
+    .defaultNow()
+    .notNull(),
+  updated_at: timestamp("updated_at", {
+    withTimezone: true,
+    mode: "string",
+  }).defaultNow(),
+});
+
+export const bank_statements = pgTable("bank_statements", {
+  id: bigint("id", { mode: "number" }).primaryKey().notNull(),
+  startup_id: bigint("startup_id", { mode: "number" }).references(
+    () => startups.id,
+    { onDelete: "cascade", onUpdate: "cascade" }
+  ),
+  name: text("name"),
+  document_link: text("document_link"),
+  created_at: timestamp("created_at", { withTimezone: true, mode: "string" })
+    .defaultNow()
+    .notNull(),
+  updated_at: timestamp("updated_at", {
+    withTimezone: true,
+    mode: "string",
+  }).defaultNow(),
+});
+
+export const nda = pgTable("nda", {
+  id: bigint("id", { mode: "number" }).primaryKey().notNull(),
   startup_id: bigint("startup_id", { mode: "number" }).references(
     () => startups.id,
     { onDelete: "cascade", onUpdate: "cascade" }
@@ -563,6 +634,10 @@ export const startupsRelations = relations(startups, ({ one, many }) => ({
   tax_returns: many(tax_returns),
   financial_statements: many(financial_statements),
   legal_documents: many(legal_documents),
+  other_documents: many(other_documents),
+  bank_statements: many(bank_statements),
+  financial_projection: many(financial_projection),
+  nda: many(nda),
   startups_owners: many(startups_owners),
 }));
 
@@ -675,6 +750,38 @@ export const legal_documentsRelations = relations(
       references: [startups.id],
     }),
   })
+);
+
+export const other_documentsRelations = relations(other_documents, ({ one }) => ({
+    startup: one(startups, {
+      fields: [other_documents.startup_id],
+      references: [startups.id],
+    }),
+  })
+);
+
+export const financial_projectionRelations = relations(financial_projection, ({ one }) => ({
+  startup: one(startups, {
+    fields: [financial_projection.startup_id],
+    references: [startups.id],
+  }),
+})
+);
+
+export const bank_statementsRelations = relations(bank_statements, ({ one }) => ({
+  startup: one(startups, {
+    fields: [bank_statements.startup_id],
+    references: [startups.id],
+  }),
+})
+);
+
+export const ndaRelations = relations(nda, ({ one }) => ({
+  startup: one(startups, {
+    fields: [nda.startup_id],
+    references: [startups.id],
+  }),
+})
 );
 
 export const startups_ownersRelations = relations(

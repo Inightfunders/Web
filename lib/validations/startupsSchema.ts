@@ -53,3 +53,31 @@ export const legalDocumentsSchema = z.object({
     //     message: "Only .pdf formats are supported."
     // })
 })
+
+export const otherDocumentsSchema = z.object({
+    name: z.string().min(1),
+    document: z.instanceof(File).refine((value) => value.size <= MAX_FILE_SIZE, {
+        message: "Max file size is 5MB.",
+    })
+})
+
+export const financialProjectionSchema = z.object({
+    name: z.string().min(1),
+    document: z.instanceof(File).refine((value) => value.size <= MAX_FILE_SIZE, {
+        message: "Max file size is 5MB.",
+    })
+})
+
+export const bankStatementsSchema = z.object({
+    name: z.string().min(1),
+    document: z.instanceof(File).refine((value) => value.size <= MAX_FILE_SIZE, {
+        message: "Max file size is 5MB.",
+    })
+})
+
+export const ndaSchema = z.object({
+    name: z.string().min(1),
+    document: z.instanceof(File).refine((value) => value.size <= MAX_FILE_SIZE, {
+        message: "Max file size is 5MB.",
+    })
+})

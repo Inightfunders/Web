@@ -21,10 +21,10 @@ export default async function DataRequests() {
                 alt="request"
               />
               <div className="flex flex-col gap-1 items-start justify-center">
-                <p className="text-sm font-medium font-Montserrat text-white">
+                <p className="text-sm font-medium font-Montserrat text-black">
                   {investor?.user?.first_name} {investor?.user?.last_name}
                 </p>
-                <p className="text-sm font-extralight font-Montserrat text-white">
+                <p className="text-sm font-extralight font-Montserrat text-black">
                   {investor?.investor_type}
                 </p>
               </div>

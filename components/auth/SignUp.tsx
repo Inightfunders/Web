@@ -60,16 +60,18 @@ export default function SignIn() {
       setLastAttempt(now);
       const result = await signUp(values);
 
-      console.log('Signup result: ', { result });
-
       if (result.error) {
-        console.log('this is error');
         setError(result.error);
         return;
       }
 
       if (result.success) {
-        router.push('/personal-details');
+        const role = values.role;
+        if (role === 'partner') {
+          router.push('/sign-up/partner/upload-profile-picture');
+        } else {
+          router.push('/personal-details');
+        }
       }
     } catch (error) {
       console.error('error', error);

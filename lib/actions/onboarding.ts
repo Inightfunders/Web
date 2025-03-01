@@ -137,7 +137,8 @@ export const saveInvestorDetails = async (investor_id: number, data: z.infer<typ
         accreditation: data.accreditation ?? null,
         future_investment_amount: !!futureInvestmentAmount ? futureInvestmentAmount : null,
         investor_type: data.investorType ?? null,
-        institution_type: !!institutionType ? institutionType : null,
+      institution_type: !!institutionType ? institutionType : null,
+        submitted: true,
         // legal_entity_type: !!legalEntityType ? legalEntityType : null
     })
     .eq('id', investor_id)
@@ -162,7 +163,7 @@ export const submitApplication = async () => {
 
     const { error: submitError } = await supabase.from('startups').update({
         submitted: true,
-        accepted: true
+        // accepted: true
     }).eq('id', data.id)
 
     if(submitError) return { error: submitError.message }

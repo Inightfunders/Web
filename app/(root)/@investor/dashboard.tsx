@@ -2,9 +2,11 @@ import InvestorsChart from "@/components/investors/InvestorsChart";
 import InvestorsStartups from "@/components/investors/InvestorsStartups";
 import { getUser } from "@/lib/actions/auth";
 import { getContracts } from "@/lib/actions/investor";
-import StartUpsChart from "@/components/startup/StartUpsChart";
+// import StartUpsChart from "@/components/startup/StartUpsChart";
 import { CustomSearch } from "@/components/lenders/CustomSearch";
 import InvestorDashboardCard from "@/components/investors/investorDashboardCard";
+import PayNow from "@/components/investors/PayNow";
+import { getNextDueDate } from "@/lib/utils";
 
 export default async function Dashboard({
   searchParams,
@@ -12,8 +14,9 @@ export default async function Dashboard({
   searchParams: { page?: string };
 }) {
   const user = await getUser();
-  console.log(user);
+  
   const investorContracts = await getContracts(user?.userInvestor?.id!);
+  // console.log("investorContracts", investorContracts);
 
   // await new Promise(resolve => setTimeout(resolve, 10000))
   const formatCurrency = (value: number) =>
@@ -40,54 +43,7 @@ export default async function Dashboard({
     (contract) => contract.investment_amount_paid
   ).length;
 
-  console.log({ totalAmountInvested, totalROI, totalStartups });
-  const investmentData = [
-    {
-      name: "Slope AI",
-      category: "Tech",
-      amount: 5000000,
-      apy: "19%",
-      term: "12 months",
-      maturityDate: "05/12/2025",
-      dueDate: "05/12/2024",
-    },
-    {
-      name: "Acme Corp",
-      category: "Fintech",
-      amount: 3000000,
-      apy: "17%",
-      term: "48 months",
-      maturityDate: "03/18/2028",
-      dueDate: "03/18/2024",
-    },
-    {
-      name: "Epsilon Dynamics",
-      category: "Software",
-      amount: 10000000,
-      apy: "18%",
-      term: "36 months",
-      maturityDate: "10/08/2027",
-      dueDate: "10/08/2024",
-    },
-    {
-      name: "Arch",
-      category: "AI",
-      amount: 1000000,
-      apy: "20%",
-      term: "48 months",
-      maturityDate: "09/15/2028",
-      dueDate: "09/15/2024",
-    },
-    {
-      name: "Pharmator",
-      category: "Pharmaceutical",
-      amount: 1000000,
-      apy: "18%",
-      term: "24months",
-      maturityDate: "01/18/2026",
-      dueDate: "01/18/2024",
-    },
-  ];
+  // console.log({ totalAmountInvested, totalROI, totalStartups });
 
   return (
     <div className="w-full mx-auto space-y-6 my-23 max-w-[90%]">
@@ -96,24 +52,24 @@ export default async function Dashboard({
         <div className="flex flex-col justify-between space-y-[20px] min-w-[332px]">
           <InvestorDashboardCard
             title="Total Investment"
-            value={"$20,000,000"}
+            value={formatCurrency(totalAmountInvested!)}
             className="text-center content-center"
           />
           <InvestorDashboardCard
             title="Total Expected Return"
-            value={"$4,000,000"}
+            value={formatCurrency(Number(totalROI?.toFixed(2)))}
             className="text-center content-center"
           />
           <InvestorDashboardCard
             title="Companies Invested"
-            value={"6"}
+            value={totalStartups!}
             className="text-center content-center"
           />
         </div>
 
         {/* Right column with ROI card spanning 2 columns */}
         <div className="w-full">
-          <StartUpsChart totalAmountInvested={totalAmountInvested!} />
+          <InvestorsChart contracts={investorContracts.acceptedContracts!} totalROI={totalROI!} />
         </div>
       </div>
 
@@ -150,42 +106,42 @@ export default async function Dashboard({
             </tr>
           </thead>
           <tbody>
-            {investmentData.map((company, index) => (
+            {investorContracts?.acceptedContracts?.map((company, index) => (
               <tr key={index}>
                 <td className={`p-4 bg-[#EAEAEA] font-Montserrat`}>
                   <div>
                     <div className="font-medium font-Montserrat text-[13px] leading-[15px]">
-                      {company.name}
+                      {company.company_name}
                     </div>
                     <div className="text-sm text-gray-500 font-Montserrat text-[13px]">
-                      {company.category}
+                      {company.industry_sector}
                     </div>
                   </div>
                 </td>
                 <td
                   className={`p-4 bg-white font-Montserrat text-[13px] leading-[15px] text-[#1A1A1A]`}
-                >
-                  ${company.amount.toLocaleString()}
+                >         
+                  {company.investment_amount_paid ? `${parseFloat(company.amount_invested).toLocaleString()}` : <PayNow contractId={company.id} />}
                 </td>
                 <td
                   className={`p-4 bg-[#EAEAEA] font-Montserrat text-[13px] leading-[15px] text-[#1A1A1A]`}
                 >
-                  {company.apy}
+                  {company.interest_rate}
                 </td>
                 <td
                   className={`p-4 bg-white font-Montserrat text-[13px] leading-[15px] text-[#1A1A1A]`}
                 >
-                  {company.term}
+                  {company.payment_interval}
                 </td>
                 <td
                   className={`p-4 bg-[#EAEAEA] font-Montserrat leading-[15px] text-[#1A1A1A] text-[13px]`}
                 >
-                  {company.maturityDate}
+                  {company.maturity_date}
                 </td>
                 <td
                   className={`p-4 bg-white font-Montserrat leading-[15px] text-[#1A1A1A] text-[13px]`}
                 >
-                  {company.dueDate}
+                  {getNextDueDate(new Date(company.createdAt!), company.payment_interval!).toDateString()}
                 </td>
               </tr>
             ))}
