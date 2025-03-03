@@ -9,6 +9,7 @@ import { getBankAccount } from '@/lib/actions/user';
 import { X } from 'lucide-react';
 import { updatePage } from '@/lib/server';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 type Props = {
   user: UserType;
@@ -94,10 +95,7 @@ export default function StartUpFinancialDetailsContainer({ user }: Props) {
 
   return (
     <>
-      <form
-        onSubmit={handleSubmit}
-        className="max-w-[90vw] flex flex-col pb-8 gap-4 ipfield"
-      >
+      <div className="max-w-[90vw] flex flex-col pb-8 gap-4 ipfield">
         {/* <PlaidLink user={user} /> */}
         <div className="flex flex-col relative max-w-[450px] w-full">
           <select
@@ -168,15 +166,13 @@ export default function StartUpFinancialDetailsContainer({ user }: Props) {
             <p className="text-black font-semibold">{error}</p>
           </div>
         )}
-      </form>
-      <button
-        onClick={() => {
-          router.push('/startup-details');
-        }}
+      </div>
+      <Link
+        href="/startup-details"
         className="text-white text-[13px py-2 px-4 bg-transparent font-Montserrat mt-2 flex justify-center w-full"
       >
         Go back
-      </button>
+      </Link>
     </>
   );
 }

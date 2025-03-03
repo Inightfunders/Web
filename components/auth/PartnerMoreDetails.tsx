@@ -47,9 +47,7 @@ export default function PartnerMoreDetails({ searchParams, user }: Props) {
     return Object.keys(validationErrors).length === 0;
   };
 
-  const handleSubmit = async (e?: React.FormEvent<HTMLFormElement>) => {
-    e?.preventDefault();
-
+  const handleSubmit = async () => {
     if (!validateFields()) return;
 
     setLoading(true);
@@ -92,10 +90,7 @@ export default function PartnerMoreDetails({ searchParams, user }: Props) {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="space-y-8 max-w-[90vw] flex flex-col gap-4 pb-8 ipfield"
-    >
+    <div className="space-y-8 max-w-[90vw] flex flex-col gap-4 pb-8 ipfield">
       <div className="flex flex-col">
         <input
           type="text"
@@ -130,6 +125,7 @@ export default function PartnerMoreDetails({ searchParams, user }: Props) {
         disabled={loading}
         className="w-full !mt-4 bg-[#FF7A00] text-white font-bold rounded-[8px] mx-auto py-3.5 text-sm px-4 max-w-[216px] disabled:opacity-70"
         type="submit"
+        onClick={() => handleSubmit()}
       >
         {loading ? (
           <Loader2 stroke="#fff" className="animate-spin mx-auto" />
@@ -137,6 +133,6 @@ export default function PartnerMoreDetails({ searchParams, user }: Props) {
           'Continue'
         )}
       </button>
-    </form>
+    </div>
   );
 }

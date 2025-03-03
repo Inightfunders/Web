@@ -155,10 +155,7 @@ export default function SignIn() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="max-w-[90vw] flex flex-col pb-8 gap-4 ipfield "
-    >
+    <div className="max-w-[90vw] flex flex-col pb-8 gap-4 ipfield ">
       {rolePage ? (
         <>
           <p className="font-light text-white text-center">
@@ -374,6 +371,6 @@ export default function SignIn() {
           </p>
         </>
       )}
-    </form>
+    </div>
   );
 }

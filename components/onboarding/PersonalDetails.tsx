@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { UserType } from '@/lib/types/user';
 import { getUser } from '@/lib/actions/auth';
+import { Link } from 'lucide-react';
 
 type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
@@ -187,10 +188,7 @@ export default function PersonalDetails({ searchParams, user }: Props) {
 
   return (
     <>
-      <form
-        onSubmit={handleSubmit}
-        className="max-w-[90vw] flex flex-col pb-8 gap-4 ipfield "
-      >
+      <div className="max-w-[90vw] flex flex-col pb-8 gap-4 ipfield ">
         <div className="flex flex-col relative max-w-[450px] w-full">
           <input
             type="text"
@@ -338,15 +336,13 @@ export default function PersonalDetails({ searchParams, user }: Props) {
         >
           {isPending ? 'Submitting...' : 'Submit'}
         </button>
-      </form>
-      <button
-        onClick={() => {
-          router.push('/sign-up');
-        }}
+      </div>
+      <Link
+        href="/sign-up"
         className="text-white text-[13px py-2 px-4 bg-transparent font-Montserrat mt-2"
       >
         Go back
-      </button>
+      </Link>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent key={error} className="bg-white rounded-xl">
           <div className="flex flex-col gap-4 items-center justify-center">
