@@ -29,23 +29,6 @@ export default function PersonalDetails({ searchParams, user }: Props) {
     ssn?: string;
     dob?: string;
   }>({});
-  type personalDetailsValues = {
-    address?: string;
-    city?: string;
-    state?: string;
-    postalCode?: string;
-    ssn?: string;
-    dob?: string;
-  };
-
-  const handleValueInitialization = () => {
-    setAddress('');
-    setCity('');
-    setPostalCode('');
-    setSSN('');
-    setDob('');
-    setErrors({});
-  };
 
   const validateFields = () => {
     let validationErrors: {
@@ -101,7 +84,6 @@ export default function PersonalDetails({ searchParams, user }: Props) {
       dateOfBirth: dob // Rename 'dob' to 'dateOfBirth'
     };
     const response = await updatePersonalDetails(personalDataValues);
-    console.log('personalDataValues 6 values: ', personalDataValues);
     setIsPending(false);
 
     if (response.error) {

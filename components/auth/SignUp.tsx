@@ -20,14 +20,14 @@ export default function SignIn() {
   const [lastAttempt, setLastAttempt] = useState<number>(0);
   const COOLDOWN_PERIOD = 60000; // 1 minute in milliseconds
   const router = useRouter();
-  const [rolePage, setRolePage] = useState(true); // role page ?
+  const [rolePage, setRolePage] = useState(true);
   const [role, setRole] = useState<'startup' | 'investor' | 'partner'>(
     'startup'
   );
-  const [firstName, setFirstName] = useState(''); // first name
-  const [lastName, setLastName] = useState(''); // last name
-  const [email, setEmail] = useState(''); // email - validation
-  const [password, setPassword] = useState(''); // password - 8, visible
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [isPending, setIsPending] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -42,7 +42,7 @@ export default function SignIn() {
     password: string;
     firstName?: string;
     lastName?: string;
-    role: 'startup' | 'investor' | 'partner'; // Ensure `role` matches expected values
+    role: 'startup' | 'investor' | 'partner';
   };
 
   const handleValueInitialization = () => {
@@ -73,7 +73,6 @@ export default function SignIn() {
       validationErrors.firstName = 'First name is required';
     if (!lastName.trim()) validationErrors.lastName = 'Last name is required';
 
-    // Email validation using regex
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email.trim()) {
       validationErrors.email = 'Email is required';
@@ -81,7 +80,6 @@ export default function SignIn() {
       validationErrors.email = 'Invalid email format';
     }
 
-    // Password validation: at least 8 characters
     if (!password.trim()) {
       validationErrors.password = 'Password is required';
     } else if (password.length < 8) {
@@ -95,6 +93,7 @@ export default function SignIn() {
   const handleSubmit = async () => {
     if (!validateFields()) return;
 
+    setIsPending(true);
     const now = Date.now();
     setError(null);
     if (now - lastAttempt < COOLDOWN_PERIOD) {
@@ -114,8 +113,6 @@ export default function SignIn() {
 
       const result = await signUp(values);
 
-      console.log('signup input 4 values: ', values);
-
       if (result.error) {
         console.log('signup error: ', result.error);
         setError(result.error);
@@ -123,6 +120,7 @@ export default function SignIn() {
       }
 
       if (result.success) {
+        setIsPending(false);
         const role = values.role;
         if (role === 'partner') {
           router.push('/sign-up/partner/upload-profile-picture');
