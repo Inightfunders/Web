@@ -1,17 +1,5 @@
 'use client';
 
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from '@/components/ui/form';
-import { personalDetailsSchema } from '@/lib/validations/authSchema';
 import { useEffect, useState } from 'react';
 import { updatePersonalDetails } from '@/lib/actions/onboarding';
 import { useRouter } from 'next/navigation';
@@ -26,7 +14,48 @@ type Props = {
 
 export default function PersonalDetails({ searchParams, user }: Props) {
   const [isPending, setIsPending] = useState(false);
+  const router = useRouter();
+  const [address, setAddress] = useState('');
+  const [city, setCity] = useState('');
+  const [state, setState] = useState('');
+  const [postalCode, setPostalCode] = useState('');
   const [ssn, setSSN] = useState<string>(''); // Explicitly define ssn type as string
+  const [dob, setDob] = useState('');
+  const [errors, setErrors] = useState<{
+    address?: string;
+    city?: string;
+    state?: string;
+    postalCode?: string;
+    ssn?: string;
+    dob?: string;
+  }>({});
+
+  const validateFields = () => {
+    let validationErrors: {
+      address?: string;
+      city?: string;
+      postalCode?: string;
+      ssn?: string;
+      dob?: string;
+    } = {};
+
+    if (!address.trim()) validationErrors.address = 'Address is required';
+    if (!city.trim()) validationErrors.city = 'City is required';
+    if (!postalCode.trim()) {
+      validationErrors.postalCode = 'Postal code is required';
+    } else if (!/^\d{5}$/.test(postalCode)) {
+      validationErrors.postalCode = 'Postal code must be exactly 5 digits';
+    }
+    if (!ssn.trim()) validationErrors.ssn = 'SSN is required';
+    if (!dob.trim()) {
+      validationErrors.dob = 'Date of birth is required';
+    } else if (!/^(0[1-9]|1[0-2])\/([0-2][1-9]|3[01])\/\d{4}$/.test(dob)) {
+      validationErrors.dob = 'Invalid Date of Birth.';
+    }
+
+    setErrors(validationErrors);
+    return Object.keys(validationErrors).length === 0;
+  };
 
   const error =
     typeof searchParams.error === 'string' ? searchParams.error : undefined;
@@ -41,49 +70,20 @@ export default function PersonalDetails({ searchParams, user }: Props) {
     }
   }, [error]);
 
-  const router = useRouter();
+  const handleSubmit = async () => {
+    if (!validateFields()) return;
 
-  // Define the type of 'value' as string
-  const formatSSN = (value: string): string => {
-    // Remove all non-numeric characters
-    value = value.replace(/\D/g, '');
-
-    // Add dashes after 3rd and 5th digits
-    if (value.length > 5) {
-      return `${value.slice(0, 3)}-${value.slice(3, 5)}-${value.slice(5, 9)}`;
-    } else if (value.length > 3) {
-      return `${value.slice(0, 3)}-${value.slice(3, 5)}`;
-    } else {
-      return value;
-    }
-  };
-
-  // Define the type of 'event' as React.ChangeEvent<HTMLInputElement>
-  const handleSSNChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ): void => {
-    const formattedSSN = formatSSN(event.target.value);
-    setSSN(formattedSSN);
-
-    // Sync the formatted value back to the form field
-    form.setValue('ssn', formattedSSN);
-  };
-
-  const form = useForm<z.infer<typeof personalDetailsSchema>>({
-    resolver: zodResolver(personalDetailsSchema),
-    defaultValues: {
-      address1: '',
-      city: '',
-      state: '',
-      postalCode: '',
-      ssn: '',
-      dateOfBirth: ''
-    }
-  });
-
-  const onSubmit = async (values: z.infer<typeof personalDetailsSchema>) => {
     setIsPending(true);
-    const response = await updatePersonalDetails(values);
+
+    const personalDataValues = {
+      address1: address, // Rename 'address' to 'address1'
+      city,
+      state,
+      postalCode,
+      ssn,
+      dateOfBirth: dob // Rename 'dob' to 'dateOfBirth'
+    };
+    const response = await updatePersonalDetails(personalDataValues);
     setIsPending(false);
 
     if (response.error) {
@@ -107,14 +107,12 @@ export default function PersonalDetails({ searchParams, user }: Props) {
     }
   };
 
-  const dof = form.watch('dateOfBirth');
-
   useEffect(() => {
-    let value = dof?.replace(/\D/g, ''); // Remove non-digits
+    let value = dob?.replace(/\D/g, ''); // Remove non-digits
     let formattedValue = '';
 
-    if (value?.length > 0) {
-      // Format month
+    if (value.length > 0) {
+      // Format as MM/DD/YYYY
       formattedValue = value.substring(0, 2);
       if (value.length > 2) {
         formattedValue += '/' + value.substring(2, 4);
@@ -124,186 +122,223 @@ export default function PersonalDetails({ searchParams, user }: Props) {
       }
     }
 
-    form.setValue('dateOfBirth', formattedValue);
-  }, [dof]);
+    setDob(formattedValue);
+  }, [dob]);
+
+  useEffect(() => {
+    let value = ssn.replace(/\D/g, ''); // Remove non-numeric characters
+
+    if (/^\d*$/.test(value)) {
+      // Ensure only numbers are present
+      let formattedValue = '';
+
+      if (value.length > 0) {
+        // Format as XXX-XX-XXXX
+        formattedValue = value.substring(0, 3);
+        if (value.length > 3) {
+          formattedValue += '-' + value.substring(3, 5);
+        }
+        if (value.length > 5) {
+          formattedValue += '-' + value.substring(5, 9);
+        }
+      }
+
+      setSSN(formattedValue);
+    }
+  }, [ssn]);
+
+  useEffect(() => {
+    let value = postalCode.replace(/\D/g, ''); // Remove non-numeric characters
+
+    if (value.length > 5) {
+      value = value.substring(0, 5); // Restrict to 5 digits
+    }
+
+    setPostalCode(value);
+  }, [postalCode]);
+
+  const handleInputChange = (
+    field: 'address' | 'city' | 'state' | 'postalCode' | 'ssn' | 'dob',
+    value: string
+  ) => {
+    if (field === 'address') {
+      setAddress(value);
+      if (errors.address)
+        setErrors((prev) => ({ ...prev, address: undefined }));
+    } else if (field === 'city') {
+      setCity(value);
+      if (errors.city) setErrors((prev) => ({ ...prev, city: undefined }));
+    } else if (field === 'state') {
+      setState(value);
+      if (errors.state) setErrors((prev) => ({ ...prev, email: undefined }));
+    } else if (field === 'postalCode') {
+      const numericValue = value.replace(/\D/g, '').substring(0, 5);
+      setPostalCode(numericValue);
+      if (errors.postalCode)
+        setErrors((prev) => ({ ...prev, postalCode: undefined }));
+    } else if (field === 'ssn') {
+      setSSN(value);
+      if (errors.ssn) setErrors((prev) => ({ ...prev, ssn: undefined }));
+    } else if (field === 'dob') {
+      setDob(value);
+      if (errors.dob) setErrors((prev) => ({ ...prev, dob: undefined }));
+    }
+  };
 
   return (
     <>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8 max-w-[90vw] flex flex-col gap-4 pb-8 ipfield"
-        >
-          <FormField
-            control={form.control}
-            disabled={isPending}
-            name="address1"
-            render={({ field }) => (
-              <FormItem className="relative flex flex-col gap-1  !mt-0 max-w-[450px]">
-                <FormControl>
-                  <input
-                    className="flex flex-1 px-6 placeholder:font-light py-3.5 text-sm rounded-[8px] outline-none ipfield"
-                    placeholder="Address"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="block !mt-0 text-red-600 " />
-              </FormItem>
-            )}
+      <form
+        onSubmit={handleSubmit}
+        className="max-w-[90vw] flex flex-col pb-8 gap-4 ipfield "
+      >
+        <div className="flex flex-col relative max-w-[450px] w-full">
+          <input
+            type="text"
+            value={address}
+            onChange={(e) => handleInputChange('address', e.target.value)}
+            className={`flex flex-1 px-6 placeholder:font-light py-3.5 text-sm rounded-[8px] outline-none w-full max-w-[450px] ${
+              errors.address ? 'border-red-500' : ''
+            }`}
+            placeholder="Address"
           />
-          <FormField
-            control={form.control}
-            disabled={isPending}
-            name="city"
-            render={({ field }) => (
-              <FormItem className="relative flex flex-col gap-1  !mt-0 max-w-[450px]">
-                <FormControl>
-                  <input
-                    className="flex flex-1 px-6 placeholder:font-light py-3.5 text-sm rounded-[8px] outline-none"
-                    placeholder="City"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="block !mt-0 text-red-600 " />
-              </FormItem>
-            )}
+          {errors.address && (
+            <p className="text-red-500 text-xs mt-1">{errors.address}</p>
+          )}
+        </div>
+        <div className="flex flex-col relative max-w-[450px] w-full">
+          <input
+            type="text"
+            value={city}
+            onChange={(e) => handleInputChange('city', e.target.value)}
+            className={`flex flex-1 px-6 placeholder:font-light py-3.5 text-sm rounded-[8px] outline-none w-full max-w-[450px] ${
+              errors.city ? 'border-red-500' : ''
+            }`}
+            placeholder="City"
           />
-          <FormField
-            control={form.control}
-            disabled={isPending}
-            name="state"
-            render={({ field }) => (
-              <FormItem className="relative flex flex-col gap-1  !mt-0 max-w-[450px]">
-                <FormControl>
-                  <select
-                    defaultValue=""
-                    className="flex flex-1 px-6 placeholder:font-light py-3.5 text-sm rounded-[8px] outline-none"
-                    {...field}
-                  >
-                    <option disabled value="">
-                      State
-                    </option>
-                    <option value="AL">AL</option>
-                    <option value="AK">AK</option>
-                    <option value="AZ">AZ</option>
-                    <option value="AR">AR</option>
-                    <option value="CA">CA</option>
-                    <option value="CO">CO</option>
-                    <option value="CT">CT</option>
-                    <option value="DE">DE</option>
-                    <option value="FL">FL</option>
-                    <option value="GA">GA</option>
-                    <option value="HI">HI</option>
-                    <option value="ID">ID</option>
-                    <option value="IL">IL</option>
-                    <option value="IN">IN</option>
-                    <option value="IA">IA</option>
-                    <option value="KS">KS</option>
-                    <option value="KY">KY</option>
-                    <option value="LA">LA</option>
-                    <option value="ME">ME</option>
-                    <option value="MD">MD</option>
-                    <option value="MA">MA</option>
-                    <option value="MI">MI</option>
-                    <option value="MN">MN</option>
-                    <option value="MS">MS</option>
-                    <option value="MO">MO</option>
-                    <option value="MT">MT</option>
-                    <option value="NE">NE</option>
-                    <option value="NV">NV</option>
-                    <option value="NH">NH</option>
-                    <option value="NJ">NJ</option>
-                    <option value="NM">NM</option>
-                    <option value="NY">NY</option>
-                    <option value="NC">NC</option>
-                    <option value="ND">ND</option>
-                    <option value="OH">OH</option>
-                    <option value="OK">OK</option>
-                    <option value="OR">OR</option>
-                    <option value="PA">PA</option>
-                    <option value="RI">RI</option>
-                    <option value="SC">SC</option>
-                    <option value="SD">SD</option>
-                    <option value="TN">TN</option>
-                    <option value="TX">TX</option>
-                    <option value="UT">UT</option>
-                    <option value="VT">VT</option>
-                    <option value="VA">VA</option>
-                    <option value="WA">WA</option>
-                    <option value="WV">WV</option>
-                    <option value="WI">WI</option>
-                    <option value="WY">WY</option>
-                  </select>
-                </FormControl>
-                <FormMessage className=" text-red-600 !mt-0" />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            disabled={isPending}
-            name="postalCode"
-            render={({ field }) => (
-              <FormItem className="relative flex flex-col gap-1  !mt-0 max-w-[450px]">
-                <FormControl>
-                  <input
-                    className="flex flex-1 px-6 placeholder:font-light py-3.5 text-sm rounded-[8px] outline-none"
-                    placeholder="Postal Code"
-                    {...field}
-                    maxLength={5} // Set max length to 5
-                  />
-                </FormControl>
-                <FormMessage className=" text-red-600  !mt-0" />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            disabled={isPending}
-            name="ssn"
-            render={({ field }) => (
-              <FormItem className="relative flex flex-col gap-1  !mt-0 max-w-[450px]">
-                <FormControl>
-                  <input
-                    className="flex flex-1 px-6 placeholder:font-light py-3.5 text-sm rounded-[8px] outline-none"
-                    placeholder="SSN e.g. XXX-XX-XXXX"
-                    {...field}
-                    value={ssn}
-                    onChange={handleSSNChange}
-                    maxLength={11}
-                  />
-                </FormControl>
-                <FormMessage className=" text-red-600 !mt-0 " />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            disabled={isPending}
-            name="dateOfBirth"
-            render={({ field }) => (
-              <FormItem className="relative flex flex-col gap-1  !mt-0 max-w-[450px]">
-                <FormControl>
-                  <input
-                    className="flex flex-1 px-6 placeholder:font-light py-3.5 text-sm rounded-[8px] outline-none"
-                    placeholder="DOB e.g. MM/DD/YYYY"
-                    {...field}
-                    value={field.value} // Ensure the value is retained
-                  />
-                </FormControl>
-                <FormMessage className="text-red-600 !mt-0 " />
-              </FormItem>
-            )}
-          />
-          <button
-            disabled={isPending}
-            className="w-full !mt-8 bg-[#FF7A00] text-white font-bold rounded-[8px] mx-auto py-3.5 text-sm px-4 max-w-[216px] disabled:opacity-70"
-            type="submit"
+          {errors.city && (
+            <p className="text-red-500 text-xs mt-1">{errors.city}</p>
+          )}
+        </div>
+        <div className="flex flex-col relative max-w-[450px] w-full">
+          <select
+            value={state || 'AL'}
+            onChange={(e) => handleInputChange('state', e.target.value)}
+            className={`flex flex-1 px-6 placeholder:font-light py-3.5 text-sm rounded-[8px] outline-none w-full max-w-[450px] ${
+              errors.state ? 'border-red-500' : ''
+            }`}
           >
-            {isPending ? 'Submitting...' : 'Submit'}
-          </button>
-        </form>
-      </Form>
+            {[
+              'AL',
+              'AK',
+              'AZ',
+              'AR',
+              'CA',
+              'CO',
+              'CT',
+              'DE',
+              'FL',
+              'GA',
+              'HI',
+              'ID',
+              'IL',
+              'IN',
+              'IA',
+              'KS',
+              'KY',
+              'LA',
+              'ME',
+              'MD',
+              'MA',
+              'MI',
+              'MN',
+              'MS',
+              'MO',
+              'MT',
+              'NE',
+              'NV',
+              'NH',
+              'NJ',
+              'NM',
+              'NY',
+              'NC',
+              'ND',
+              'OH',
+              'OK',
+              'OR',
+              'PA',
+              'RI',
+              'SC',
+              'SD',
+              'TN',
+              'TX',
+              'UT',
+              'VT',
+              'VA',
+              'WA',
+              'WV',
+              'WI',
+              'WY'
+            ].map((stateOption) => (
+              <option key={stateOption} value={stateOption}>
+                {stateOption}
+              </option>
+            ))}
+          </select>
+          {errors.state && (
+            <p className="text-red-500 text-xs mt-1">{errors.state}</p>
+          )}
+        </div>
+        <div className="flex flex-col relative max-w-[450px] w-full">
+          <input
+            type="text"
+            value={postalCode}
+            onChange={(e) => handleInputChange('postalCode', e.target.value)}
+            className={`flex flex-1 px-6 placeholder:font-light py-3.5 text-sm rounded-[8px] outline-none w-full max-w-[450px] ${
+              errors.postalCode ? 'border-red-500' : ''
+            }`}
+            placeholder="Postal Code"
+          />
+          {errors.postalCode && (
+            <p className="text-red-500 text-xs mt-1">{errors.postalCode}</p>
+          )}
+        </div>
+        <div className="flex flex-col relative max-w-[450px] w-full">
+          <input
+            type="text"
+            value={ssn}
+            onChange={(e) => handleInputChange('ssn', e.target.value)}
+            className={`flex flex-1 px-6 placeholder:font-light py-3.5 text-sm rounded-[8px] outline-none w-full max-w-[450px] ${
+              errors.ssn ? 'border-red-500' : ''
+            }`}
+            placeholder="SSN e.g. XXX-XX-XXXX"
+          />
+          {errors.ssn && (
+            <p className="text-red-500 text-xs mt-1">{errors.ssn}</p>
+          )}
+        </div>
+        <div className="flex flex-col relative max-w-[450px] w-full">
+          <input
+            type="text"
+            value={dob}
+            onChange={(e) => handleInputChange('dob', e.target.value)}
+            className={`flex flex-1 px-6 placeholder:font-light py-3.5 text-sm rounded-[8px] outline-none w-full max-w-[450px] ${
+              errors.dob ? 'border-red-500' : ''
+            }`}
+            placeholder="DOB e.g. MM/DD/YYYY"
+          />
+          {errors.dob && (
+            <p className="text-red-500 text-xs mt-1">{errors.dob}</p>
+          )}
+        </div>
+        <button
+          type="button"
+          disabled={isPending}
+          className="w-full !mt-4 bg-[#FF7A00] text-white font-bold rounded-[8px] mx-auto py-3.5 text-sm px-4 max-w-[216px] disabled:opacity-70"
+          onClick={() => handleSubmit()}
+        >
+          {isPending ? 'Submitting...' : 'Submit'}
+        </button>
+      </form>
       <button
         onClick={() => {
           router.push('/sign-up');

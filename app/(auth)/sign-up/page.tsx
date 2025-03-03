@@ -36,9 +36,9 @@ export default function SignUpPage({ searchParams }: Props) {
           <Image src="/images/iflogo.png" alt="logo" width={153} height={35} />
         </Link>
       </header>
-      <div className="flex flex-col items-center justify-center gap-1 mt-24">
+      <div className="flex flex-col items-center justify-center gap-1 mt-[130px]">
         <div className="flex flex-col items-center justify-center gap-4">
-          <h1 className="text-2xl  font-semibold text-white text-center">
+          <h1 className="text-2xl  font-semibold text-white text-center mb-[15px]">
             Create an account
           </h1>
         </div>
