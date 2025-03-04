@@ -19,7 +19,7 @@ export default function StartUpFinancialDetailsContainer({ user }: Props) {
   const router = useRouter();
 
   const [isPending, setIsPending] = useState(false);
-  const [stage, setStage] = useState('');
+  const [stage, setStage] = useState('Pre-seed');
   const [recentRaise, setRecentRaise] = useState('');
   const [error, setError] = useState('');
   const [errors, setErrors] = useState<{
@@ -90,7 +90,7 @@ export default function StartUpFinancialDetailsContainer({ user }: Props) {
     await updatePage('/startup-details');
     await updatePage('/startup-details/submit');
 
-    router.replace('/startup-details/submit');
+    router.push('/startup-details/submit');
   };
 
   return (
