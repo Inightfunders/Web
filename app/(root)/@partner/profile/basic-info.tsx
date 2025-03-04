@@ -17,12 +17,12 @@ export default function BasicInfo() {
   const supabase = createClient();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter(); 
-  console.log("user:", user);
+
 
   useEffect(() => {
     async function fetchUser() {
       const fetchedUser = await getUser();
-      console.log("Updated User Data:", fetchedUser);
+      // console.log("Updated User Data:", fetchedUser);
       setUser(fetchedUser);
     }
     fetchUser();

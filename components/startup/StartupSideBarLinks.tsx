@@ -102,7 +102,7 @@ export default function StartupSideBarLinks({
       >
         Offers
       </Link>
-      <div className="w-full">
+      <div className="w-full relative">
         <button
           onClick={() => setIsReferralOpen(!isReferralOpen)}
           className={cn(
@@ -121,7 +121,7 @@ export default function StartupSideBarLinks({
         </button>
 
         {isReferralOpen && (
-          <div className="bg-gray-800">
+          <div className="bg-gray-800 absolute w-100 right-1">
             <Link
               href="/referral"
               className={cn(

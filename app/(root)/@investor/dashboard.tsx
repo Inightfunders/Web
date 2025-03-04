@@ -2,9 +2,11 @@ import InvestorsChart from "@/components/investors/InvestorsChart";
 import InvestorsStartups from "@/components/investors/InvestorsStartups";
 import { getUser } from "@/lib/actions/auth";
 import { getContracts } from "@/lib/actions/investor";
-import StartUpsChart from "@/components/startup/StartUpsChart";
+// import StartUpsChart from "@/components/startup/StartUpsChart";
 import { CustomSearch } from "@/components/lenders/CustomSearch";
 import InvestorDashboardCard from "@/components/investors/investorDashboardCard";
+import PayNow from "@/components/investors/PayNow";
+import { getNextDueDate } from "@/lib/utils";
 
 export default async function Dashboard({
   searchParams,
@@ -14,6 +16,7 @@ export default async function Dashboard({
   const user = await getUser();
   // console.log(user);
   const investorContracts = await getContracts(user?.userInvestor?.id!);
+  // console.log("investorContracts", investorContracts);
 
   // await new Promise(resolve => setTimeout(resolve, 10000))
   const formatCurrency = (value: number) =>
@@ -96,24 +99,24 @@ export default async function Dashboard({
         <div className="flex flex-col justify-between space-y-[20px] min-w-[332px]">
           <InvestorDashboardCard
             title="Total Investment"
-            value={"$20,000,000"}
+            value={formatCurrency(totalAmountInvested!)}
             className="text-center content-center"
           />
           <InvestorDashboardCard
             title="Total Expected Return"
-            value={"$4,000,000"}
+            value={formatCurrency(Number(totalROI?.toFixed(2)))}
             className="text-center content-center"
           />
           <InvestorDashboardCard
             title="Companies Invested"
-            value={"6"}
+            value={totalStartups!}
             className="text-center content-center"
           />
         </div>
 
         {/* Right column with ROI card spanning 2 columns */}
         <div className="w-full">
-          <StartUpsChart totalAmountInvested={totalAmountInvested!} />
+          <InvestorsChart contracts={investorContracts.acceptedContracts!} totalROI={totalROI!} />
         </div>
       </div>
 
@@ -150,42 +153,42 @@ export default async function Dashboard({
             </tr>
           </thead>
           <tbody>
-            {investmentData.map((company, index) => (
+            {investorContracts?.acceptedContracts?.map((company, index) => (
               <tr key={index}>
                 <td className={`p-4 bg-[#EAEAEA] font-Montserrat`}>
                   <div>
                     <div className="font-medium font-Montserrat text-[13px] leading-[15px]">
-                      {company.name}
+                      {company.company_name}
                     </div>
                     <div className="text-sm text-gray-500 font-Montserrat text-[13px]">
-                      {company.category}
+                      {company.industry_sector}
                     </div>
                   </div>
                 </td>
                 <td
                   className={`p-4 bg-white font-Montserrat text-[13px] leading-[15px] text-[#1A1A1A]`}
-                >
-                  ${company.amount.toLocaleString()}
+                >         
+                  {company.investment_amount_paid ? `${parseFloat(company.amount_invested).toLocaleString()}` : <PayNow contractId={company.id} />}
                 </td>
                 <td
                   className={`p-4 bg-[#EAEAEA] font-Montserrat text-[13px] leading-[15px] text-[#1A1A1A]`}
                 >
-                  {company.apy}
+                  {company.interest_rate}
                 </td>
                 <td
                   className={`p-4 bg-white font-Montserrat text-[13px] leading-[15px] text-[#1A1A1A]`}
                 >
-                  {company.term}
+                  {company.payment_interval}
                 </td>
                 <td
                   className={`p-4 bg-[#EAEAEA] font-Montserrat leading-[15px] text-[#1A1A1A] text-[13px]`}
                 >
-                  {company.maturityDate}
+                  {company.maturity_date}
                 </td>
                 <td
                   className={`p-4 bg-white font-Montserrat leading-[15px] text-[#1A1A1A] text-[13px]`}
                 >
-                  {company.dueDate}
+                  {getNextDueDate(new Date(company.createdAt!), company.payment_interval!).toDateString()}
                 </td>
               </tr>
             ))}

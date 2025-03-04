@@ -27,11 +27,11 @@ type Props = {
 export default function InvestorsChart({ contracts, totalROI }: Props)
 {
     const officialReturn = useMemo(() => {
-        return contracts.reduce((acc, contract) => acc + (parseFloat(contract.total_return_paid ?? '0')), 0) + 1
+        return contracts.reduce((acc, contract) => acc + (parseFloat(contract.total_return_paid ?? '0')), 0)
     }, [contracts])
 
     const expectedReturn = useMemo(() => {
-        return totalROI - officialReturn + 5
+        return totalROI - officialReturn
     }, [officialReturn, totalROI])
 
     const chartData = useMemo(() => {

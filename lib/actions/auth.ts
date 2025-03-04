@@ -119,6 +119,7 @@ export const getUser = cache(async () => {
       role: true,
       first_name: true,
       last_name: true,
+      profile_img: true,
       plaid_id: true,
       dwolla_customer_id: true,
       dwolla_customer_url: true
@@ -174,6 +175,7 @@ export const getUser = cache(async () => {
 
 export const getReferredUsers = cache(async (id: string) => {
   const supabase = createClient();
+
   const referredUsers = await db.query.users.findMany({
     columns: {
       id: true,
@@ -183,83 +185,101 @@ export const getReferredUsers = cache(async (id: string) => {
       plaid_id: true,
       dwolla_customer_id: true,
       dwolla_customer_url: true,
-      ref: true,  
+      ref: true,
     },
     where: (table, { eq }) => eq(table.ref, id),
   });
-  // const refferuserData = await getAllReferredUsers()
-  // console.log("allrefered", refferuserData)
+
+  if (referredUsers.length === 0) {
+    return { referredUsers, referredStartups: [], referredInvestors: [], statuses: [] };
+  }
+
   const referredUserIds = referredUsers.map((user) => user.id);
 
 
-  if (referredUserIds.length === 0) {
-    return { referredUsers, referredStartups: [] }; 
-  }
+  const [referredStartups, referredInvestors] = await Promise.all([
+    db.query.startups.findMany({
+      where: (table, { inArray }) => inArray(table.user_id, referredUserIds),
+    }),
+    db.query.investors.findMany({
+      where: (table, { inArray }) => inArray(table.user_id, referredUserIds),
+    }),
+  ]);
 
-  // Fetch startups where `user_id` matches any of the referred user IDs
-  const referredStartups = referredUserIds.length ? await db.query.startups.findMany({
-    where: (table, { inArray }) => inArray(table.user_id, referredUserIds),
-  }):[];
-
-  const referredInvestors = referredUserIds.length ? await db.query.investors.findMany({
-    where: (table, { inArray }) => inArray(table.user_id, referredUserIds),
-  }) :[];
-
-  const referrederning = id 
-  ? await db.query.referrals.findMany({
-      where: (table, { eq }) => eq(table.referred_user_id, id), // Use eq() for a single UUID
-    }) 
-  : [];
   const referredInvestorIds = referredInvestors.map((investor) => investor.id);
   const referredStartupIds = referredStartups.map((startup) => startup.id);
 
-  const referredContracts = referredInvestorIds.length || referredStartupIds.length
-    ? await db.query.contracts.findMany({
-        where: (table) =>
-          or(
-            referredInvestorIds.length > 0
-              ? inArray(table.investor_id, referredInvestorIds)
-              : undefined,
-            referredStartupIds.length > 0
-              ? inArray(table.startup_id, referredStartupIds)
-              : undefined
-          ), 
-      })
-    : [];
-  //  console.log("reffer", referredContracts)
-  //  console.log("reffererning", referrederning)
-   const referredcombine = referredContracts.map((contact) => {
-    const matchedStartup = referredStartups.find(startup => startup.id === contact.startup_id);
-  
-    return {
-      id: matchedStartup ? matchedStartup.user_id : null, // Get the user_id from the matched startup
-      investor_id: contact.investor_id,
-      startup_id: contact.startup_id,
-      amount_invested: Number(contact.amount_invested)*0.02*0.2,
-      accepted: contact.accepted,
-    };
-  });
+  const referredContracts =
+    referredInvestorIds.length > 0 || referredStartupIds.length > 0
+      ? await db.query.contracts.findMany({
+          where: (table) =>
+            or(
+              referredInvestorIds.length > 0 ? inArray(table.investor_id, referredInvestorIds) : undefined,
+              referredStartupIds.length > 0 ? inArray(table.startup_id, referredStartupIds) : undefined
+            ),
+          orderBy: (table, { asc }) => asc(table.createdAt), 
+        })
+      : [];
+
+
+  const referredCombine = referredContracts.reduce((acc, contract) => {
+    const investorId = String(contract.investor_id);
+    const startupId = String(contract.startup_id);
+    const existingEntry = acc.find(
+      (entry) => entry.id === investorId || entry.id === startupId
+    );
+
+    if (existingEntry) return acc;
+
+    const matchedStartup = referredStartups.find((startup) => startup.id === contract.startup_id);
+
+    acc.push({
+      id: matchedStartup ? String(matchedStartup.user_id) : investorId, 
+      investor_id: investorId,
+      startup_id: startupId,
+      amount_invested: Number(contract.amount_invested) * 0.02 * 0.2, 
+      accepted: contract.accepted,
+    });
+
+    return acc;
+  }, [] as { id: string | null; investor_id: string; startup_id: string; amount_invested: number; accepted: boolean }[]);
+
   const statuses = referredUsers.map((user) => {
-    const isStartup = referredStartups.some(startup => startup.user_id === user.id && startup.accepted=== true);
-    const isInvestor = referredInvestors.some(investor => investor.user_id === user.id && investor.accepted=== true);
-    const isContracted = referredcombine.some(contract => contract.id === user.id );
+    const isStartup = referredStartups.some(
+      (startup) => startup.user_id === user.id && startup.accepted === true
+    );
+    const isInvestor = referredInvestors.some(
+      (investor) => investor.user_id === user.id && investor.accepted === true
+    );
+
+    const companyName =
+      referredStartups.find((startup) => startup.user_id === user.id)?.company_name ||
+      referredInvestors.find((investor) => investor.user_id === user.id)?.company_name ||
+      user.first_name ||
+      null;
+
+    const earnings =
+      referredCombine.find((contract) => contract.id === user.id)?.amount_invested || 0;
+
+    const accepted = referredCombine.find((contract) => contract.id === user.id)?.accepted;
+
     return {
       user_id: user.id,
       first_name: user.first_name,
       last_name: user.last_name,
       status: isStartup || isInvestor ? "Registered" : "Pending",
-      company_name: referredStartups.find(startup => startup.user_id === user.id)?.company_name 
-      || referredInvestors.find(investor => investor.user_id === user.id)?.company_name 
-      || user.first_name
-      || null,
-      earnings: referredcombine.find(contract => contract.id === user.id)?.amount_invested  || 0,
-      accepted:  referredcombine.find(contract => contract.id === user.id)?.accepted ,
+      company_name: companyName,
+      earnings: earnings,
+      accepted: accepted,
     };
   });
-  console.log("referred", referredcombine);
-  console.log("status", statuses);
+
+  console.log("Referred Contracts:", referredCombine);
+  console.log("Statuses:", statuses);
+
   return { referredUsers, referredStartups, referredInvestors, statuses };
 });
+
 
 export const createBankAccount = async ({
   userId,

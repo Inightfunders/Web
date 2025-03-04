@@ -72,25 +72,15 @@ export default async function DashboardContent({
   ];
 
   return (
-    <div
-      className="w-full mx-auto space-y-6 my-8
-      max-w-[800px]                     
-      lg:max-w-[850px]                 
-      xl:max-w-[923px]                  
-      2xl:max-w-[1200px]               
-      3xl:max-w-[1700px]              
-      4xl:max-w-[1800px]"
-    >
-      {/* Top Section */}
-      <div className="flex gap-[21px]">
-        {/* Left Stats */}
-        <div className="flex flex-col justify-between space-y-[20px] min-w-[332px]">
-          <DashboardCard
-            title="Invites"
-            value={`1200`}
-            className="h-[calc(50%-12px)] text-center content-center"
-          />
-          <div
+    <div className="w-full px-4 sm:px-6 lg:px-8 mx-auto space-y-6 my-8 max-w-[1800px]">
+    {/* Top Section */}
+    <div className="flex flex-col md:flex-row gap-6">
+      {/* Left Stats */}
+      <div className="flex flex-col w-full md:w-1/3 space-y-4">
+        <div className="p-4 bg-[#212121] rounded-lg text-center">
+          <DashboardCard title="Invites" value="1200" />
+        </div>
+        <div
             className={`p-4 bg-[#212121] rounded-[8px] h-[calc(50%-12px)] text-center content-center items-center`}
           >
             <p className="text-white text-xs mb-[12px] font-Montserrat leading-[14px]">
@@ -108,104 +98,50 @@ export default async function DashboardContent({
               </button>
             </div>
           </div>
-        </div>
-
-        <div className="w-full">
-          <Shareable />
-        </div>
       </div>
-
-      <div className="mt-[30px] flex items-center justify-between">
-        <p className="text-[#ffffff] font-normal text-[20px] ">
-          Recent referral status
-        </p>
-        <p className="text-[#FF7A00] font-normal text-[16px] underline">
-          See all
-        </p>
-      </div>
-
-      <div className="overflow-x-auto bg-[#FAFAFA] rounded-lg !mt-[30px]">
-        <table className="w-full">
-          <thead>
-            <tr className="text-sm">
-              <th className="text-[12px] w-[130px] text-left p-[22px] font-medium font-Montserrat text-[#1A1A1A] leading-[14px] whitespace-nowrap">
-                Serial number
-              </th>
-              <th className="text-[12px] text-left p-[22px] font-medium font-Montserrat text-[#1A1A1A] leading-[14px]">
-                Company
-              </th>
-              <th className="text-[12px] text-left p-[22px] font-medium font-Montserrat text-[#1A1A1A] leading-[14px]">
-                Registered
-              </th>
-              <th className="text-[12px] text-left p-[22px] font-medium font-Montserrat text-[#1A1A1A] leading-[14px]">
-                Funding Status
-              </th>
-              <th className="text-[12px] text-left p-[22px] font-medium font-Montserrat text-[#1A1A1A] leading-[14px]">
-                Earnings
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {lendersData.map((lender, index) => (
-              <tr key={index}>
-                <td
-                  className={`p-[22px] bg-[#EAEAEA] font-Montserrat text-center text-[13px]`}
-                >
-                  {lender.serial_number}
-                </td>
-                <td
-                  className={`p-[22px] bg-[#FEFFFE] font-Montserrat text-left text-[12px]`}
-                >
-                  {lender.company}
-                </td>
-                <td
-                  className={`p-[22px] bg-[#EAEAEA] font-Montserrat text-left text-[13px]`}
-                >
-                  {lender.registered === "Yes" && (
-                    <div className="bg-[#008802] w-fit py-[4px] px-[8px] rounded-[42px] text-[#ffffff] text-[12px]">
-                      {lender.registered}
-                    </div>
-                  )}
-                  {lender.registered === "Pending" && (
-                    <div className="bg-[#CC9900] w-fit py-[4px] px-[8px] rounded-[42px] text-[#ffffff] text-[12px]">
-                      {lender.registered}
-                    </div>
-                  )}
-                  {lender.registered === "NO" && (
-                    <div className="bg-[#D80000] w-fit py-[4px] px-[8px] rounded-[42px] text-[#ffffff] text-[12px]">
-                      {lender.registered}
-                    </div>
-                  )}
-                </td>
-                <td
-                  className={`p-[22px] bg-[#FEFFFE] font-Montserrat text-left text-[13px]`}
-                >
-                  {lender.funding_status === "Completed" && (
-                    <div className="bg-[#008802] w-fit py-[4px] px-[8px] rounded-[42px] text-[#ffffff] text-[12px]">
-                      {lender.funding_status}
-                    </div>
-                  )}
-                  {lender.funding_status === "Pending" && (
-                    <div className="bg-[#CC9900] w-fit py-[4px] px-[8px] rounded-[42px] text-[#ffffff] text-[12px]">
-                      {lender.funding_status}
-                    </div>
-                  )}
-                  {lender.funding_status === "NO" && (
-                    <div className="bg-[#D80000] w-fit py-[4px] px-[8px] rounded-[42px] text-[#ffffff] text-[12px]">
-                      {lender.funding_status}
-                    </div>
-                  )}
-                </td>
-                <td
-                  className={`p-[22px] bg-[#EAEAEA] font-Montserrat text-left text-[13px]`}
-                >
-                  {lender.earnings}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      {/* Right Section */}
+      <div className="w-full md:w-2/3">
+        <Shareable />
       </div>
     </div>
-  );
+    {/* Recent Referral Status */}
+    <div className="mt-8 flex items-center justify-between">
+      <p className="text-white text-lg">Recent referral status</p>
+      <p className="text-[#FF7A00] text-sm underline cursor-pointer">See all</p>
+    </div>
+    {/* Table */}
+    <div className="overflow-x-auto bg-[#FAFAFA] rounded-lg mt-6">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="text-left bg-gray-100">
+            <th className="p-3">Serial Number</th>
+            <th className="p-3">Company</th>
+            <th className="p-3">Registered</th>
+            <th className="p-3">Funding Status</th>
+            <th className="p-3">Earnings</th>
+          </tr>
+        </thead>
+        <tbody>
+          {lendersData.map((lender, index) => (
+            <tr key={index} className="border-t">
+              <td className="p-3 text-center">{lender.serial_number}</td>
+              <td className="p-3">{lender.company}</td>
+              <td className="p-3">
+                <span className={`px-3 py-1 rounded-full text-white text-xs ${lender.registered === "Yes" ? "bg-green-600" : lender.registered === "Pending" ? "bg-yellow-500" : "bg-red-600"}`}>
+                  {lender.registered}
+                </span>
+              </td>
+              <td className="p-3">
+                <span className={`px-3 py-1 rounded-full text-white text-xs ${lender.funding_status === "Completed" ? "bg-green-600" : lender.funding_status === "Pending" ? "bg-yellow-500" : "bg-red-600"}`}>
+                  {lender.funding_status}
+                </span>
+              </td>
+              <td className="p-3">{lender.earnings}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+);
 }

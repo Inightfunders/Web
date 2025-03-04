@@ -41,7 +41,7 @@ const Shareable = () => {
   return (
     <div className="bg-[#212121] border-none rounded-[8px] text-white">
       <div className="py-[40px] px-[32px]">
-        <p className="font-bold text-left text-lg pb-2">
+        <p className="font-bold text-left font-Montserrat text-base sm:text-lg md:text-xl lg:text-[20px]  pb-2 sm:pb-[8px]">
           Share with your friends to help them get funded!
         </p>
         <p className="text-sm pb-4">

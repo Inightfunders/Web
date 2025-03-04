@@ -144,6 +144,7 @@ input {
   }
   .dashboarmaincontiner .data_room_section .data_room_section_1{
     flex-direction: column !important;
+    margin-top: 1rem;
     }
     .data-room-pieChart{
       flex-direction: column !important;
@@ -179,15 +180,14 @@ input {
     justify-content: center;
     align-items: center;
     flex-direction: row;
-    /* / margin: auto; / */
-    /* / margin-bottom: 20px; / */
+    /* margin: auto; */
+    /* margin-bottom: 20px; */
     margin-left: 0.5rem;
     margin-right:0.5rem;
     position: absolute;
     width: 100%;
     top: 90px;
   }
-
   .hamburger {
     display: block !important;
   }
@@ -196,8 +196,8 @@ input {
     flex-direction: row;
     position: absolute;
     width: 100%;
-    top: 26px;
-    height: 185px;
+    top: 0;
+    height: 180px;
     z-index: 0;
   }
   .sidebardashboardopen {

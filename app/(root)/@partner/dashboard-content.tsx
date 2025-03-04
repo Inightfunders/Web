@@ -118,11 +118,11 @@ export default async function DashboardContent({
       </div>
     </div>
 
-      <div className="mt-[30px] flex items-center justify-between">
-        <p className="text-[#ffffff] font-normal text-[20px] ">
+      <div className="mt-8 flex items-center justify-between">
+        <p className="text-white text-lg">
           Recent referral status
         </p>
-        <p className="text-[#FF7A00] font-normal text-[16px] underline">
+        <p className="text-[#FF7A00] text-sm underline cursor-pointer">
           See all
         </p>
       </div>
@@ -130,7 +130,7 @@ export default async function DashboardContent({
       <div className="overflow-x-auto bg-[#FAFAFA] rounded-lg !mt-[30px]">
         <table className="min-w-full divide-y divide-gray-200">
           <thead>
-            <tr className="text-sm">
+            <tr className="text-left bg-gray-100">
               <th className="text-[12px] w-[130px] text-left p-[22px] font-medium font-Montserrat text-[#1A1A1A] leading-[14px] whitespace-nowrap">
                 Serial number
               </th>

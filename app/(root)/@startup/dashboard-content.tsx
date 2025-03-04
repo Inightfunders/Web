@@ -13,7 +13,7 @@ export default async function DashboardContent({
 }) {
   const user = await getUser();
   const startupContracts = await getContracts(user?.userStartUp?.id!);
- console.log("contract",startupContracts);
+//  console.log("contract",startupContracts);
   const totalAmountInvested = startupContracts.acceptedContracts?.reduce(
     (acc, contract) =>
       acc +
@@ -47,7 +47,7 @@ export default async function DashboardContent({
 
   return (
     <div
-      className="w-full mx-auto space-y-6 my-8
+      className="w-full mx-auto space-y-6 my-8 data_room_section
       max-w-[800px]                     
       lg:max-w-[850px]                 
       xl:max-w-[923px]                  
@@ -56,7 +56,7 @@ export default async function DashboardContent({
       4xl:max-w-[1800px]"
     >
       {/* Top Section */}
-      <div className="flex gap-[21px]">
+      <div className="flex gap-[21px] lg:flex-row md:flex-col data_room_section_1 ">
         {/* Left Stats */}
         <div className="flex flex-col justify-between space-y-[20px] min-w-[332px]">
           <DashboardCard
@@ -82,7 +82,7 @@ export default async function DashboardContent({
         </div>
       </div>
 
-      <div>
+      <div className="ml-1">
         <StartUpsInvestors
           searchParams={searchParams}
           contracts={startupContracts.acceptedContracts!}
