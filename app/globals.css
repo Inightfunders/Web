@@ -78,15 +78,21 @@ input {
 }
 
 .tableShadow {
-  box-shadow: 0px 1px 8px 0px rgba(0, 0, 0, 0.75);
-  -webkit-box-shadow: 0px 1px 8px 0px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 0px 1px 8px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 1px 8px 0px rgba(85, 85, 85, 0.75);
+  -webkit-box-shadow: 0px 1px 8px 0px rgba(85, 85, 85, 0.75);
+  -moz-box-shadow:0px 1px 8px 0px rgba(85, 85, 85, 0.75);
 }
 
 .radioBlack * {
   border-color: black !important;
 }
 
+.financial_detail_button{
+border-radius: 0.4rem;
+}
+.request_button{
+  border-radius: 0.8rem;
+}
 @media (min-width: 1024px) {
   .perspective {
     perspective: 1400px;
@@ -95,6 +101,9 @@ input {
   }
   .dashboarmaincontiner .data_room_section .data_room_section_1{
     margin-top: 1rem;
+    }
+        .investor_explore {
+      margin-top: 5rem;
     }
 }
 
@@ -153,7 +162,12 @@ input {
       flex-direction: column !important;
       gap: 0;
     }
-    
+    .investor_explore {
+      margin-top: 5rem;
+    }
+    .explore_id_page{
+      margin-top: 6rem;
+    }
 }
 @media (max-width: 1030px) {
   .logoutButn {
@@ -192,6 +206,20 @@ input {
     top: 90px;
   }
 
+  .data_room_section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    /* margin: auto; */
+    /* margin-bottom: 20px; */
+    margin-left: 0.5rem;
+    margin-right:0.5rem;
+    position: absolute;
+    width: 100%;
+    top: 90px;
+  }
+
   .hamburger {
     display: block !important;
   }
@@ -209,11 +237,20 @@ input {
     left: 0;
     width: 50%;
   }
+  .explore_id_page{
+    margin-top: 6rem;
+  }
 }
 @media (max-width: 768px) {
   .dashboarmaincontiner .data_room_section .data_room_section_1{
     flex-direction: column !important;
     margin-top: 1rem;
+    }
+    .investor_explore {
+      margin-top: 5rem;
+    }
+    .explore_id_page{
+      margin-top: 6rem;
     }
 }
 @media (max-width: 1440px) {

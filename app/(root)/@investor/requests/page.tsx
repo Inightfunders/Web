@@ -1,3 +1,4 @@
+import { CustomSearch } from "@/components/lenders/CustomSearch"
 import Notifications from "@/components/shared/Notifications"
 import { getUser } from "@/lib/actions/auth"
 import { getAllRequests } from "@/lib/actions/investor"
@@ -12,63 +13,69 @@ export default async function Requests()
     const notifications = await getNotifications(user?.user.id!)
 
     return (
-        <section className='relative flex flex-col flex-1 items-center justify-start gap-6 h-screen max-h-screen px-4 overflow-auto pt-8'>
-            <div className='flex w-full items-center justify-end'>
-                <Notifications user={user!} notifications={notifications} />
+        <>
+        
+        <section className="relative flex flex-col flex-1 items-center justify-start gap-6 h-screen max-h-screen px-4 overflow-auto pt-8">
+        <div className="flex w-full items-center justify-end">
+            <Notifications user={user!} notifications={notifications} />
+        </div>
+               {/* Search Bar */}
+       <div className="relative w-full">
+              <CustomSearch
+                placeholder="Search startups"
+                className="pl-10 bg-white border border-gray-300 text-gray-800 font-Montserrat w-full py-2 rounded-md"
+              />
             </div>
-            <div className='flex flex-1 items-start justify-center gap-6 flex-wrap mb-auto w-full'>
-                {requests.map(({ startups }) => (
-                    <Link href={`/explore/${startups?.id}`} key={startups?.id} className="flex bg-white max-h-36 min-w-[35vw] flex-1 cursor-pointer">
-                        <div className="flex items-center justify-center w-36 h-36 border-r border-2 border-[#00000050]">
+        {/* Grid Layout for Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+            {requests.map(({ startups }) => (
+                <Link 
+                    href={`/explore/${startups?.id}`} 
+                    key={startups?.id} 
+                    className="flex flex-col bg-white rounded-xl overflow-hidden shadow-md text-gray-800"
+                >
+                    {/* Status Label */}
+                    <div className="bg-[#222] text-xs font-medium text-white px-4 py-1 w-fit request_button m-3">
+                        REQUEST PENDING
+                    </div>
+    
+                    <div className="flex items-center p-4">
+                        {/* Company Logo */}
+                        <div className="flex items-center justify-center w-14 h-14 bg-white rounded-full border border-gray-400">
                             <Image
-                                src='/images/placehodler.jpg'
-                                alt={startups?.company_name!}
-                                width={144}
-                                height={144}
+                                src='/images/placeholder.jpg'
+                                alt={startups?.company_name || 'Company Logo'}
+                                width={40}
+                                height={40}
                             />
                         </div>
-                        <div className="flex flex-col px-6 py-4 gap-3">
-                            <div className="flex flex-col items-start justify-center gap-1">
-                                <p className='font-medium text-xs'>    
-                                    {startups?.company_name}
-                                </p>
-                                <p className='font-medium text-[10px] text-[#00000099]'>    
-                                    {startups?.industry_sector}
-                                </p>
-                            </div>
-                            <div className="flex gap-2 flex-col items-start justify-center">
-                                <div className="flex gap-1 items-center justify-center text-xs">
-                                    <Image
-                                        src='/images/location.svg'
-                                        alt='location'
-                                        width={10}
-                                        height={12}
-                                    />
-                                    {startups?.address}
-                                </div>
-                                <div className="flex gap-1 items-center justify-center text-xs">
-                                    <Image
-                                        src='/images/series.svg'
-                                        alt='series'
-                                        width={10}
-                                        height={12}
-                                    />
-                                    {startups?.stage}
-                                </div>
-                                <div className="flex gap-1 items-center justify-center text-xs">
-                                    <Image
-                                        src='/images/series.svg'
-                                        alt='series'
-                                        width={10}
-                                        height={12}
-                                    />
-                                    ${startups?.recent_raise}
-                                </div>
-                            </div>
+    
+                        {/* Company Info */}
+                        <div className="ml-4 flex flex-col">
+                            <p className="text-lg font-semibold">{startups?.company_name}</p>
+                            <p className="text-sm text-gray-800">{startups?.industry_sector}</p>
                         </div>
-                    </Link>
-                ))}
-            </div>
-        </section>
+                    </div>
+    
+                    {/* Details Section */}
+                    <div className="px-4 pb-4 text-sm">
+                        <div className="flex items-center gap-2">
+                            <Image src="/images/location.svg" alt="location" width={10} height={12} />
+                            <p>{startups?.address}</p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <Image src="/images/series.svg" alt="series" width={10} height={12} />
+                            <p>{startups?.stage}</p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <Image src="/images/series.svg" alt="series" width={10} height={12} />
+                            <p>${startups?.recent_raise}</p>
+                        </div>
+                    </div>
+                </Link>
+            ))}
+        </div>
+    </section>
+    </>
     )
 }

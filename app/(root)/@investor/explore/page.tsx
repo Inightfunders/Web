@@ -31,8 +31,8 @@ export default async function ExplorePage({ searchParams }: Props) {
   // console.log({ test: JSON.stringify(exploreStartups) });
 
   return (
-    <div className="w-full mx-auto space-y-6 my-23 max-w-[90%] py-[40px]">
-      <div className="bg-[#1A1A1A] flex items-center justify-center w-full sticky top-0 pb-2">
+<div className="w-full mx-auto space-y-6 my-6 max-w-[90%] py-10 investor_explore">
+<div className="bg-[#1A1A1A] flex items-center justify-center w-full sticky top-0 pb-2">
         <SearchStartupsBar />
       </div>
       <div className="grid grid-cols-3 gap-6 w-full">
