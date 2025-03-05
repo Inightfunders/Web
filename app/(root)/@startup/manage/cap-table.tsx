@@ -28,7 +28,7 @@ export default async function CapTable() {
         <TableHeader>
           <TableRow className="">
             <TableHead className="px-1 border-2 text-center border-[#EAEAEA]  chartcontenttext   w-[20px]">
-              {" "}
+              SN
             </TableHead>
             <TableHead className=" px-1 border-2 text-center border-[#EAEAEA]  chartcontenttext  ">
               Document Name
@@ -48,10 +48,7 @@ export default async function CapTable() {
           {CapTable?.map((CapTable, index) => (
             <TableRow key={CapTable.id}>
               <TableCell className="px-1 border-2 text-center border-[#EAEAEA]    w-[100px]">
-                <ViewBtn
-                  document_link={CapTable.document_link!}
-                  type="capTables"
-                />
+                { index + 1 }
               </TableCell>
               <TableCell className="px-1 border-2 text-center border-[#EAEAEA]   ">
                 {CapTable.name}

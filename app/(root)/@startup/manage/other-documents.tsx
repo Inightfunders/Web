@@ -1,5 +1,5 @@
-import { getLegalDocuments } from "@/lib/actions/startup";
-import UploadLegalDocuments from "./upload-legal-documents";
+import { getOtherDocuments } from "@/lib/actions/startup";
+import UploadOtherDocuments from "./upload-other-documents";
 import {
   Table,
   TableBody,
@@ -8,26 +8,26 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import LegalDocumentsActionBtns from "./legal-documents-action-btns";
+import OtherDocumentsActionBtns from "./other-documents-action-btns";
 import ViewBtn from "./view-btn";
 import { formatDate } from "@/lib/utils";
 
-export default async function Others() {
-  const Others = await getLegalDocuments();
+export default async function OtherDocuments() {
+  const Others = await getOtherDocuments();
 
   return (
     <section className="flex w-full flex-col gap-4 mt-12">
       <div className="flex items-center justify-between gap-4">
         <p className="font-bold dashboardtablehead   text-white text-xl">
-          Others
+          Other documents
         </p>
-        <UploadLegalDocuments />
+        <UploadOtherDocuments />
       </div>
       <Table className="bg-white">
         <TableHeader>
           <TableRow className="">
             <TableHead className="px-1 border-2 text-center border-[#EAEAEA]  chartcontenttext  w-[20px]">
-              {" "}
+              SN
             </TableHead>
             <TableHead className="px-1 border-2 text-center border-[#EAEAEA]  chartcontenttext ">
               Document Name
@@ -46,11 +46,12 @@ export default async function Others() {
         <TableBody>
           {Others?.map((Others, index) => (
             <TableRow key={Others.id}>
-              <TableCell className="px-1 border-2 text-center border-[#EAEAEA]    w-[100px]">
-                <ViewBtn
+              <TableCell className="px-1 border-2 text-center border-[#EAEAEA] w-[100px]">
+                {/* <ViewBtn
                   document_link={Others.document_link!}
-                  type="legalDocuments"
-                />
+                  type="otherDocuments"
+                /> */}
+                { index + 1 }
               </TableCell>
               <TableCell className="px-1 border-2 text-center border-[#EAEAEA]  chartcontenttext ">
                 {Others.name}
@@ -62,9 +63,9 @@ export default async function Others() {
                 {formatDate(new Date(Others?.updated_at!))}
               </TableCell>
               <TableCell className="flex items-center justify-center gap-3 p-6 text-center border-[#EAEAEA]   ">
-                <LegalDocumentsActionBtns
+                <OtherDocumentsActionBtns
                   document_link={Others.document_link!}
-                  legalDocumentsId={Others.id!}
+                  otherDocumentsId={Others.id!}
                 />
               </TableCell>
             </TableRow>
