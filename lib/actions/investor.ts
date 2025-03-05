@@ -207,7 +207,7 @@ export const payContractAmount = async (contractId: number) => {
                 }
             })
         ])
-    
+
         const transfer = await createTransfer({
             amount: contract.amount_invested,
             sourceFundingSourceUrl: startupBankAccount?.funding_source_url!,
@@ -229,72 +229,119 @@ export const payContractAmount = async (contractId: number) => {
     revalidatePath('/')
 }
 
-export const getCapTable = cache(async (startupId: number) => {
+export const getCapTable = cache(async (investorId: number, startupId: number) => {
 
-    return await db.query.cap_tables.findMany({
-        where: (table, { eq }) => eq(table.startup_id, startupId),
+    const detailsReq = await db.query.financial_details_requests.findFirst({
+        where: (table, { eq, and }) => and(
+                eq(table.investor_id, investorId), eq(table.startup_id, startupId), eq(table.accepted, true)),
     })
+    if(detailsReq) {
+        return await db.query.cap_tables.findMany({
+            where: (table, { eq }) => eq(table.startup_id, startupId),
+        })
+    }
 })
 
-export const getPitchDeck = cache(async (startupId: number) => {
+export const getPitchDeck = cache(async (investorId: number, startupId: number) => {
 
-    return await db.query.pitch_decks.findMany({
-        where: (table, { eq }) => eq(table.startup_id, startupId),
+    const detailsReq = await db.query.financial_details_requests.findFirst({
+        where: (table, { eq, and }) => and(
+                eq(table.investor_id, investorId), eq(table.startup_id, startupId), eq(table.accepted, true)),
     })
+    if(detailsReq) {
+        return await db.query.pitch_decks.findMany({
+            where: (table, { eq }) => eq(table.startup_id, startupId),
+        })
+    }
 })
 
-export const getTaxReturns = cache(async (startupId: number) => {
+export const getTaxReturns = cache(async (investorId: number, startupId: number) => {
 
-    return await db.query.tax_returns.findMany({
-        where: (table, { eq }) => eq(table.startup_id, startupId),
+    const detailsReq = await db.query.financial_details_requests.findFirst({
+        where: (table, { eq, and }) => and(
+                eq(table.investor_id, investorId), eq(table.startup_id, startupId), eq(table.accepted, true)),
     })
+    if(detailsReq) {
+        return await db.query.tax_returns.findMany({
+            where: (table, { eq }) => eq(table.startup_id, startupId),
+        })
+    }
 })
 
-export const getFinancialStatements = cache(async (startupId: number) => {
+export const getFinancialStatements = cache(async (investorId: number, startupId: number) => {
 
-    return await db.query.financial_statements.findMany({
-        where: (table, { eq }) => eq(table.startup_id, startupId),
+    const detailsReq = await db.query.financial_details_requests.findFirst({
+        where: (table, { eq, and }) => and(
+                eq(table.investor_id, investorId), eq(table.startup_id, startupId), eq(table.accepted, true)),
     })
+    if(detailsReq) {
+        return await db.query.financial_statements.findMany({
+            where: (table, { eq }) => eq(table.startup_id, startupId),
+        })
+    }
 })
 
-export const getLegalDocuments = cache(async (startupId: number) => {
+export const getLegalDocuments = cache(async (investorId: number, startupId: number) => {
 
-    return await db.query.legal_documents.findMany({
-        where: (table, { eq }) => eq(table.startup_id,  startupId),
+    const detailsReq = await db.query.financial_details_requests.findFirst({
+        where: (table, { eq, and }) => and(
+                eq(table.investor_id, investorId), eq(table.startup_id, startupId), eq(table.accepted, true)),
     })
+    if(detailsReq) {
+        return await db.query.legal_documents.findMany({
+            where: (table, { eq }) => eq(table.startup_id,  startupId),
+        })
+    }
 })
 
-export const getOthersDocuments = cache(async (startupId: number) => {
+export const getOthersDocuments = cache(async (investorId: number, startupId: number) => {
 
-    return await db.query.other_documents.findMany({
-        where: (table, { eq }) => eq(table.startup_id,  startupId),
+    const detailsReq = await db.query.financial_details_requests.findFirst({
+        where: (table, { eq, and }) => and(
+                eq(table.investor_id, investorId), eq(table.startup_id, startupId), eq(table.accepted, true)),
     })
+    if(detailsReq) {
+        return await db.query.other_documents.findMany({
+            where: (table, { eq }) => eq(table.startup_id,  startupId),
+        })
+    }
 })
 
-export const getFinancialProjection = cache(async (startupId: number) => {
+export const getFinancialProjection = cache(async (investorId: number, startupId: number) => {
 
-    return await db.query.financial_projection.findMany({
-        where: (table, { eq }) => eq(table.startup_id,  startupId),
+    const detailsReq = await db.query.financial_details_requests.findFirst({
+        where: (table, { eq, and }) => and(
+                eq(table.investor_id, investorId), eq(table.startup_id, startupId), eq(table.accepted, true)),
     })
+    if(detailsReq) {
+        return await db.query.financial_projection.findMany({
+            where: (table, { eq }) => eq(table.startup_id,  startupId),
+        })
+    }
 })
 
-export const getBankStatements = cache(async (startupId: number) => {
+export const getBankStatements = cache(async (investorId: number, startupId: number) => {
 
-    return await db.query.bank_statements.findMany({
-        where: (table, { eq }) => eq(table.startup_id,  startupId),
+    const detailsReq = await db.query.financial_details_requests.findFirst({
+        where: (table, { eq, and }) => and(
+                eq(table.investor_id, investorId), eq(table.startup_id, startupId), eq(table.accepted, true)),
     })
+    if(detailsReq) {
+        return await db.query.bank_statements.findMany({
+            where: (table, { eq }) => eq(table.startup_id,  startupId),
+        })
+    }
 })
 
-export const getNda = cache(async (startupId: number) => {
+export const getNda = cache(async (investorId: number, startupId: number) => {
 
-    return await db.query.nda.findMany({
-        where: (table, { eq }) => eq(table.startup_id,  startupId),
+    const detailsReq = await db.query.financial_details_requests.findFirst({
+        where: (table, { eq, and }) => and(
+                eq(table.investor_id, investorId), eq(table.startup_id, startupId), eq(table.accepted, true)),
     })
-})
-
-export const getBankDetails = cache(async (investorId: string) => {
-
-    return await db.query.bank_accounts.findMany({
-        where: (table, { eq }) => eq(table.user_id, investorId)
-    })
+    if(detailsReq) {
+        return await db.query.nda.findMany({
+            where: (table, { eq }) => eq(table.startup_id,  startupId),
+        })
+    }
 })

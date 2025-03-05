@@ -60,8 +60,8 @@ export default async function StartUpsInvestors({
   contracts,
   searchParams,
 }: Props) {
-  console.log(contracts);
-  console.log(searchParams);
+  // console.log(contracts);
+  // console.log(searchParams);
   const contractsWithInvestors = await Promise.all(
     contracts.map(async (contract) => {
       const investor = await getInvestor(contract.investor_id);

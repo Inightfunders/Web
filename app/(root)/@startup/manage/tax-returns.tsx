@@ -27,7 +27,7 @@ export default async function TaxReturns() {
         <TableHeader>
           <TableRow className="">
             <TableHead className="px-1 border-2 text-center border-[#EAEAEA] chartcontenttext   w-[20px]">
-              {" "}
+              SN
             </TableHead>
             <TableHead className="px-1 border-2 text-center border-[#EAEAEA]  chartcontenttext ">
               Document Name
@@ -44,13 +44,10 @@ export default async function TaxReturns() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {TaxReturns?.map((TaxReturns) => (
+          {TaxReturns?.map((TaxReturns, index) => (
             <TableRow key={TaxReturns.id}>
               <TableCell className="px-1 border-2 text-center border-[#EAEAEA]    w-[100px]">
-                <ViewBtn
-                  document_link={TaxReturns?.document_link!}
-                  type="taxReturns"
-                />
+                { index + 1 }
               </TableCell>
               <TableCell className="px-1 border-2 text-center border-[#EAEAEA]   ">
                 {TaxReturns.name}

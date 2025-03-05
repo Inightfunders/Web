@@ -10,7 +10,7 @@ import {
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { legalDocumentsSchema } from "@/lib/validations/startupsSchema";
+import { otherDocumentsSchema } from "@/lib/validations/startupsSchema";
 import { z } from "zod";
 import {
   Form,
@@ -24,44 +24,40 @@ import { Loader2, X } from "lucide-react";
 import { createClient } from "@/utils/supabase/client";
 import { nanoid } from "nanoid";
 import { useRouter } from "next/navigation";
-import { createLegalDocuments } from "@/lib/actions/startup";
+import { createOtherDocuments } from "@/lib/actions/startup";
 
-export default function UploadOthersDocuments() {
+export default function UploadOtherDocuments() {
   const router = useRouter();
 
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const form = useForm<z.infer<typeof legalDocumentsSchema>>({
-    resolver: zodResolver(legalDocumentsSchema),
+  const form = useForm<z.infer<typeof otherDocumentsSchema>>({
+    resolver: zodResolver(otherDocumentsSchema),
     defaultValues: {
       name: "",
       document: new File([], ""),
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof legalDocumentsSchema>) => {
+  const onSubmit = async (values: z.infer<typeof otherDocumentsSchema>) => {
     setIsLoading(true);
 
     const supabase = createClient();
 
     const fileName = `${nanoid(30)}.xlsx`;
 
-    const { error: storageError } = await supabase.storage
-      .from("legalDocuments")
-      .upload(fileName, values.document);
+    const { error: storageError } = await supabase.storage.from("otherDocuments").upload(fileName, values.document);
 
     if (storageError) {
       console.log(storageError);
       return setIsLoading(false);
     }
 
-    const {
-      data: { publicUrl },
-    } = supabase.storage.from("legalDocuments").getPublicUrl(fileName);
+    const { data: { publicUrl }, } = supabase.storage.from("otherDocuments").getPublicUrl(fileName);
 
-    const result = await createLegalDocuments({
+    const result = await createOtherDocuments({
       name: values.name,
       document_link: publicUrl,
     });
