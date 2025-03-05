@@ -9,10 +9,10 @@ export default function PaymentSetup({
   searchParams: { page?: string };
 }) {
   return (
-    <div className="w-full mx-auto space-y-6 my-8 max-w-[800px] lg:max-w-[850px] xl:max-w-[923px] 2xl:max-w-[1200px] 3xl:max-w-[1700px] 4xl:max-w-[1800px]">
-      <div className="flex gap-[21px]">
+    <div className="w-full mx-auto space-y-6 my-8 px-4 max-w-[1200px] lg:max-w-[1500px] xl:max-w-[1700px]">
+      <div className="flex flex-col md:flex-row gap-6">
         {/* Payment Method Section */}
-        <div className="w-[65%] bg-[#212121] rounded-lg py-[44px] px-[32px]">
+        <div className="md:w-2/3 bg-[#212121] rounded-lg py-6 px-6 sm:py-8 sm:px-8">
           <div className="mb-[24px] text-left">
             <h2 className="text-white text-[20px] font-bold mb-[8px] font-Montserrat">
               Payment method
@@ -128,7 +128,7 @@ export default function PaymentSetup({
         </div>
 
         {/* Other Payment Section */}
-        <div className="w-[35%] bg-[#212121] rounded-lg py-[44px] px-[32px]">
+        <div className="md:w-1/3 bg-[#212121] rounded-lg py-6 px-6 sm:py-8 sm:px-8">
           <div className="mb-[24px] text-left">
             <h2 className="text-white text-[20px] font-bold mb-[8px] font-Montserrat">
               Other payment

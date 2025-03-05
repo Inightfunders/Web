@@ -72,24 +72,18 @@ export default async function DashboardContent({
   ];
 
   return (
-    <div
-      className="w-full mx-auto space-y-6 my-8
-      max-w-[800px]                     
-      lg:max-w-[850px]                 
-      xl:max-w-[923px]                  
-      2xl:max-w-[1200px]               
-      3xl:max-w-[1700px]              
-      4xl:max-w-[1800px]"
-    >
+    <div className="w-full px-4 sm:px-6 lg:px-8 mx-auto space-y-6 my-8 max-w-[1800px]">
       {/* Top Section */}
-      <div className="flex gap-[21px]">
+      <div className="flex flex-col md:flex-row gap-6 md:mt-4">
         {/* Left Stats */}
-        <div className="flex flex-col justify-between space-y-[20px] min-w-[332px]">
-          <DashboardCard
-            title="Invites"
-            value={`1200`}
-            className="h-[calc(50%-12px)] text-center content-center"
-          />
+        <div className="flex flex-col w-full md:w-1/3 space-y-4">
+          <div className="p-4 bg-[#212121] rounded-lg text-center">
+            <DashboardCard
+              title="Invites"
+              value={`1200`}
+              className="h-[calc(50%-12px)] text-center content-center"
+            />
+          </div>
           <div
             className={`p-4 bg-[#212121] rounded-[8px] h-[calc(50%-12px)] text-center content-center items-center`}
           >
@@ -115,19 +109,17 @@ export default async function DashboardContent({
         </div>
       </div>
 
-      <div className="mt-[30px] flex items-center justify-between">
-        <p className="text-[#ffffff] font-normal text-[20px] ">
-          Recent withdraws
-        </p>
-        <p className="text-[#FF7A00] font-normal text-[16px] underline">
+      <div className="mt-8 flex items-center justify-between">
+        <p className="text-white text-lg">Recent withdraws</p>
+        <p className="text-[#FF7A00] text-sm underline cursor-pointer">
           See all
         </p>
       </div>
-
-      <div className="overflow-x-auto bg-[#FAFAFA] rounded-lg !mt-[30px]">
-        <table className="w-full">
+      {/* table */}
+      <div className="overflow-x-auto bg-[#FAFAFA] rounded-lg mt-6">
+        <table className="w-full text-sm">
           <thead>
-            <tr className="text-sm">
+            <tr className="text-left bg-gray-100">
               <th className="text-[12px] w-[130px] text-left p-[22px] font-medium font-Montserrat text-[#1A1A1A] leading-[14px] whitespace-nowrap">
                 Serial number
               </th>

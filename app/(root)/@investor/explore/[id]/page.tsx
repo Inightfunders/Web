@@ -1,4 +1,3 @@
-
 import { getUser } from "@/lib/actions/auth";
 import { getExploreStartups } from "@/lib/actions/investor";
 import { Loader2 } from "lucide-react";
@@ -9,6 +8,7 @@ import FinancialRounds from "./financialrounds";
 import RequestMoreFinancialDetailsContainer from "./requestmorefinancialdetails";
 import RequestDataContainer from "./requestDataContainer";
 import MakeAnOffer from "./makeAnOffer";
+import { FileText, Eye, Download } from "lucide-react";
 
 type Props = {
   params: {
@@ -33,14 +33,13 @@ export default async function SingleStartUpPage({ params }: Props) {
 
   return (
     <section className="relative flex flex-col flex-1 font-Montserrat items-center justify-start gap-1 h-screen max-h-screen px-4 overflow-auto explore_id_page">
-   <div className="explore_id_page cursor-pointer mr-auto text-nowrap font-light font-Montserrat text-white text-xs my-6 flex items-center justify-center gap-2">
+      <div className="explore_id_page cursor-pointer mr-auto text-nowrap font-light font-Montserrat text-white text-xs my-6 flex items-center justify-center gap-2">
         <Link href="/explore" className="">
           <span className="text-xl">{"< "}</span> Back
         </Link>
       </div>
       {/* Startup Info */}
       <div className="w-full flex gap-8 rounded-[2px] bg-[#313131] py-8 px-2 justify-evenly items-center flex-col sm:flex-row ">
-  
         <div className="flex flex-col items-center justify-start">
           <Image
             src="/images/placehodler.jpg"
@@ -120,6 +119,51 @@ export default async function SingleStartUpPage({ params }: Props) {
           </div>
         </div>
       </div>
+      {/* Additional UI Section */}
+      <div className="w-full  py-4 px-2 mt-4 flex flex-col gap-4">
+        <div className="flex justify-between items-center bg-[#313131] p-4 rounded-[4px]">
+          <div className="flex items-center gap-2 text-white rounded-[4px]">
+            <Image
+              src="/icons/file.svg"
+              alt="File Icon"
+              width={20}
+              height={20}
+            />
+            <span>Non disclosure agreement</span>
+            <span className="bg-orange-500 text-xs px-2 py-1 rounded-[4px]">
+              PENDING
+            </span>
+          </div>
+          <div className="flex gap-2">
+            <button className="border border-white text-white px-4 py-2 rounded-[4px] flex items-center gap-2">
+              <Eye size={16} /> <span>View</span>
+            </button>
+            <button className="border border-white text-white px-4 py-2 rounded-[4px] flex items-center gap-2">
+              <Download size={16} /> <span>Download</span>
+            </button>
+          </div>
+        </div>
+
+        <div className="flex justify-between items-center bg-[#313131] p-4 rounded-[4px]">
+          <div className="flex items-center gap-2 text-white">
+            <Image
+              src="/icons/file.svg"
+              alt="File Icon"
+              width={20}
+              height={20}
+            />
+            <span>Financial details</span>
+            <span className="bg-orange-500 text-xs px-2 py-1 rounded-[4px]">
+              PENDING
+            </span>
+          </div>
+          <div className="flex gap-2">
+            <button className="border border-white text-white px-4 py-2 rounded-[4px] flex items-center gap-2">
+              <Eye size={16} /> <span>View</span>
+            </button>
+          </div>
+        </div>
+      </div>
 
       {/* Financial Details */}
       <div className="w-full mt-6 bg-[#313131] px-8 py-4 rounded-md">
@@ -132,9 +176,9 @@ export default async function SingleStartUpPage({ params }: Props) {
           {/* <div className='h-6 w-[1px] bg-blue-500 mx-4' /> */}
           <div className="flex items-center gap-2">
             <Suspense fallback={<Loader2 className="w-6 h-6 animate-spin" />}>
-            <RequestDataContainer />
+              <RequestDataContainer />
             </Suspense>
-           <MakeAnOffer startupId={startup.id}/>
+            <MakeAnOffer startupId={startup.id} />
           </div>
         </div>
         <div className="p-4 rounded-md mt-2">
@@ -146,4 +190,3 @@ export default async function SingleStartUpPage({ params }: Props) {
     </section>
   );
 }
-

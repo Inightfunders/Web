@@ -71,7 +71,9 @@ interface TableProps {
 
 const Table = ({ contractsWithInvestors, searchParams }: TableProps) => {
   const [open, setOpen] = useState(false);
-  const [activeData, setActiveData] = useState<ActiveData | undefined>(undefined);
+  const [activeData, setActiveData] = useState<ActiveData | undefined>(
+    undefined
+  );
 
   const page = searchParams?.page ? parseInt(searchParams.page) : 1;
 
@@ -202,9 +204,11 @@ const Table = ({ contractsWithInvestors, searchParams }: TableProps) => {
                 </tr>
               ))
           ) : (
-            <p className="min-h-[200px] flex items-center justify-center font-Montserrat">
-              No data yet!
-            </p>
+            <tr>
+              <td colSpan={5} className="py-8 font-Montserrat text-white">
+                No data
+              </td>
+            </tr>
           )}
         </tbody>
         // @ts-ignore
