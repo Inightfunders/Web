@@ -242,7 +242,7 @@ export default function SignIn() {
                 <div className="flex flex-col gap-1">
                   <p className="text-black font-semibold text-base">Partner</p>
                   <p className="text-black text-xs leading-5">
-                    I am a partner, looking for partnerships.
+                    I am interested in becoming a referral partner
                   </p>
                 </div>
               </div>
