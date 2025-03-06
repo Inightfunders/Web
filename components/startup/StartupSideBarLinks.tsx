@@ -24,7 +24,7 @@ export default function StartupSideBarLinks({
   const pathname = usePathname();
   const [isReferralOpen, setIsReferralOpen] = useState(false);
   const [data, setData] = useState("tejinder");
-  const [hasDocuments, setHasDocuments] = useState(true);
+  const [hasDocuments, setHasDocuments] = useState(false);
 
   useEffect(() => {
     const storedData = localStorage.getItem("hamburgerState");
@@ -36,11 +36,11 @@ export default function StartupSideBarLinks({
 
   useEffect(() => {
     if (
-      !pitchDeck ||
-      !capTable ||
-      !taxReturns ||
-      !financialStatements ||
-      !legalDocuments
+      pitchDeck?.length === 0 ||
+      capTable?.length === 0 ||
+      taxReturns?.length === 0 ||
+      financialStatements?.length === 0 ||
+      legalDocuments?.length === 0
     ) {
       setHasDocuments(true);
     } else {

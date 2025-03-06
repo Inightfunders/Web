@@ -24,7 +24,7 @@ export default function OffersPage({ searchParams }: Props) {
               "text-sm flex-1 text-center border-b-4 pb-2",
               tab === undefined ||
                 tab === "data-requests" ||
-                tab !== "contracts"
+                tab !== "offer"
                 ? "text-[#FF7A00] font-semibold border-[#FF7A00]"
                 : "font-light text-white border-[#FFFFFF80]"
             )}
@@ -35,7 +35,7 @@ export default function OffersPage({ searchParams }: Props) {
             href="/offers?tab=offer"
             className={cn(
               "text-sm flex-1 text-center border-b-4 pb-2",
-              tab === "contracts"
+              tab === "offer"
                 ? "text-[#FF7A00] font-semibold border-[#FF7A00]"
                 : "font-light text-white border-[#FFFFFF80]"
             )}

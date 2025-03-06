@@ -146,9 +146,11 @@ export default async function StartUpsInvestors({
                 </tr>
               ))
           ) : (
-            <p className="min-h-[200px] flex items-center justify-center font-Montserrat">
-              No data yet!
-            </p>
+            <tr>
+              <td colSpan={5} className="py-8 font-Montserrat text-white">
+                No data
+              </td>
+            </tr>
           )}
         </tbody>
       </table>
