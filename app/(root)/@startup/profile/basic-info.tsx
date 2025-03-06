@@ -17,12 +17,13 @@ export default function BasicInfo() {
   const supabase = createClient();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
-  console.log("user:", user);
+
+  console.log("User State:", user);
 
   useEffect(() => {
     async function fetchUser() {
       const fetchedUser = await getUser();
-      console.log("Updated User Data:", fetchedUser);
+      console.log("Fetched User:", fetchedUser);
       setUser(fetchedUser);
     }
     fetchUser();
@@ -33,10 +34,9 @@ export default function BasicInfo() {
     if (!uploadedFile) return;
 
     setIsLoading(true);
-    const UserId = user?.user?.id;
-    console.log("UserId:", UserId);
+    const userId = user?.user?.id;
 
-    if (!UserId) {
+    if (!userId) {
       console.error("User ID is undefined!");
       setIsLoading(false);
       return;
@@ -44,7 +44,7 @@ export default function BasicInfo() {
 
     const newFileName = `${nanoid(30)}_${uploadedFile.name}`;
 
-    // Upload Image
+    // Upload Image to Supabase Storage
     const { data: uploadData, error: uploadError } = await supabase.storage
       .from("profileImg")
       .upload(`profile/${newFileName}`, uploadedFile, { upsert: true });
@@ -55,11 +55,12 @@ export default function BasicInfo() {
       return;
     }
 
-    // Get Public URL
+    // Get the new public URL
     const { data } = supabase.storage
       .from("profileImg")
       .getPublicUrl(`profile/${newFileName}`);
-    const publicUrl = data?.publicUrl || "";
+
+    let publicUrl = data?.publicUrl || "";
 
     if (!publicUrl) {
       console.error("Failed to get public URL");
@@ -67,17 +68,28 @@ export default function BasicInfo() {
       return;
     }
 
-    // Update User Profile in Supabase
+    // **Fix: Force refresh image by appending a timestamp**
+    publicUrl = `${publicUrl}?t=${new Date().getTime()}`;
+
+    // Update the user's profile image in Supabase database
     const { error: updateError } = await supabase
       .from("users")
       .update({ profile_img: publicUrl })
-      .eq("id", user.id);
+      .eq("id", userId);
 
     if (updateError) {
       console.error("Update Error:", updateError.message);
     } else {
       console.log("Profile image updated successfully!");
-      setUser((prev: any) => ({ ...prev, profile_img: publicUrl }));
+
+      // **Fix: Update user state properly**
+      setUser((prev: any) => ({
+        ...prev,
+        userInfo: {
+          ...prev?.userInfo,
+          profile_img: publicUrl,
+        },
+      }));
 
       // Ensure that the latest user data is fetched
       router.refresh();
@@ -87,12 +99,12 @@ export default function BasicInfo() {
   };
 
   const handleDeleteImage = async () => {
-    if (!user?.profile_img) return;
+    if (!user?.userInfo?.profile_img) return;
 
     setIsLoading(true);
 
     // Extract the file name from the URL
-    const fileName = user.profile_img.split("/").pop();
+    const fileName = user.userInfo.profile_img.split("/").pop();
 
     if (!fileName) {
       console.error("Invalid file path");
@@ -115,13 +127,20 @@ export default function BasicInfo() {
     const { error: updateError } = await supabase
       .from("users")
       .update({ profile_img: null })
-      .eq("id", user.id);
+      .eq("id", user?.user?.id);
 
     if (updateError) {
       console.error("Update Error:", updateError.message);
     } else {
       console.log("Profile image deleted successfully!");
-      setUser((prev: any) => ({ ...prev, profile_img: null }));
+
+      setUser((prev: any) => ({
+        ...prev,
+        userInfo: {
+          ...prev?.userInfo,
+          profile_img: null,
+        },
+      }));
     }
 
     setIsLoading(false);
