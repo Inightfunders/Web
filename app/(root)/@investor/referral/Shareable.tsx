@@ -26,7 +26,7 @@ const Shareable = () => {
     <div className="bg-[#212121] border-none rounded-[8px] text-white">
       <div className="py-[40px] px-[32px]">
         <p className="font-bold text-left font-Montserrat text-base sm:text-lg md:text-xl lg:text-[20px]  pb-2 sm:pb-[8px]">
-          Share with your firends to help them get funded!
+          Share with your friends to help them get funded!
         </p>
         <p className="font-normal text-sm sm:text-base lg:text-[16px] font-Montserrat text-left pb-4 sm:pb-5 lg:pb-[24px]">
           Earn 20% on our faciliation fee when you refer a qualified borrower or

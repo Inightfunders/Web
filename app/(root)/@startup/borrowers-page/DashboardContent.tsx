@@ -86,7 +86,7 @@ export default function FundsDashboard() {
     >
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Top Section */}
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-3 gap-6 ">
           {/* Left Stats */}
           <div className="space-y-6">
             <DashboardCard

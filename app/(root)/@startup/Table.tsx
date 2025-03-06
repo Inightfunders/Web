@@ -71,7 +71,9 @@ interface TableProps {
 
 const Table = ({ contractsWithInvestors, searchParams }: TableProps) => {
   const [open, setOpen] = useState(false);
-  const [activeData, setActiveData] = useState<ActiveData | undefined>(undefined);
+  const [activeData, setActiveData] = useState<ActiveData | undefined>(
+    undefined
+  );
 
   const page = searchParams?.page ? parseInt(searchParams.page) : 1;
 

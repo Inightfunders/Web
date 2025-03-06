@@ -37,7 +37,7 @@ export default function RequestMoreFinancialDetails({ investorId, startupId, has
                 </p>
             ) : (
                 <div className="flex w-full items-center justify-end mt-6">
-                    <button onMouseDown={requestMoreFinancialDetails} disabled={loading || hasRequested} className="bg-white flex items-center justify-center gap-1 disabled:opacity-65 rounded-[2px] text-black font-Montserrat text-xs font-light p-2">
+                    <button onMouseDown={requestMoreFinancialDetails} disabled={loading || hasRequested} className=" bg-white flex items-center justify-center gap-1 disabled:opacity-65 rounded-[2px] text-black font-Montserrat text-xs font-light p-2">
                         {loading && <Loader2 size={16} className='animate-spin' />}
                         Request More Financial Details
                     </button>
