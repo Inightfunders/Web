@@ -63,7 +63,7 @@ export default function BasicInfoDetails({ user }: { user: UserType }) {
         .eq("id", user?.user?.id!),
     ]);
 
-    console.log(data);
+    // console.log(data);
 
     if (updateUserError) setError(updateUserError.message);
     else if (updateStartUpUserError) setError(updateStartUpUserError.message);

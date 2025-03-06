@@ -27,7 +27,7 @@ export default async function PitchDeck() {
         <TableHeader>
           <TableRow className="">
             <TableHead className="px-1 border-2 text-center border-[#EAEAEA] chartcontenttext   w-[20px]">
-              {" "}
+              SN
             </TableHead>
             <TableHead className="px-1 border-2 text-center border-[#EAEAEA]  chartcontenttext ">
               Document Name
@@ -47,10 +47,7 @@ export default async function PitchDeck() {
           {PitchDeck?.map((PitchDeck, index) => (
             <TableRow key={PitchDeck.id}>
               <TableCell className="px-1 border-2 text-center border-[#EAEAEA]  chartcontenttext  w-[100px]">
-                <ViewBtn
-                  document_link={PitchDeck.document_link!}
-                  type="pitchDecks"
-                />
+                { index + 1 }
               </TableCell>
               <TableCell className="px-1 border-2 text-center border-[#EAEAEA]  chartcontenttext ">
                 {PitchDeck.name}

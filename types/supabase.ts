@@ -444,6 +444,146 @@ export type Database = {
           },
         ]
       }
+      other_documents: {
+        Row: {
+          created_at: string
+          document_link: string | null
+          id: number
+          name: string | null
+          startup_id: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          document_link?: string | null
+          id?: number
+          name?: string | null
+          startup_id?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          document_link?: string | null
+          id?: number
+          name?: string | null
+          startup_id?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "other_documents_startup_id_fkey"
+            columns: ["startup_id"]
+            isOneToOne: false
+            referencedRelation: "startups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      financial_projection: {
+        Row: {
+          created_at: string
+          document_link: string | null
+          id: number
+          name: string | null
+          startup_id: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          document_link?: string | null
+          id?: number
+          name?: string | null
+          startup_id?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          document_link?: string | null
+          id?: number
+          name?: string | null
+          startup_id?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "financial_projection_startup_id_fkey"
+            columns: ["startup_id"]
+            isOneToOne: false
+            referencedRelation: "startups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bank_statements: {
+        Row: {
+          created_at: string
+          document_link: string | null
+          id: number
+          name: string | null
+          startup_id: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          document_link?: string | null
+          id?: number
+          name?: string | null
+          startup_id?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          document_link?: string | null
+          id?: number
+          name?: string | null
+          startup_id?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bank_statements_startup_id_fkey"
+            columns: ["startup_id"]
+            isOneToOne: false
+            referencedRelation: "startups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      nda: {
+        Row: {
+          created_at: string
+          document_link: string | null
+          id: number
+          name: string | null
+          startup_id: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          document_link?: string | null
+          id?: number
+          name?: string | null
+          startup_id?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          document_link?: string | null
+          id?: number
+          name?: string | null
+          startup_id?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "nda_startup_id_fkey"
+            columns: ["startup_id"]
+            isOneToOne: false
+            referencedRelation: "startups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notifications: {
         Row: {
           content: string | null
@@ -730,9 +870,9 @@ export type Database = {
           first_name: string | null
           id: string
           last_name: string | null
+          profile_img: string | null
           plaid_id: string | null
           role: Database["public"]["Enums"]["user_role"] | null
-          profile_img: string | null
         }
         Insert: {
           dwolla_customer_id?: string | null
@@ -740,9 +880,9 @@ export type Database = {
           first_name?: string | null
           id?: string
           last_name?: string | null
+          profile_img?: string | null
           plaid_id?: string | null
           role?: Database["public"]["Enums"]["user_role"] | null
-          profile_img?: string | null
         }
         Update: {
           dwolla_customer_id?: string | null
@@ -750,9 +890,9 @@ export type Database = {
           first_name?: string | null
           id?: string
           last_name?: string | null
+          profile_img?: string | null
           plaid_id?: string | null
           role?: Database["public"]["Enums"]["user_role"] | null
-          profile_img?: string | null
         }
         Relationships: [
           {

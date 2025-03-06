@@ -1,100 +1,131 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { getUser } from "@/lib/actions/auth";
-import { Edit } from "lucide-react";
-import Link from "next/link";
-import BasicInfoDetails from "./basic-info-details";
-
-export default async function BasicInfo() {
-  const user = await getUser();
-
-  return (
-    <section className="flex flex-1 flex-col gap-6">
-      <>
-        <div className="flex items-center justify-between gap-4 border-b border-[#808080] py-4">
-          <p className="font-bold font-Montserrat text-white text-xl">
-            Basic Information
-          </p>
-          <Link
-            href="/profile?edit=true"
-            className="w-24 h-10 bg-[#FF7A00] gap-2 text-white text-sm font-semibold rounded-[8px] flex items-center justify-center"
-          >
-            <Edit size={16} />
-            Edit
-          </Link>
-        </div>
-        <BasicInfoDetails user={user!} />
-      </>
-      <>
-        <div className="flex items-center justify-between gap-4 border-b border-[#808080] py-4">
-          <p className="font-bold font-Montserrat text-white text-xl">
-            Profile picture
-          </p>
-        </div>
-        <div className="text-left">
-          <h4 className="text-lg text-white font-Montserrat mb-5">
-            Brand logo
-          </h4>
-          <Avatar className="bg-[#F1F5F9] text-black border-4 border-[#FF7A00]">
-            <AvatarImage src="" alt="company" />
-            <AvatarFallback className="">
-              {user?.userStartUp?.company_name?.slice(0, 1)}
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex justify-start mt-5 flex-col gap-1">
-            <span className="text-[#FF7A00] text-sm font-bold">Re-upload</span>
-            <span className="text-[#808080] text-[13px] ">or</span>
-            <span className="text-[#FF7A00] text-sm font-bold">Delete</span>
-          </div>
-        </div>
-      </>
-    </section>
-  );
-}
-
-/* 
-
 "use client";
+
+import { useState, useRef, useEffect, ChangeEvent } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getUser } from "@/lib/actions/auth";
 import { Edit } from "lucide-react";
 import Link from "next/link";
 import BasicInfoDetails from "./basic-info-details";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRef } from "react";
+import { createClient } from "@/utils/supabase/client";
+import { nanoid } from "nanoid";
+import { useRouter } from "next/navigation"; // Import useRouter
 
-type FormData = {
-  brandLogo: File | null;
-};
+export default function BasicInfo() {
+  const [user, setUser] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-type Props = {
-  user: any;
-};
-
-const basicInfoSchema = z.object({
-  brandLogo: z.instanceof(File).optional(),
-});
-
-export default async function BasicInfo({ user }: Props) {
-  const form = useForm({
-    resolver: zodResolver(basicInfoSchema),
-    defaultValues: {
-      brandLogo: null,
-    },
-  });
-
+  const supabase = createClient();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter(); 
+  console.log("user:", user);
 
-  const onSubmit = (data: FormData) => {
-    console.log(data);
+  useEffect(() => {
+    async function fetchUser() {
+      const fetchedUser = await getUser();
+      console.log("Updated User Data:", fetchedUser);
+      setUser(fetchedUser);
+    }
+    fetchUser();
+  }, []); 
+
+  const handleUploadNewImage = async (e: ChangeEvent<HTMLInputElement>) => {
+    const uploadedFile = e.target.files?.[0];
+    if (!uploadedFile) return;
+  
+    setIsLoading(true);
+    const UserId = user?.id;
+    console.log("UserId:",UserId);
+    
+    if (!UserId) {
+      console.error("User ID is undefined!");
+      setIsLoading(false);
+      return;
+    }
+  
+    const newFileName = `${nanoid(30)}_${uploadedFile.name}`;
+  
+    // Upload Image
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from("profileImg")
+      .upload(`profile/${newFileName}`, uploadedFile, { upsert: true });
+  
+    if (uploadError) {
+      console.error("Upload Error:", uploadError.message);
+      setIsLoading(false);
+      return;
+    }
+  
+    // Get Public URL
+    const { data } = supabase.storage
+      .from("profileImg")
+      .getPublicUrl(`profile/${newFileName}`);
+    const publicUrl = data?.publicUrl || "";
+  
+    if (!publicUrl) {
+      console.error("Failed to get public URL");
+      setIsLoading(false);
+      return;
+    }
+  
+    // Update User Profile in Supabase
+    const { error: updateError } = await supabase
+      .from("users")
+      .update({ profile_img: publicUrl })
+      .eq("id", user.id);
+  
+    if (updateError) {
+      console.error("Update Error:", updateError.message);
+    } else {
+      console.log("Profile image updated successfully!");
+      setUser((prev: any) => ({ ...prev, profile_img: publicUrl }));
+      
+      // Ensure that the latest user data is fetched
+      router.refresh();
+    }
+  
+    setIsLoading(false);
+  };
+  
+
+  const handleDeleteImage = async () => {
+    if (!user?.profile_img) return;
+
+    setIsLoading(true);
+
+    // Extract the file name from the URL
+    const fileName = user.profile_img.split("/").pop();
+
+    if (!fileName) {
+      console.error("Invalid file path");
+      setIsLoading(false);
+      return;
+    }
+
+    // Delete the file from storage
+    const { error: deleteError } = await supabase.storage
+      .from("profileImg")
+      .remove([`profile/${fileName}`]);
+
+    if (deleteError) {
+      console.error("Delete Error:", deleteError.message);
+      setIsLoading(false);
+      return;
+    }
+
+    // Update the user's profile image to null
+    const { error: updateError } = await supabase
+      .from("users")
+      .update({ profile_img: null })
+      .eq("id", user.id);
+
+    if (updateError) {
+      console.error("Update Error:", updateError.message);
+    } else {
+      console.log("Profile image deleted successfully!");
+      setUser((prev: any) => ({ ...prev, profile_img: null }));
+    }
+
+    setIsLoading(false);
   };
 
   return (
@@ -107,85 +138,48 @@ export default async function BasicInfo({ user }: Props) {
           href="/profile?edit=true"
           className="w-24 h-10 bg-[#FF7A00] gap-2 text-white text-sm font-semibold rounded-[8px] flex items-center justify-center"
         >
-          <Edit size={16} />
-          Edit
+          <Edit size={16} /> Edit
         </Link>
       </div>
-      <BasicInfoDetails user={user!} />
+      <BasicInfoDetails user={user} />
       <div className="flex items-center justify-between gap-4 border-b border-[#808080] py-4">
         <p className="font-bold font-Montserrat text-white text-xl">
           Profile picture
         </p>
       </div>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col items-center justify-center gap-8"
-        >
-          <div className="text-left">
-            <h4 className="text-lg text-white font-Montserrat mb-5">
-              Brand logo
-            </h4>
-            <FormField
-              control={form.control}
-              name="brandLogo"
-              render={({ field }) => (
-                <FormItem className="relative flex flex-col gap-1 w-screen max-w-[384px]">
-                  <FormControl>
-                    <input
-                      type="file"
-                      className="hidden"
-                      ref={fileInputRef}
-                      onChange={(e) => {
-                        field.onChange(
-                          e?.target?.files ? e.target.files[0] : null
-                        );
-                      }}
-                    />
-                    <label
-                      htmlFor="brandLogo"
-                      className="cursor-pointer"
-                      onClick={() => fileInputRef.current?.click()}
-                    >
-                      <Avatar className="bg-[#F1F5F9] text-black border-4 border-[#FF7A00]">
-                        <AvatarImage src="" alt="company" />
-                        <AvatarFallback>
-                          {user?.userStartUp?.company_name?.slice(0, 1)}
-                        </AvatarFallback>
-                      </Avatar>
-                    </label>
-                  </FormControl>
-                  <FormMessage className="absolute text-red-600 -bottom-6" />
-                </FormItem>
-              )}
-            />
-            <div className="flex justify-start mt-5 flex-col gap-1">
-              <span
-                className="text-[#FF7A00] text-sm font-bold cursor-pointer"
-                onClick={() => fileInputRef.current?.click()}
-              >
-                Re-upload
-              </span>
-              <span className="text-[#808080] text-[13px]">or</span>
-              <span
-                className="text-[#FF7A00] text-sm font-bold cursor-pointer"
-                onClick={() => form.setValue("brandLogo", null)}
-              >
-                Delete
-              </span>
-            </div>
-          </div>
-          <button
-            type="submit"
-            className="bg-[#FF7A00] text-white font-bold py-2 px-4 rounded"
+      <div className="text-left">
+        <h4 className="text-lg text-white font-Montserrat mb-5">Brand logo</h4>
+        <label htmlFor="upload-image" className="cursor-pointer">
+          <Avatar className="bg-[#F1F5F9] text-black border-4 border-[#FF7A00]">
+            <AvatarImage src={user?.userInfo?.profile_img || ""} alt="company" />
+            <AvatarFallback>
+              {user?.userStartUp?.company_name?.slice(0, 1)}
+            </AvatarFallback>
+          </Avatar>
+        </label>
+        <input
+          type="file"
+          id="upload-image"
+          className="hidden"
+          ref={fileInputRef}
+          onChange={handleUploadNewImage}
+        />
+        <div className="flex justify-start mt-5 flex-col gap-1">
+          <span
+            className="text-[#FF7A00] text-sm font-bold cursor-pointer"
+            onClick={() => fileInputRef.current?.click()}
           >
-            Submit
-          </button>
-        </form>
-      </Form>
+            Re-upload
+          </span>
+          <span className="text-[#808080] text-[13px]">or</span>
+          <span
+            className="text-[#FF7A00] text-sm font-bold cursor-pointer"
+            onClick={handleDeleteImage}
+          >
+            Delete
+          </span>
+        </div>
+      </div>
     </section>
   );
 }
-
-
-*/

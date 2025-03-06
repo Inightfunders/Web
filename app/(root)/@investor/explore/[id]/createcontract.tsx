@@ -124,7 +124,7 @@ export default function CreateContract({ user, startupId }: Props) {
             <input
               type="text"
               placeholder="Investor's Signature"
-              className="bg-transparent border-b border-white text-white w-[294px] outline-none py-1.5"
+              className="bg-transparent border-black text-black w-[294px] outline py-1.5"
               value={signature}
               onChange={(e) => setSignature(e.target.value)}
             />
@@ -135,7 +135,7 @@ export default function CreateContract({ user, startupId }: Props) {
             )}
             <button
               onMouseDown={handleSubmitSignature}
-              className="w-fit rounded-[2px] bg-white text-black !text-[10px] mt-4 ml-auto text-xs px-2.5 text-nowrap py-1.5"
+              className="w-fit rounded-[5px] bg-black text-white !text-[10px] mt-4 ml-auto text-xs px-2.5 text-nowrap py-1.5"
             >
               I Agree to all terms & Conditions
             </button>
@@ -143,177 +143,158 @@ export default function CreateContract({ user, startupId }: Props) {
         </div>
       ) : (
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col items-center justify-center gap-8"
-          >
-            <div className="flex items-center justify-center flex-wrap gap-8">
-              <FormField
-                control={form.control}
-                disabled={isLoading || success}
-                name="amountInvested"
-                render={({ field }) => (
-                  <FormItem className="relative flex flex-col gap-1 w-screen max-w-[384px]">
-                    <FormLabel className="text-left text-white">
-                      Amount Invested
-                    </FormLabel>
-                    <FormControl>
-                      <input
-                        className="flex flex-1 px-12 placeholder:font-light py-5 rounded-[2px] outline-none"
-                        placeholder="Amount Invested"
-                        {...field}
-                        onChange={(e) => {
-                          const value = e.target.value;
-                          if (value === "") field.onChange(0);
-                          else if (numericRegex.test(value)) {
-                            field.onChange(parseFloat(value));
-                          }
-                        }}
-                      />
-                    </FormControl>
-                    <FormMessage className="absolute text-red-600 -bottom-6" />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                disabled={isLoading || success}
-                name="interestRate"
-                render={({ field }) => (
-                  <FormItem className="relative flex flex-col gap-1 w-screen max-w-[384px]">
-                    <FormLabel className="text-left text-white">
-                      Interest Rate
-                    </FormLabel>
-                    <FormControl>
-                      <input
-                        className="flex flex-1 px-12 placeholder:font-light py-5 rounded-[2px] outline-none"
-                        placeholder="Interest Rate"
-                        {...field}
-                        onChange={(e) => {
-                          const value = e.target.value;
-                          if (value === "") field.onChange(0);
-                          else if (numericRegex.test(value)) {
-                            field.onChange(parseFloat(value));
-                          }
-                        }}
-                      />
-                    </FormControl>
-                    <FormMessage className="absolute text-red-600 -bottom-6" />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                disabled={isLoading || success}
-                name="paymentInterval"
-                render={({ field }) => (
-                  <FormItem className="relative flex flex-col gap-1 w-screen max-w-[384px]">
-                    <FormLabel className="text-left text-white">
-                      Payment Interval
-                    </FormLabel>
-                    <FormControl>
-                      <select
-                        className="flex flex-1 px-12 placeholder:font-light py-5 rounded-[2px] outline-none"
-                        {...field}
-                      >
-                        <option value="">Select Payment Interval</option>
-                        <option value="month">Month</option>
-                        <option value="week">Week</option>
-                        <option value="quarter">Quarter</option>
-                        <option value="year">Year</option>
-                      </select>
-                    </FormControl>
-                    <FormMessage className="absolute text-red-600 -bottom-6" />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                disabled={isLoading || success}
-                name="maturityDate"
-                render={({ field }) => (
-                  <FormItem className="relative flex flex-col gap-1 w-screen max-w-[384px]">
-                    <FormLabel className="text-left text-white">
-                      Maturity Date
-                    </FormLabel>
-                    <FormControl>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant={"outline"}
-                              className={cn(
-                                "flex flex-1 px-12 placeholder:font-light py-5 rounded-[2px] bg-white hover:bg-white outline-none",
-                                !field.value && "text-muted-foreground"
-                              )}
-                            >
-                              {field.value ? (
-                                format(field.value, "PPP")
-                              ) : (
-                                <span>Pick a date</span>
-                              )}
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={field.value}
-                            onSelect={field.onChange}
-                            disabled={(date) => {
-                              const currentDate = new Date();
-                              currentDate.setDate(currentDate.getDate() + 7);
-                              return date < currentDate;
-                            }}
-                            initialFocus
-                            className="bg-white"
-                          />
-                        </PopoverContent>
-                      </Popover>
-                    </FormControl>
-                    <FormMessage className="absolute text-red-600 -bottom-6" />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                disabled={isLoading || success}
-                name="termSheet"
-                render={({ field }) => (
-                  <FormItem className="relative flex flex-col gap-1 w-screen max-w-[384px]">
-                    <FormLabel className="text-left text-white">
-                      Term Sheet
-                    </FormLabel>
-                    <FormControl>
-                      <>
-                        {/* <div className='flex flex-1 px-12 placeholder:font-light py-5 rounded-[2px] bg-white hover:bg-white outline-none cursor-pointer'>Upload Term Sheet</div> */}
-                        <input
-                          type="file"
-                          onChange={(e) =>
-                            field.onChange(e.target.files?.[0] || null)
-                          }
-                          onBlur={field.onBlur}
-                          name={field.name}
-                          ref={field.ref}
-                          disabled={field.disabled}
-                          className="flex flex-1 px-12 placeholder:font-light py-5 rounded-[2px] bg-white hover:bg-white outline-none cursor-pointer"
+        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col items-center justify-center gap-6 p-4">
+          <div className="flex flex-wrap justify-center gap-6 w-full max-w-2xl">
+            {/* Amount Invested */}
+            <FormField
+              control={form.control}
+              disabled={isLoading || success}
+              name="amountInvested"
+              render={({ field }) => (
+                <FormItem className="relative flex flex-col gap-1 w-full">
+                  <FormLabel className="text-left text-gray-700">Amount Invested</FormLabel>
+                  <FormControl>
+                    <input
+                      className="w-full px-4 py-3 border rounded-md outline-none"
+                      placeholder="Enter amount"
+                      {...field}
+                      value={field.value ?? ""}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        if (/^\d*\.?\d*$/.test(value)) {
+                          field.onChange(value);
+                        }
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-red-600 text-sm" />
+                </FormItem>
+              )}
+            />
+  
+            {/* Interest Rate */}
+            <FormField
+              control={form.control}
+              disabled={isLoading || success}
+              name="interestRate"
+              render={({ field }) => (
+                <FormItem className="relative flex flex-col gap-1 w-full">
+                  <FormLabel className="text-left text-gray-700">Interest Rate</FormLabel>
+                  <FormControl>
+                    <input
+                      className="w-full px-4 py-3 border rounded-md outline-none"
+                      placeholder="Enter interest rate"
+                      {...field}
+                      value={field.value ?? ""}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        if (/^\d*\.?\d*$/.test(value)) {
+                          field.onChange(value);
+                        }
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-red-600 text-sm" />
+                </FormItem>
+              )}
+            />
+  
+            {/* Payment Interval */}
+            <FormField
+              control={form.control}
+              disabled={isLoading || success}
+              name="paymentInterval"
+              render={({ field }) => (
+                <FormItem className="relative flex flex-col gap-1 w-full">
+                  <FormLabel className="text-left text-gray-700">Payment Interval</FormLabel>
+                  <FormControl>
+                    <select className="w-full px-4 py-3 border rounded-md outline-none" {...field}>
+                      <option value="">Select Payment Interval</option>
+                      <option value="month">Month</option>
+                      <option value="week">Week</option>
+                      <option value="quarter">Quarter</option>
+                      <option value="year">Year</option>
+                    </select>
+                  </FormControl>
+                  <FormMessage className="text-red-600 text-sm" />
+                </FormItem>
+              )}
+            />
+  
+            {/* Maturity Date */}
+            <FormField
+              control={form.control}
+              disabled={isLoading || success}
+              name="maturityDate"
+              render={({ field }) => (
+                <FormItem className="relative flex flex-col gap-1 w-full">
+                  <FormLabel className="text-left text-gray-700">Maturity Date</FormLabel>
+                  <FormControl>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button variant="outline" className="w-full px-4 py-3 border rounded-md bg-white outline-none">
+                          {field.value ? format(field.value, "PPP") : "Pick a date"}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          disabled={(date) => {
+                            const minDate = new Date();
+                            minDate.setDate(minDate.getDate() + 7);
+                            return date < minDate;
+                          }}
+                          initialFocus
+                          className="bg-white"
                         />
-                      </>
-                    </FormControl>
-                    <FormMessage className="absolute text-red-600 -bottom-6" />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-fit rounded-[2px] bg-white text-black mt-4 mx-auto text-sm px-2.5 text-nowrap py-1.5"
-            >
-              Submit Contract
-            </button>
-          </form>
-        </Form>
+                      </PopoverContent>
+                    </Popover>
+                  </FormControl>
+                  <FormMessage className="text-red-600 text-sm" />
+                </FormItem>
+              )}
+            />
+  
+            {/* Term Sheet Upload */}
+            <FormField
+              control={form.control}
+              disabled={isLoading || success}
+              name="termSheet"
+              render={({ field }) => (
+                <FormItem className="relative flex flex-col gap-1 w-full">
+                  <FormLabel className="text-left text-gray-700">Term Sheet</FormLabel>
+                  <FormControl>
+                    <div className="border rounded-md px-4 py-3 flex items-center justify-between bg-white">
+                      <input
+                        type="file"
+                        onChange={(e) => field.onChange(e.target.files?.[0] || null)}
+                        className="hidden"
+                        id="upload"
+                      />
+                      <label htmlFor="upload" className="cursor-pointer text-blue-600">
+                        Choose File
+                      </label>
+                      <span className="text-sm text-gray-500">
+                        {field.value ? field.value.name : "No file chosen"}
+                      </span>
+                    </div>
+                  </FormControl>
+                  <FormMessage className="text-red-600 text-sm" />
+                </FormItem>
+              )}
+            />
+          </div>
+  
+          {/* Submit Button */}
+          <button type="submit" className="bg-blue-600 text-white px-6 py-2 rounded-[5px] text-sm mt-4">
+            Submit Contract
+          </button>
+        </form>
+      </Form>
+  
       )}
       <Dialog open={isLoading}>
         <DialogContent className="flex items-center justify-center bg-transparent border-none shadow-none outline-none">

@@ -13,7 +13,7 @@ type Props = {
 };
 
 export default function StartUpFinancialDetailsContainer({ user }: Props) {
-  console.log(user);
+  // console.log(user);
 
   const router = useRouter();
 

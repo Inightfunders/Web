@@ -114,6 +114,7 @@ export const getUser = cache(async () => {
       role: true,
       first_name: true,
       last_name: true,
+      profile_img: true,
       plaid_id: true,
       dwolla_customer_id: true,
       dwolla_customer_url: true

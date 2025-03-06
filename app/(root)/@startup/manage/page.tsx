@@ -7,7 +7,7 @@ import PitchDeck from "./pitch-deck";
 import TaxReturns from "./tax-returns";
 import FinancialStatements from "./financial-statements";
 import LegalDocuments from "./legal-documents";
-import Others from "./others";
+import OtherDocuments from "./other-documents";
 
 type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
@@ -121,7 +121,7 @@ export default function OffersPage({ searchParams }: Props) {
           <Suspense
             fallback={<Loader2 className="animate-spin text-white" size={24} />}
           >
-            <Others />
+            <OtherDocuments />
           </Suspense>
         ) : (
           <Suspense

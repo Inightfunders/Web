@@ -60,8 +60,8 @@ export default async function StartUpsInvestors({
   contracts,
   searchParams,
 }: Props) {
-  console.log(contracts);
-  console.log(searchParams);
+  // console.log(contracts);
+  // console.log(searchParams);
   const contractsWithInvestors = await Promise.all(
     contracts.map(async (contract) => {
       const investor = await getInvestor(contract.investor_id);
@@ -86,73 +86,69 @@ export default async function StartUpsInvestors({
   const prevAvailable = page > 1;
 
   return (
-    <div>
-      <table className="w-full">
-        <thead>
-          <tr className="bg-[#FAFAFA] text-sm">
-            <th className="text-[12px] text-center p-[22px] font-medium font-Montserrat text-[#1A1A1A] leading-[14px]">
-              Lender Name
-            </th>
-            <th className="text-[12px] text-center p-[22px] font-medium font-Montserrat text-[#1A1A1A] leading-[14px]">
-              Total Funds
-            </th>
-            <th className="text-[12px] text-center p-[22px] font-medium font-Montserrat text-[#1A1A1A] leading-[14px]">
-              Initiation Date
-            </th>
-            <th className="text-[12px] text-center p-[22px] font-medium font-Montserrat text-[#1A1A1A] leading-[14px]">
-              Loan Duration
-            </th>
-            <th className="text-[12px] text-center p-[22px] font-medium font-Montserrat text-[#1A1A1A] leading-[14px]">
-              Due Date
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {contractsWithInvestors.length > 0 ? (
-            contractsWithInvestors
-              .slice(startIndex - 1, endIndex)
-              .map((lender, index) => (
-                <tr key={index}>
-                  <td className="border-0 p-0">
-                    <InvestorNameDialog
-                      investor={lender.investor!}
-                      name={`${lender.investor?.user.first_name} ${lender.investor?.user.last_name}`}
-                    />
-                  </td>
-                  <td
-                    className={`p-[22px] bg-[#FEFFFE] font-Montserrat text-[12px]`}
-                  >
-                    {formatCurrency(Number(lender.amount_invested))}
-                  </td>
-                  <td
-                    className={`p-[22px] bg-[#EAEAEA] font-Montserrat text-[13px]`}
-                  >
-                    {formatDate(new Date(lender.createdAt!))}
-                  </td>
-                  <td
-                    className={`p-[22px] bg-[#FEFFFE] font-Montserrat text-[13px]`}
-                  >
-                    {getMonthsDifference(
-                      new Date(lender.createdAt!),
-                      new Date(lender.maturity_date!)
-                    )}{" "}
-                    months
-                  </td>
-                  <td
-                    className={`p-[22px] bg-[#EAEAEA] font-Montserrat text-[13px]`}
-                  >
-                    {lender.maturity_date}
-                  </td>
-                </tr>
-              ))
-          ) : (
-            <p className="min-h-[200px] flex items-center justify-center font-Montserrat">
-              No data yet!
-            </p>
-          )}
-        </tbody>
-      </table>
-      <div className="h-10 bg-[#FAFAFA] flex items-center px-4 justify-between ">
+    <>
+      <div className="w-full overflow-auto max-h-[400px] border border-gray-200">
+        <table className="w-full min-w-max">
+          <thead className="sticky top-0 bg-[#FAFAFA]">
+            <tr className="text-sm">
+              <th className="text-[12px] text-center p-[22px] font-medium font-Montserrat text-[#1A1A1A] leading-[14px]">
+                Lender Name
+              </th>
+              <th className="text-[12px] text-center p-[22px] font-medium font-Montserrat text-[#1A1A1A] leading-[14px]">
+                Total Funds
+              </th>
+              <th className="text-[12px] text-center p-[22px] font-medium font-Montserrat text-[#1A1A1A] leading-[14px]">
+                Initiation Date
+              </th>
+              <th className="text-[12px] text-center p-[22px] font-medium font-Montserrat text-[#1A1A1A] leading-[14px]">
+                Loan Duration
+              </th>
+              <th className="text-[12px] text-center p-[22px] font-medium font-Montserrat text-[#1A1A1A] leading-[14px]">
+                Due Date
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {contractsWithInvestors.length > 0 ? (
+              contractsWithInvestors
+                .slice(startIndex - 1, endIndex)
+                .map((lender, index) => (
+                  <tr key={index} className="border-b">
+                    <td className="border-0 p-0">
+                      <InvestorNameDialog
+                        investor={lender.investor!}
+                        name={`${lender.investor?.user.first_name} ${lender.investor?.user.last_name}`}
+                      />
+                    </td>
+                    <td className="p-[22px] bg-[#FEFFFE] font-Montserrat text-[12px]">
+                      {formatCurrency(Number(lender.amount_invested))}
+                    </td>
+                    <td className="p-[22px] bg-[#EAEAEA] font-Montserrat text-[13px]">
+                      {formatDate(new Date(lender.createdAt!))}
+                    </td>
+                    <td className="p-[22px] bg-[#FEFFFE] font-Montserrat text-[13px]">
+                      {getMonthsDifference(
+                        new Date(lender.createdAt!),
+                        new Date(lender.maturity_date!)
+                      )}{" "}
+                      months
+                    </td>
+                    <td className="p-[22px] bg-[#EAEAEA] font-Montserrat text-[13px]">
+                      {lender.maturity_date}
+                    </td>
+                  </tr>
+                ))
+            ) : (
+              <tr>
+                <td colSpan={5} className="py-8 font-Montserrat text-white">
+                  No data
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+      <div className="h-10 bg-[#FAFAFA] flex items-center px-4 justify-between">
         <p className="text-xs font-medium font-Montserrat">
           Showing {startIndex} - {endIndex}
         </p>
@@ -177,6 +173,6 @@ export default async function StartUpsInvestors({
           </Link>
         </div>
       </div>
-    </div>
+    </>
   );
 }
