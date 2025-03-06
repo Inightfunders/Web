@@ -50,7 +50,9 @@ export default function OtherDocumentsActionBtns({ document_link, otherDocuments
 
         if(!uploadedFile) return
 
-        const newFileName = `${nanoid(30)}.xlsx`
+        const fileExtension = uploadedFile.name.split('.').pop();
+
+        const newFileName = `${nanoid(30)}.${fileExtension}`;
 
         const { error: storageError } = await supabase.storage.from('otherDocuments').upload(newFileName, uploadedFile)
 

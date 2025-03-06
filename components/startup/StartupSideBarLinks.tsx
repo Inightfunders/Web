@@ -12,6 +12,10 @@ type Props = {
   taxReturns: any;
   financialStatements: any;
   legalDocuments: any;
+  otherDocuments: any;
+  financialProjection: any;
+  bankStatements: any;
+  nda: any;
 };
 
 export default function StartupSideBarLinks({
@@ -20,6 +24,10 @@ export default function StartupSideBarLinks({
   taxReturns,
   financialStatements,
   legalDocuments,
+  otherDocuments,
+  financialProjection,
+  bankStatements,
+  nda
 }: Props) {
   const pathname = usePathname();
   const [isReferralOpen, setIsReferralOpen] = useState(false);
@@ -40,7 +48,11 @@ export default function StartupSideBarLinks({
       capTable?.length === 0 ||
       taxReturns?.length === 0 ||
       financialStatements?.length === 0 ||
-      legalDocuments?.length === 0
+      legalDocuments?.length === 0 ||
+      otherDocuments?.length === 0 ||
+      financialProjection?.length === 0 ||
+      bankStatements?.length === 0 ||
+      nda?.length === 0
     ) {
       setHasDocuments(true);
     } else {

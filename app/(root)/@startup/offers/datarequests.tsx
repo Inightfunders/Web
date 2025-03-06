@@ -11,7 +11,7 @@ export default async function DataRequests() {
   return (
     <section className="flex flex-1 items-start justify-between gap-6 h-screen py-12 px-12 flex-wrap">
       {requests.length ? (
-        requests.map(({ investor, id }) => (
+        requests.map(({ investor, id, accepted }) => (
           <div className="flex flex-col gap-4 px-6 items-start justify-center bg-white w-[310px] rounded-[8px] h-[150px] py-4">
             <div className="flex gap-2">
               <Image
@@ -29,7 +29,7 @@ export default async function DataRequests() {
                 </p>
               </div>
             </div>
-            <ActionButtons user={user!} requestId={id!} />
+            <ActionButtons user={user!} requestId={id!} accepted={accepted!} />
           </div>
         ))
       ) : (

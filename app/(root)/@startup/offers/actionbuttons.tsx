@@ -7,12 +7,13 @@ import { useState } from "react";
 type Props = {
   user: UserType;
   requestId: number;
+  accepted: boolean;
 };
 
-export default function ActionButtons({ user, requestId }: Props) {
+export default function ActionButtons({ user, requestId, accepted  }: Props) {
   const [loading, setLoading] = useState(false);
 
-  console.log({ user, requestId });
+  // console.log({ user, requestId });
 
   const handleAccept = async () => {
     setLoading(true);
@@ -30,17 +31,19 @@ export default function ActionButtons({ user, requestId }: Props) {
     <div className={cn("flex gap-4", loading && "opacity-50")}>
       <button
         onMouseDown={handleReject}
-        disabled={loading}
+        disabled={loading || accepted}
         className="bg-black rounded-[8px] w-24 h-10 text-white font-semibold text-sm"
       >
         Decline
       </button>
       <button
         onMouseDown={handleAccept}
-        disabled={loading}
-        className="bg-[#FF7A00] rounded-[8px] w-24 h-10 text-white font-semibold text-sm"
+        disabled={loading || accepted}
+        className={`rounded-[8px] w-24 h-10 text-white font-semibold text-sm ${
+          accepted ? "bg-green-500" : "bg-[#FF7A00]"
+        }`}
       >
-        Accept
+        {accepted ? "Accepted" : "Accept"}
       </button>
     </div>
   );

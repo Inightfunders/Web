@@ -285,6 +285,7 @@ export type Database = {
           company_email: string | null
           company_name: string | null
           company_website: string | null
+          created_at: string
           future_investment_amount:
             | Database["public"]["Enums"]["future_investment_amounts"]
             | null
@@ -315,6 +316,7 @@ export type Database = {
           company_email?: string | null
           company_name?: string | null
           company_website?: string | null
+          created_at?: string
           future_investment_amount?:
             | Database["public"]["Enums"]["future_investment_amounts"]
             | null
@@ -345,6 +347,7 @@ export type Database = {
           company_email?: string | null
           company_name?: string | null
           company_website?: string | null
+          created_at?: string
           future_investment_amount?:
           | Database["public"]["Enums"]["future_investment_amounts"]
           | null
@@ -697,6 +700,7 @@ export type Database = {
             | Database["public"]["Enums"]["business_structure"]
             | null
           company_name: string | null
+          created_at: string
           EIN: string | null
           email: string | null
           id: number
@@ -717,6 +721,7 @@ export type Database = {
             | Database["public"]["Enums"]["business_structure"]
             | null
           company_name?: string | null
+          created_at?: string
           EIN?: string | null
           email?: string | null
           id?: number
@@ -737,6 +742,7 @@ export type Database = {
             | Database["public"]["Enums"]["business_structure"]
             | null
           company_name?: string | null
+          created_at?: string
           EIN?: string | null
           email?: string | null
           id?: number

@@ -42,7 +42,9 @@ export default function UploadFinancialProjection()
 
         const supabase = createClient()
 
-        const fileName = `${nanoid(30)}.xlsx`
+        const fileExtension = values.document.name.split('.').pop();
+
+        const fileName = `${nanoid(30)}.${fileExtension}`;
 
         const { error: storageError } = await supabase.storage.from('financialProjection').upload(fileName, values.document)
 

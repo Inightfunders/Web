@@ -52,7 +52,9 @@ export default function CapTableActionBtns({ document_link, capTableId }: { docu
 
         if(!uploadedFile) return
 
-        const newFileName = `${nanoid(30)}.xlsx`
+        const fileExtension = uploadedFile.name.split('.').pop();
+
+        const newFileName = `${nanoid(30)}.${fileExtension}`;
 
         const { error: storageError } = await supabase.storage
             .from('capTables')
