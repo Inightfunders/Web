@@ -133,7 +133,7 @@ export default function StartupSideBarLinks({
         </button>
 
         {isReferralOpen && (
-          <div className="bg-gray-800 absolute w-100 right-1">
+          <div className="bg-gray-800 flex flex-col">
             <Link
               href="/referral"
               className={cn(

@@ -163,7 +163,7 @@ export const submitApplication = async () => {
 
     const { error: submitError } = await supabase.from('startups').update({
         submitted: true,
-        // accepted: true
+        accepted: true
     }).eq('id', data.id)
 
     if(submitError) return { error: submitError.message }

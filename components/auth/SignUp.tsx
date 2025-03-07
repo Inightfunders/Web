@@ -38,12 +38,16 @@ export default function SignIn() {
     email?: string;
     password?: string;
   }>({});
+  const searchParams = useSearchParams();
+  const value = searchParams.get("key");
+
   type signUpValues = {
     email: string;
     password: string;
     firstName?: string;
     lastName?: string;
     role: 'startup' | 'investor' | 'partner';
+    ref: string;
   };
 
   const handleValueInitialization = () => {
@@ -109,11 +113,11 @@ export default function SignIn() {
         password,
         firstName,
         lastName,
-        role
+        role,
+        ref: value ?? ""
       };
 
       const result = await signUp(values);
-     
 
 
       if (result.error) {
