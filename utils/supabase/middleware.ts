@@ -4,6 +4,7 @@ import { type NextRequest, NextResponse } from "next/server";
 export const updateSession = async (request: NextRequest) => {
   try {
     const response = NextResponse.next();
+    response.headers.set('x-pathname', request.nextUrl.pathname)
 
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,

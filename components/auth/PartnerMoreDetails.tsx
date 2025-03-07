@@ -1,20 +1,8 @@
 'use client';
 
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from '@/components/ui/form';
-import { partnerMoreDetailsSchema } from '@/lib/validations/authSchema';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
+import { Loader2 } from 'lucide-react';
 import { UserType } from '@/lib/types/user';
 import { getUser, upsertPartner } from '@/lib/actions/auth';
 
@@ -29,6 +17,13 @@ export default function PartnerMoreDetails({ searchParams, user }: Props) {
 
   const [open, setOpen] = useState(false);
   const [isPending, setIsPending] = useState(false);
+  const [occupation, setOccupation] = useState('');
+  const [companyName, setCompanyName] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<{
+    occupation?: string;
+    companyName?: string;
+  }>({});
 
   useEffect(() => {
     if (error) {
@@ -40,19 +35,26 @@ export default function PartnerMoreDetails({ searchParams, user }: Props) {
 
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof partnerMoreDetailsSchema>>({
-    resolver: zodResolver(partnerMoreDetailsSchema),
-    defaultValues: {
-      occupation: '',
-      companyName: ''
-    }
-  });
+  const validateFields = () => {
+    let validationErrors: { occupation?: string; companyName?: string } = {};
 
-  const onSubmit = async (values: z.infer<typeof partnerMoreDetailsSchema>) => {
-    const { occupation, companyName } = values;
+    if (!occupation.trim())
+      validationErrors.occupation = 'Occupation is required';
+    if (!companyName.trim())
+      validationErrors.companyName = 'Company Name is required';
+
+    setErrors(validationErrors);
+    return Object.keys(validationErrors).length === 0;
+  };
+
+  const handleSubmit = async () => {
+    if (!validateFields()) return;
+
+    setLoading(true);
     try {
       const currentUser = await getUser();
       if (!currentUser) {
+        setLoading(false);
         router.push('/');
         return;
       }
@@ -62,6 +64,7 @@ export default function PartnerMoreDetails({ searchParams, user }: Props) {
         occupation,
         companyName
       });
+      setLoading(false);
 
       if (success) {
         router.push('/');
@@ -71,56 +74,65 @@ export default function PartnerMoreDetails({ searchParams, user }: Props) {
     }
   };
 
+  const handleInputChange = (
+    field: 'occupation' | 'companyName',
+    value: string
+  ) => {
+    if (field === 'occupation') {
+      setOccupation(value);
+      if (errors.occupation)
+        setErrors((prev) => ({ ...prev, occupation: undefined }));
+    } else {
+      setCompanyName(value);
+      if (errors.companyName)
+        setErrors((prev) => ({ ...prev, companyName: undefined }));
+    }
+  };
+
   return (
-    <>
-      <Form {...form}>
-        <form
-          className="space-y-8 max-w-[90vw] flex flex-col gap-4 pb-8 ipfield"
-          onSubmit={form.handleSubmit(onSubmit)}
-        >
-          <FormField
-            control={form.control}
-            disabled={isPending}
-            name="occupation"
-            render={({ field }) => (
-              <FormItem className="relative flex flex-col gap-1 !mt-0 max-w-[450px]">
-                <FormControl>
-                  <input
-                    className="flex flex-1 px-6 placeholder:font-light py-3.5 text-sm rounded-[8px] outline-none"
-                    placeholder="Occupation"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="block !mt-0 text-red-600" />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            disabled={isPending}
-            name="companyName"
-            render={({ field }) => (
-              <FormItem className="relative flex flex-col gap-1 !mt-0 max-w-[450px]">
-                <FormControl>
-                  <input
-                    className="flex flex-1 px-6 placeholder:font-light py-3.5 text-sm rounded-[8px] outline-none"
-                    placeholder="Company name"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="block !mt-0 text-red-600" />
-              </FormItem>
-            )}
-          />
-          <button
-            type="submit"
-            disabled={isPending}
-            className="w-full !mt-4 bg-[#FF7A00] text-white font-bold rounded-[8px] mx-auto py-3.5 text-sm px-4 max-w-[216px] disabled:opacity-70"
-          >
-            Continue
-          </button>
-        </form>
-      </Form>
-    </>
+    <div className="space-y-8 max-w-[90vw] flex flex-col gap-4 pb-8 ipfield">
+      <div className="flex flex-col">
+        <input
+          type="text"
+          value={occupation}
+          onChange={(e) => handleInputChange('occupation', e.target.value)}
+          className={`flex flex-1 px-6 placeholder:font-light py-3.5 text-sm rounded-[8px] outline-none w-screen max-w-[450px] ${
+            errors.occupation ? 'border-red-500' : ''
+          }`}
+          placeholder="Occupation"
+        />
+        {errors.occupation && (
+          <p className="text-red-500 text-xs mt-1">{errors.occupation}</p>
+        )}
+      </div>
+
+      <div className="flex flex-col">
+        <input
+          type="text"
+          value={companyName}
+          onChange={(e) => handleInputChange('companyName', e.target.value)}
+          className={`flex flex-1 px-6 placeholder:font-light py-3.5 text-sm rounded-[8px] outline-none w-screen max-w-[450px] ${
+            errors.companyName ? 'border-red-500' : ''
+          }`}
+          placeholder="Company Name"
+        />
+        {errors.companyName && (
+          <p className="text-red-500 text-xs mt-1">{errors.companyName}</p>
+        )}
+      </div>
+
+      <button
+        disabled={loading}
+        className="w-full !mt-4 bg-[#FF7A00] text-white font-bold rounded-[8px] mx-auto py-3.5 text-sm px-4 max-w-[216px] disabled:opacity-70"
+        type="submit"
+        onClick={() => handleSubmit()}
+      >
+        {loading ? (
+          <Loader2 stroke="#fff" className="animate-spin mx-auto" />
+        ) : (
+          'Continue'
+        )}
+      </button>
+    </div>
   );
 }
