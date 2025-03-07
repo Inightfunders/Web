@@ -308,7 +308,7 @@ export default function PersonalDetails({ searchParams, user }: Props) {
             className={`flex flex-1 px-6 placeholder:font-light py-3.5 text-sm rounded-[8px] outline-none w-full max-w-[450px] ${
               errors.ssn ? 'border-red-500' : ''
             }`}
-            placeholder="SSN e.g. XXX-XX-XXXX"
+            placeholder="SSN XXX-XX-XXXX"
           />
           {errors.ssn && (
             <p className="text-red-500 text-xs mt-1">{errors.ssn}</p>
@@ -322,7 +322,7 @@ export default function PersonalDetails({ searchParams, user }: Props) {
             className={`flex flex-1 px-6 placeholder:font-light py-3.5 text-sm rounded-[8px] outline-none w-full max-w-[450px] ${
               errors.dob ? 'border-red-500' : ''
             }`}
-            placeholder="DOB e.g. MM/DD/YYYY"
+            placeholder="DOB MM/DD/YYYY"
           />
           {errors.dob && (
             <p className="text-red-500 text-xs mt-1">{errors.dob}</p>

@@ -133,10 +133,11 @@ export default function StartUpFinancialDetailsContainer({ user }: Props) {
             </p>
             <input
               type="text"
-              value={recentRaise}
+              value={recentRaise.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
               onChange={(e) => {
-                if (/^\d*$/.test(e.target.value)) {
-                  setRecentRaise(e.target.value);
+                const rawValue = e.target.value.replace(/,/g, ''); // Remove commas
+                if (/^\d*$/.test(rawValue)) {
+                  setRecentRaise(rawValue);
                   if (errors.recentRaise)
                     setErrors((prev) => ({ ...prev, recentRaise: undefined }));
                 }
@@ -144,7 +145,7 @@ export default function StartUpFinancialDetailsContainer({ user }: Props) {
               className={`flex flex-1 px-6 placeholder:font-light py-3.5 text-sm rounded-[8px] outline-none w-full max-w-[450px] ${
                 errors.recentRaise ? 'border-red-500' : ''
               }`}
-              placeholder="e.g. 15000"
+              placeholder=""
             />
           </div>
           {errors.recentRaise && (
