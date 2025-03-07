@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import InvestorModal from "@/components/modal/investorModals/requestDataModal";
+// import InvestorModal from "@/components/modal/investorModals/requestDataModal";
 
 export default function RequestDataContainer() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -15,10 +15,10 @@ export default function RequestDataContainer() {
         Request more data
       </button>
 
-       <InvestorModal
+       {/* <InvestorModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-      /> 
+      />  */}
     </>
   );
 }
