@@ -33,7 +33,7 @@ export default async function SingleStartUpPage({ params }: Props) {
 
   const startup = startUpDetails[0].startup;
 
-  console.log({ startup: JSON.stringify(startUpDetails) });
+  // console.log({ startup: JSON.stringify(startUpDetails) });
 
   return (
     <section className="relative flex flex-col flex-1 font-Montserrat items-center justify-start gap-1 h-screen max-h-screen px-4 overflow-auto">

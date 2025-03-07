@@ -128,7 +128,7 @@ export const createContract = async (data: { amountInvested: number, interestRat
     const user = await getUser()
 
     if(user?.userInvestor?.id !== data.investorId) return { error: 'You are not authorized to create a contract for this startup' }
-
+ 
     const [contractId, startUpUser] = await Promise.all([
         db.insert(contracts).values({
             id: sql`DEFAULT`,
@@ -169,7 +169,7 @@ export const createContract = async (data: { amountInvested: number, interestRat
 }
 
 export const payContractAmount = async (contractId: number) => {
-    const user = await getUser()
+    const user = await getUser();
 
     await db.transaction(async (trx) => {
         const contract = await trx.query.contracts.findFirst({

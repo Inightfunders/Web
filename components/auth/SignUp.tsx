@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
+import { useSearchParams } from "next/navigation";
 import {
   ArrowLeft,
   CheckCircle2,
@@ -112,6 +113,8 @@ export default function SignIn() {
       };
 
       const result = await signUp(values);
+     
+
 
       if (result.error) {
         console.log('signup error: ', result.error);

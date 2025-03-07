@@ -39,7 +39,7 @@ const numericRegex = /^-?\d*\.?\d+(?:[eE][-+]?\d+)?$/;
 export default function CreateContract({ user, startupId }: Props) {
   const router = useRouter();
 
-  console.log({ user });
+  // console.log({ user });
 
   const [isLoading, setIsLoading] = useState(false);
   const [signedAgreement, setSignedAgreement] = useState(false);
@@ -80,7 +80,7 @@ export default function CreateContract({ user, startupId }: Props) {
     const {
       data: { publicUrl },
     } = supabase.storage.from("termSheets").getPublicUrl(fileName);
-
+    console.log("data", publicUrl);
     const { error } = await createContract({ ...values, termSheet: publicUrl });
 
     if (error) setError(error);

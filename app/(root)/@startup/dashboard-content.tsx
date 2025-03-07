@@ -13,7 +13,7 @@ export default async function DashboardContent({
 }) {
   const user = await getUser();
   const startupContracts = await getContracts(user?.userStartUp?.id!);
-
+//  console.log("contract",startupContracts);
   const totalAmountInvested = startupContracts.acceptedContracts?.reduce(
     (acc, contract) =>
       acc +
@@ -29,7 +29,7 @@ export default async function DashboardContent({
       (contract.investment_amount_paid && contract.total_return_paid
         ? parseFloat(contract.total_return_paid)
         : 0),
-    0
+    0                                                                                                 
   );
 
   const availableBalance = startupContracts.acceptedContracts?.reduce(

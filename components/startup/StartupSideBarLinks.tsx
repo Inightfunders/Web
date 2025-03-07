@@ -38,7 +38,7 @@ export default function StartupSideBarLinks({
     const storedData = localStorage.getItem("hamburgerState");
     if (storedData) {
       setData(JSON.parse(storedData));
-      console.log("data", data);
+      // console.log("data", data);
     }
   }, []);
 
