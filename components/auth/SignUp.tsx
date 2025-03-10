@@ -1,8 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { cn } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import Link from 'next/link';
 import {
   ArrowLeft,
   CheckCircle2,
@@ -11,19 +12,19 @@ import {
   EyeOff,
   Loader2
 } from 'lucide-react';
-import { signUp } from '@/lib/actions/auth';
-import Link from 'next/link';
-import '../../app/globals.css';
-import { useRouter } from 'next/navigation';
 
-export default function SignIn() {
+import '../../app/globals.css';
+
+import { cn, isValidPassword } from '@/lib/utils';
+import { signUp } from '@/lib/actions/auth';
+import { RoleSelector, Role } from '@/components/auth/role-selector';
+
+export default function SignUp() {
   const [lastAttempt, setLastAttempt] = useState<number>(0);
   const COOLDOWN_PERIOD = 60000; // 1 minute in milliseconds
   const router = useRouter();
   const [rolePage, setRolePage] = useState(true);
-  const [role, setRole] = useState<'startup' | 'investor' | 'partner'>(
-    'startup'
-  );
+  const [role, setRole] = useState<Role>('startup');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -80,10 +81,13 @@ export default function SignIn() {
       validationErrors.email = 'Invalid email format';
     }
 
+    // Passwords must have 6 characters, 1 uppercase character, 1 lowercase character, 1 number, 1 non-alphanumeric character.
     if (!password.trim()) {
       validationErrors.password = 'Password is required';
     } else if (password.length < 8) {
       validationErrors.password = 'Password must be at least 8 characters';
+    } else if (!isValidPassword(password)) {
+      validationErrors.password = "Password doesn't meet requirements.";
     }
 
     setErrors(validationErrors);
@@ -162,100 +166,7 @@ export default function SignIn() {
             Select an option from below
           </p>
 
-          <div className="flex flex-col space-y-3 justify-center items-center">
-            {/* Borrower Option */}
-            <div
-              className={cn(
-                'm-auto flex justify-between items-start p-4 pb-6 gap-4 max-w-[360px] border-2 rounded-[12px] bg-white cursor-pointer selectcard',
-                role === 'startup' ? 'border-[#FF7A00]' : 'border-white'
-              )}
-              onClick={() => setRole('startup')}
-            >
-              <div className="flex gap-4 pl-2 items-center">
-                {role !== 'startup' ? (
-                  <Circle size={24} fill="#fff" stroke="#00000080" />
-                ) : (
-                  <CheckCircle2 size={24} fill="#FF7A00" stroke="#fff" />
-                )}
-                <div className="flex flex-col gap-1">
-                  <p className="text-black font-semibold text-base">Borrower</p>
-                  <p className="text-black text-xs leading-5">
-                    I am a borrower, looking for funding.
-                  </p>
-                </div>
-              </div>
-              <input
-                type="radio"
-                name="role"
-                value="startup"
-                checked={role === 'startup'}
-                onChange={() => setRole('startup')}
-                className="hidden"
-              />
-            </div>
-
-            {/* Lender Option */}
-            <div
-              className={cn(
-                'm-auto flex justify-between items-start p-4 pb-6 gap-4 max-w-[360px] border-2 rounded-[12px] bg-white cursor-pointer selectcard',
-                role === 'investor' ? 'border-[#FF7A00]' : 'border-white'
-              )}
-              onClick={() => setRole('investor')}
-            >
-              <div className="flex gap-4 pl-2 items-center">
-                {role !== 'investor' ? (
-                  <Circle size={24} fill="#fff" stroke="#00000080" />
-                ) : (
-                  <CheckCircle2 size={24} fill="#FF7A00" stroke="#fff" />
-                )}
-                <div className="flex flex-col gap-1">
-                  <p className="text-black font-semibold text-base">Lender</p>
-                  <p className="text-black text-xs leading-5">
-                    I am a lender, looking for deals.
-                  </p>
-                </div>
-              </div>
-              <input
-                type="radio"
-                name="role"
-                value="investor"
-                checked={role === 'investor'}
-                onChange={() => setRole('investor')}
-                className="hidden"
-              />
-            </div>
-
-            {/* Partner Option */}
-            <div
-              className={cn(
-                'm-auto flex justify-between items-start p-4 pb-6 gap-4 max-w-[360px] border-2 rounded-[12px] bg-white cursor-pointer selectcard',
-                role === 'partner' ? 'border-[#FF7A00]' : 'border-white'
-              )}
-              onClick={() => setRole('partner')}
-            >
-              <div className="flex gap-4 pl-2 items-center">
-                {role !== 'partner' ? (
-                  <Circle size={24} fill="#fff" stroke="#00000080" />
-                ) : (
-                  <CheckCircle2 size={24} fill="#FF7A00" stroke="#fff" />
-                )}
-                <div className="flex flex-col gap-1">
-                  <p className="text-black font-semibold text-base">Partner</p>
-                  <p className="text-black text-xs leading-5">
-                    I am interested in becoming a referral partner
-                  </p>
-                </div>
-              </div>
-              <input
-                type="radio"
-                name="role"
-                value="partner"
-                checked={role === 'partner'}
-                onChange={() => setRole('partner')}
-                className="hidden"
-              />
-            </div>
-          </div>
+          <RoleSelector value={role} onChange={(value) => setRole(value)} />
 
           {/* Continue Button */}
           <button
