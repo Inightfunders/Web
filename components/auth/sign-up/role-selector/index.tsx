@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { RoleSelectorItem } from '@/components/auth/role-selector/item';
+import { RoleSelectorItem } from './item';
 import { cn } from '@/lib/utils';
 
 export type Role = 'startup' | 'investor' | 'partner';
