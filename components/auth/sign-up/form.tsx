@@ -149,6 +149,9 @@ export const SignUpForm: React.FC<Props> = ({ className = '' }) => {
             {form.formState.errors.password.message}
           </p>
         )}
+        <p className="text-[13px] text-[#808080] mt-1">
+          Passwords must have 8 characters, 1 uppercase character, 1 number.
+        </p>
       </div>
       <button
         className="!mt-10 bg-[#FF7A00] text-white font-bold rounded-[8px] mx-auto text-sm w-[216px] disabled:opacity-70 h-[48px]"
