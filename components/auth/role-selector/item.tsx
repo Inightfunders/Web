@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  ArrowLeft,
-  CheckCircle2,
-  Circle,
-  Eye,
-  EyeOff,
-  Loader2
-} from 'lucide-react';
+import { CheckCircle2, Circle } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Role } from '.';
