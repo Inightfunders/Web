@@ -46,7 +46,9 @@ export default function UploadOtherDocuments() {
 
     const supabase = createClient();
 
-    const fileName = `${nanoid(30)}.xlsx`;
+    const fileExtension = values.document.name.split('.').pop();
+
+    const fileName = `${nanoid(30)}.${fileExtension}`;
 
     const { error: storageError } = await supabase.storage.from("otherDocuments").upload(fileName, values.document);
 

@@ -8,7 +8,9 @@ import {
     ChartTooltip,
     ChartTooltipContent,
   } from "@/components/ui/chart"
-
+  import Highcharts from "highcharts";
+  import Highcharts3D from "highcharts/highcharts-3d";
+  import HighchartsReact from "highcharts-react-official";
 type Props = {
     contracts: {
         id: number;
@@ -33,7 +35,65 @@ export default function InvestorsChart({ contracts, totalROI }: Props)
     const expectedReturn = useMemo(() => {
         return totalROI - officialReturn
     }, [officialReturn, totalROI])
-
+    const options = {
+        chart: {
+          type: "pie",
+          backgroundColor: "transparent",
+          options3d: {
+            enabled: true,
+            alpha: 45,
+            beta: 0,
+            depth: 50,
+            viewDistance: 25,
+          },
+          height: 200,
+          width: 300,
+        },
+        title: {
+          text: "",
+        },
+        credits: {
+          enabled: false, // ✅ Disables the Highcharts watermark
+        },
+        plotOptions: {
+          pie: {
+            allowPointSelect: true,
+            cursor: "pointer",
+            depth: 50, // 3D depth
+            size: "100%",
+            dataLabels: {
+              enabled: true,
+              format: "<b>{point.percentage:.0f}%</b>",
+              distance: -50,
+              style: {
+                color: "#fff",
+                textShadow: "2px 2px 4px rgba(199, 196, 196, 0.8)",
+                fontSize: "16px",
+                fontWeight: "bold",
+              },
+            },
+            showInLegend: false, // ✅ Remove legend if needed
+          },
+        },
+        series: [
+          {
+            name: "Returns",
+            data: [
+              {
+                name: "Return",
+                y: officialReturn,
+                color: "#616161",
+              },
+              {
+                name: "Expected Return",
+                y: expectedReturn,
+                color: "#C4C4C4",
+              },
+            ],
+          },
+        ],
+      };
+    
     const chartData = useMemo(() => {
         return [
             { type: 'Return', value: officialReturn, fill: '#616161' },
@@ -57,51 +117,10 @@ export default function InvestorsChart({ contracts, totalROI }: Props)
 
     return (
         <div className="bg-[#212121] whiteText flex">
-            <div className='flex-1'>
-                <ChartContainer
-                    config={chartConfig}
-                    className="ml-auto aspect-square max-h-[250px] whiteText"
-                >
-                    <PieChart className="whiteText">
-                        <ChartTooltip
-                            cursor={false}
-                            content={<ChartTooltipContent hideLabel />}
-                        />
-                        <Pie
-                            data={chartData}
-                            dataKey="value"
-                            nameKey="type"
-                            innerRadius={60}
-                            className="whiteText"
-                            strokeWidth={5}
-                        >
-                            <Label
-                                content={({ viewBox }) => {
-                                if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                                    return (
-                                    <text
-                                        x={viewBox.cx}
-                                        y={viewBox.cy}
-                                        textAnchor="middle"
-                                        dominantBaseline="middle"
-                                        fill="#fff"
-                                    >
-                                        <tspan
-                                            x={viewBox.cx}
-                                            y={viewBox.cy}
-                                            className="whiteText text-lg font-bold"
-                                        >
-                                            Total ROI
-                                        </tspan>
-                                    </text>
-                                    )
-                                }
-                                }}
-                            />
-                        </Pie>
-                    </PieChart>
-                </ChartContainer>
-            </div>
+           {/* Highcharts Pie Chart */}
+      <div className="w-[250px] h-[250px]">
+        <HighchartsReact highcharts={Highcharts} options={options} />
+      </div>
             <div className='flex-[0.65] flex flex-col items-start justify-center gap-4 pl-12'>
                 <div className="flex items-center justify-between gap-2 min-w-[200px]">
                     <div className='w-4 h-4 bg-[#616161] rounded-full' />

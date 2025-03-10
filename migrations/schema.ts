@@ -321,6 +321,7 @@ export const startups = pgTable(
     submitted: boolean("submitted").default(false).notNull(),
     recent_raise: numeric("recent_raise"),
     stage: company_stage("stage"),
+    created_at: timestamp("created_at", { withTimezone: true, mode: "string" }).defaultNow().notNull(),
   },
   (table) => {
     return {
@@ -422,6 +423,7 @@ export const investors = pgTable(
     ),
     institution_type: institution_types("institution_type"),
     accreditation: text("accreditation"),
+    created_at: timestamp("created_at", { withTimezone: true, mode: "string" }).defaultNow().notNull(),
   },
   (table) => {
     return {

@@ -50,7 +50,9 @@ export default function FinancialProjectionActionBtns({ document_link, Financial
 
         if(!uploadedFile) return
 
-        const newFileName = `${nanoid(30)}.xlsx`
+        const fileExtension = uploadedFile.name.split('.').pop();
+
+        const newFileName = `${nanoid(30)}.${fileExtension}`;
 
         const { error: storageError } = await supabase.storage.from('financialProjection').upload(newFileName, uploadedFile)
 

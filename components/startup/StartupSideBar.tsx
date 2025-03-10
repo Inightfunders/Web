@@ -11,6 +11,10 @@ import {
   getLegalDocuments,
   getPitchDeck,
   getTaxReturns,
+  getOtherDocuments,
+  getFinancialProjection,
+  getBankStatements,
+  getNda
 } from "@/lib/actions/startup";
 
 type Props = {
@@ -24,6 +28,10 @@ export default async function StartupSideBar() {
   const taxReturns = await getTaxReturns();
   const financialStatements = await getFinancialStatements();
   const legalDocuments = await getLegalDocuments();
+  const otherDocuments = await getOtherDocuments();
+  const financialProjection = await getFinancialProjection();
+  const bankStatements = await getBankStatements();
+  const nda = await getNda();
 
   return (
     <aside className="bg-[#212121] h-screen flex w-[250px] flex-col items-center justify-between py-6 sidebardashboard ">
@@ -40,6 +48,10 @@ export default async function StartupSideBar() {
           taxReturns={taxReturns}
           financialStatements={financialStatements}
           legalDocuments={legalDocuments}
+          otherDocuments={otherDocuments}
+          financialProjection={financialProjection}
+          bankStatements={bankStatements}
+          nda={nda}
         />
       </div>
       <LogOutSlider />

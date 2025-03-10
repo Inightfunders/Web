@@ -46,33 +46,24 @@ export default async function DashboardContent({
     `$${Intl.NumberFormat("us").format(value)}`;
 
   return (
-    <div
-      className="w-full mx-auto space-y-6 my-8 data_room_section
-      max-w-[800px]                     
-      lg:max-w-[850px]                 
-      xl:max-w-[923px]                  
-      2xl:max-w-[1200px]               
-      3xl:max-w-[1700px]              
-      4xl:max-w-[1800px]"
-    >
+    <div className="w-full mx-auto space-y-6 my-8 px-4 sm:px-6 lg:px-8 borrower_dashboard">
       {/* Top Section */}
-      <div className="flex gap-[21px] lg:flex-row md:flex-col data_room_section_1 ">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Left Stats */}
-        <div className="flex flex-col justify-between space-y-[20px] min-w-[332px]">
+        <div className="flex flex-col space-y-6">
           <DashboardCard
             title="Total Funds"
-            value={`${
-              totalAmountInvested && formatCurrency(totalAmountInvested)
-            }`}
-            className="h-[calc(50%-12px)] text-center content-center"
+            value={totalAmountInvested ? formatCurrency(totalAmountInvested) : "$0"}
+            className="text-center content-center w-full h-full"
           />
           <DashboardCard
             title="Available Balance"
-            value={`${availableBalance && formatCurrency(availableBalance)}`}
-            className="h-[calc(50%-12px)] text-center content-center"
+            value={availableBalance ? formatCurrency(availableBalance) : "$0"}
+            className="text-center content-center w-full h-full"
           />
         </div>
 
+        {/* Right Chart */}
         <div className="w-full">
           <CustomStartupChart
             totalAmountInvested={totalAmountInvested!}
@@ -82,7 +73,8 @@ export default async function DashboardContent({
         </div>
       </div>
 
-      <div className="ml-1">
+      {/* Investors Section */}
+      <div className="w-full">
         <StartUpsInvestors
           searchParams={searchParams}
           contracts={startupContracts.acceptedContracts!}
@@ -91,3 +83,4 @@ export default async function DashboardContent({
     </div>
   );
 }
+
