@@ -1,30 +1,36 @@
-import clsx, { ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import clsx, { ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
 export const stringToUuid = (str: string) => {
   str = str.replaceAll('-', '');
-  return 'xxxxxxxx-xxxx-4xxx-xxxx-xxxxxxxxxxxx'.replace(/[x]/g, function(c, p) {
-    return str[p % str.length];
-  });
-}
+  return 'xxxxxxxx-xxxx-4xxx-xxxx-xxxxxxxxxxxx'.replace(
+    /[x]/g,
+    function (c, p) {
+      return str[p % str.length];
+    }
+  );
+};
 
 export const parseStringify = (value: any) => JSON.parse(JSON.stringify(value));
 
-export const encryptId = (id: string) =>  btoa(id);
+export const encryptId = (id: string) => btoa(id);
 
 export function extractCustomerIdFromUrl(url: string) {
-    const parts = url.split("/");
+  const parts = url.split('/');
 
-    const customerId = parts[parts.length - 1];
+  const customerId = parts[parts.length - 1];
 
-    return customerId;
+  return customerId;
 }
 
-export function getNextDueDate(createdAt: Date, paymentInterval: 'week' | 'year' | 'quarter' | 'month'): Date {
+export function getNextDueDate(
+  createdAt: Date,
+  paymentInterval: 'week' | 'year' | 'quarter' | 'month'
+): Date {
   const currentDate = new Date();
   let nextDueDate = new Date(createdAt);
 
@@ -51,10 +57,14 @@ export function getNextDueDate(createdAt: Date, paymentInterval: 'week' | 'year'
 function getOrdinalSuffix(day: number) {
   if (day > 3 && day < 21) return 'th';
   switch (day % 10) {
-    case 1:  return "st";
-    case 2:  return "nd";
-    case 3:  return "rd";
-    default: return "th";
+    case 1:
+      return 'st';
+    case 2:
+      return 'nd';
+    case 3:
+      return 'rd';
+    default:
+      return 'th';
   }
 }
 
@@ -64,10 +74,17 @@ export function formatDate(date: Date) {
     month: 'long',
     day: 'numeric'
   });
-  
+
   // Add the ordinal suffix to the day
   const day = date.getDate();
   const suffix = getOrdinalSuffix(day);
-  
+
   return formattedDate.replace(/\d+/, `${day}${suffix}`);
+}
+
+export function isValidPassword(password: string) {
+  const regExp =
+    /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\-/@#$%{}^&_+=()!,<>?:;*]).{6,}$/;
+  //	const regExp = /^(?=.*[\\d])(?=.*[A-Z])[\\w!@#$%^&*-:;<>.,]{8,}$/
+  return regExp.test(password);
 }
