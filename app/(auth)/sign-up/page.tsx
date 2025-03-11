@@ -1,5 +1,5 @@
 'use client';
-import SignUp from '@/components/auth/SignUp';
+import SignUp from '@/components/auth/sign-up';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import Image from 'next/image';
 import Link from 'next/link';
