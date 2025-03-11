@@ -9,9 +9,9 @@ import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { cache } from 'react';
 import { db } from '@/db';
-import { users } from "@/migrations/schema"
+import { users } from '@/migrations/schema';
 import { getAllReferredUsers } from './startup';
-import { or, inArray } from "drizzle-orm";
+import { or, inArray } from 'drizzle-orm';
 
 export const signUp = async (values: z.infer<typeof signUpSchema>) => {
   const supabase = createClient();
@@ -27,13 +27,11 @@ export const signUp = async (values: z.infer<typeof signUpSchema>) => {
         data: {
           first_name: firstName,
           last_name: lastName,
-          role,
-         
-        },
-      },
-      
+          role
+        }
+      }
     });
-    console.log("user" , data)
+    console.log('user', data);
     if (signUpError) {
       return {
         error: signUpError.message
@@ -53,7 +51,7 @@ export const signUp = async (values: z.infer<typeof signUpSchema>) => {
       last_name: lastName,
       role,
       ref: ref,
-      plaid_id: nanoid(30),
+      plaid_id: nanoid(30)
     });
 
     if (insertError) {
@@ -63,7 +61,7 @@ export const signUp = async (values: z.infer<typeof signUpSchema>) => {
     }
 
     if (role === 'partner') {
-      await upsertPartner({userId: data.user.id})
+      await upsertPartner({ userId: data.user.id });
     }
 
     return {
@@ -215,25 +213,29 @@ export const getReferredUsers = cache(async (id: string) => {
       plaid_id: true,
       dwolla_customer_id: true,
       dwolla_customer_url: true,
-      ref: true,
+      ref: true
     },
-    where: (table, { eq }) => eq(table.ref, id),
+    where: (table, { eq }) => eq(table.ref, id)
   });
 
   if (referredUsers.length === 0) {
-    return { referredUsers, referredStartups: [], referredInvestors: [], statuses: [] };
+    return {
+      referredUsers,
+      referredStartups: [],
+      referredInvestors: [],
+      statuses: []
+    };
   }
 
   const referredUserIds = referredUsers.map((user) => user.id);
 
-
   const [referredStartups, referredInvestors] = await Promise.all([
     db.query.startups.findMany({
-      where: (table, { inArray }) => inArray(table.user_id, referredUserIds),
+      where: (table, { inArray }) => inArray(table.user_id, referredUserIds)
     }),
     db.query.investors.findMany({
-      where: (table, { inArray }) => inArray(table.user_id, referredUserIds),
-    }),
+      where: (table, { inArray }) => inArray(table.user_id, referredUserIds)
+    })
   ]);
 
   const referredInvestorIds = referredInvestors.map((investor) => investor.id);
@@ -244,13 +246,16 @@ export const getReferredUsers = cache(async (id: string) => {
       ? await db.query.contracts.findMany({
           where: (table) =>
             or(
-              referredInvestorIds.length > 0 ? inArray(table.investor_id, referredInvestorIds) : undefined,
-              referredStartupIds.length > 0 ? inArray(table.startup_id, referredStartupIds) : undefined
+              referredInvestorIds.length > 0
+                ? inArray(table.investor_id, referredInvestorIds)
+                : undefined,
+              referredStartupIds.length > 0
+                ? inArray(table.startup_id, referredStartupIds)
+                : undefined
             ),
-          orderBy: (table, { asc }) => asc(table.createdAt), 
+          orderBy: (table, { asc }) => asc(table.createdAt)
         })
       : [];
-
 
   const referredCombine = referredContracts.reduce((acc, contract) => {
     const investorId = String(contract.investor_id);
@@ -261,14 +266,16 @@ export const getReferredUsers = cache(async (id: string) => {
 
     if (existingEntry) return acc;
 
-    const matchedStartup = referredStartups.find((startup) => startup.id === contract.startup_id);
+    const matchedStartup = referredStartups.find(
+      (startup) => startup.id === contract.startup_id
+    );
 
     acc.push({
-      id: matchedStartup ? String(matchedStartup.user_id) : investorId, 
+      id: matchedStartup ? String(matchedStartup.user_id) : investorId,
       investor_id: investorId,
       startup_id: startupId,
-      amount_invested: Number(contract.amount_invested) * 0.02 * 0.2, 
-      accepted: contract.accepted,
+      amount_invested: Number(contract.amount_invested) * 0.02 * 0.2,
+      accepted: contract.accepted
     });
 
     return acc;
@@ -283,37 +290,41 @@ export const getReferredUsers = cache(async (id: string) => {
     );
 
     const companyName =
-      referredStartups.find((startup) => startup.user_id === user.id)?.company_name ||
-      referredInvestors.find((investor) => investor.user_id === user.id)?.company_name ||
+      referredStartups.find((startup) => startup.user_id === user.id)
+        ?.company_name ||
+      referredInvestors.find((investor) => investor.user_id === user.id)
+        ?.company_name ||
       user.first_name ||
       null;
 
     const earnings =
-      referredCombine.find((contract) => contract.id === user.id)?.amount_invested || 0;
+      referredCombine.find((contract) => contract.id === user.id)
+        ?.amount_invested || 0;
 
-    const accepted = referredCombine.find((contract) => contract.id === user.id)?.accepted;
+    const accepted = referredCombine.find(
+      (contract) => contract.id === user.id
+    )?.accepted;
 
     return {
       user_id: user.id,
       first_name: user.first_name,
       last_name: user.last_name,
-      status: isStartup || isInvestor ? "Registered" : "Pending",
+      status: isStartup || isInvestor ? 'Registered' : 'Pending',
       company_name: companyName,
       earnings: earnings,
-      accepted: accepted,
+      accepted: accepted
     };
   });
 
-  console.log("Referred Contracts:", referredCombine);
-  console.log("Statuses:", statuses);
+  console.log('Referred Contracts:', referredCombine);
+  console.log('Statuses:', statuses);
 
   return { referredUsers, referredStartups, referredInvestors, statuses };
 });
 
-
 export const createBankAccount = async ({
   userId,
-  bankId,    
+  bankId,
   accountId,
   accessToken,
   fundingSourceUrl,
@@ -359,7 +370,11 @@ export const upsertPartner = async ({
 
   const { error } = await supabase
     .from('partners')
-    .upsert({ user_id: userId, occupation: occupation, company_name: companyName })
+    .upsert({
+      user_id: userId,
+      occupation: occupation,
+      company_name: companyName
+    })
     .eq('user_id', userId);
 
   if (error) {
@@ -374,4 +389,40 @@ export const upsertPartner = async ({
   return {
     success: true
   };
+};
+
+export const getProfileImageUrl = async (
+  fileName: string,
+  expiresIn: number = 10
+) => {
+  const supabase = createClient();
+
+  const { error, data } = await supabase.storage
+    .from('profileImg')
+    .createSignedUrl(fileName, 10);
+
+  if (error) {
+    console.error(error);
+    return null;
+  }
+
+  return data.signedUrl;
+};
+
+export const updateProfileImage = async (userId: string, fileName: string) => {
+  const supabase = createClient();
+
+  const { error } = await supabase
+    .from('users')
+    .update({
+      profile_img: fileName
+    })
+    .eq('id', userId);
+
+  if (error) {
+    console.error(error);
+    return { error: error.message };
+  }
+
+  return { success: true };
 };
