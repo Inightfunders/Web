@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { Eye, EyeOff, Loader2 } from 'lucide-react';
 
 import '../../app/globals.css';
 
@@ -23,6 +24,7 @@ export function UploadProfilePicture() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [isUploaded, setUploaded] = useState(false);
+  const [isLoading, setLoading] = React.useState(false);
 
   useEffect(() => {
     handleFile(imageFile);
@@ -44,15 +46,21 @@ export function UploadProfilePicture() {
   }
 
   const handleUpload = async () => {
-    if (!imageFile) return;
+    setLoading(true);
+    if (!imageFile) {
+      setLoading(false);
+      return;
+    }
 
     if (isUploaded) {
+      setLoading(false);
       router.push('/sign-up/partner/more-details');
       return;
     }
 
     const currentUser = await getUser();
     if (!currentUser) {
+      setLoading(false);
       router.push('/');
       return;
     }
@@ -68,6 +76,7 @@ export function UploadProfilePicture() {
 
     if (uploadError) {
       console.log(uploadError);
+      setLoading(false);
       return;
     }
 
@@ -77,6 +86,7 @@ export function UploadProfilePicture() {
 
     const imageUrl = await getProfileImageUrl(fileName);
     setImageUrl(imageUrl);
+    setLoading(false);
   };
 
   return (
@@ -121,7 +131,13 @@ export function UploadProfilePicture() {
           className="w-[216px] h-[48px] gap-[10px] rounded-[8px] pt-[12px] pr-[81px] pb-[12px] pl-[81px] bg-[#FF7A00] text-white font-semibold font-montserrat text-[14px] leading-[17.07px]"
           onClick={() => handleUpload()}
         >
-          {isUploaded ? 'Continue' : 'Upload'}
+          {isLoading ? (
+            <Loader2 stroke="#fff" className="animate-spin mx-auto" />
+          ) : isUploaded ? (
+            'Continue'
+          ) : (
+            'Upload'
+          )}
         </button>
         <Link
           className="font-montserrat font-normal text-[13px] leading-[15.85px] tracking-[0%] text-gray-500 mt-[20px]"

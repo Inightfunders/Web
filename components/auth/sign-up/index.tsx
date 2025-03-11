@@ -45,7 +45,7 @@ export default function SignUp() {
         </>
       ) : (
         <>
-          <SignUpForm />
+          <SignUpForm role={role} />
           <p className="text-white font-normal !mt-4 text-sm font-Montserrat mx-auto">
             Already have an account?{' '}
             <Link
