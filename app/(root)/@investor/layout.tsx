@@ -1,13 +1,13 @@
-import InvestorSideBar from "@/components/investors/InvestorSideBar";
-import PlaidLink from "@/components/plaid/PlaidLink";
-import SignOutBtn from "@/components/startup/SignOutBtn";
-import { getUser } from "@/lib/actions/auth";
-import { getBankAccount } from "@/lib/actions/user";
-import HeaderStartUp from "../@startup/header";
-import HeaderInvestor from "./header";
+import InvestorSideBar from '@/components/investors/InvestorSideBar';
+import PlaidLink from '@/components/plaid/PlaidLink';
+import SignOutBtn from '@/components/startup/SignOutBtn';
+import { getUser } from '@/lib/actions/auth';
+import { getBankAccount } from '@/lib/actions/user';
+import HeaderStartUp from '../@startup/header';
+import HeaderInvestor from './header';
 
 export default async function InvestorLayout({
-  children,
+  children
 }: Readonly<{
   children: React.ReactNode;
 }>) {

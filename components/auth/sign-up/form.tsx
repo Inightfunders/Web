@@ -25,11 +25,14 @@ const signupSchema = z.object({
 
 type SignupFormValues = z.infer<typeof signupSchema>;
 
+type Role = 'startup' | 'investor' | 'partner';
+
 interface Props {
   className?: string;
+  role: SignupFormValues['role'];
 }
 
-export const SignUpForm: React.FC<Props> = ({ className = '' }) => {
+export const SignUpForm: React.FC<Props> = ({ className = '', role }) => {
   const router = useRouter();
 
   const form = useForm<SignupFormValues>({
@@ -39,7 +42,7 @@ export const SignUpForm: React.FC<Props> = ({ className = '' }) => {
       lastName: '',
       email: '',
       password: '',
-      role: 'startup'
+      role
     }
   });
 
@@ -63,6 +66,9 @@ export const SignUpForm: React.FC<Props> = ({ className = '' }) => {
       }
 
       const role = data.role;
+
+      console.log('role - ', role);
+
       if (role === 'partner') {
         router.push('/sign-up/partner/upload-profile-picture');
       } else {

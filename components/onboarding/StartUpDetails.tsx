@@ -1,41 +1,41 @@
-"use client";
+'use client';
 
-import { Database } from "@/types/supabase";
-import { useEffect, useState } from "react";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { Database } from '@/types/supabase';
+import { useEffect, useState } from 'react';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
-import { startUpDetailsSchema } from "@/lib/validations/onBoardingSchema";
-import { Check, Loader2, X } from "lucide-react";
-import { countryDialingCodes } from "@/constants";
+  FormMessage
+} from '@/components/ui/form';
+import Link from 'next/link';
+import { cn } from '@/lib/utils';
+import { startUpDetailsSchema } from '@/lib/validations/onBoardingSchema';
+import { Check, Loader2, X } from 'lucide-react';
+import { countryDialingCodes } from '@/constants';
 import {
   saveStartUpDetails,
-  updatePersonalDetails,
-} from "@/lib/actions/onboarding";
-import { useRouter } from "next/navigation";
+  updatePersonalDetails
+} from '@/lib/actions/onboarding';
+import { useRouter } from 'next/navigation';
 
 type Props = {
   startUpDetails: {
     accepted: boolean;
     address: string | null;
     business_structure:
-      | Database["public"]["Enums"]["business_structure"]
+      | Database['public']['Enums']['business_structure']
       | null;
     company_name: string | null;
     EIN: string | null;
     email: string | null;
     id: number;
-    industry_sector: Database["public"]["Enums"]["industry_and_sector"] | null;
+    industry_sector: Database['public']['Enums']['industry_and_sector'] | null;
     other_industry_and_sector: string | null;
     phone_number: string | null;
     user_id: string;
@@ -49,7 +49,7 @@ type Props = {
 
 export default function StartUpDetails({
   startUpDetails,
-  startUpOwners,
+  startUpOwners
 }: Props) {
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -60,35 +60,35 @@ export default function StartUpDetails({
   const form = useForm<z.infer<typeof startUpDetailsSchema>>({
     resolver: zodResolver(startUpDetailsSchema),
     defaultValues: {
-      companyName: startUpDetails.company_name ?? "",
-      businessStructure: startUpDetails.business_structure ?? "Partnership",
+      companyName: startUpDetails.company_name ?? '',
+      businessStructure: startUpDetails.business_structure ?? 'Partnership',
       businessOwners: startUpOwners.map((owner) => ({
-        name: owner.name ?? "",
+        name: owner.name ?? '',
         share: owner.share ?? 0,
-        saved: false,
+        saved: false
       })),
-      EIN: startUpDetails.EIN ?? "",
-      companyEmail: startUpDetails.email ?? "",
-      phoneNumber: startUpDetails.phone_number?.split(" ")[1] ?? "",
+      EIN: startUpDetails.EIN ?? '',
+      companyEmail: startUpDetails.email ?? '',
+      phoneNumber: startUpDetails.phone_number?.split(' ')[1] ?? '',
       countryCode:
         Object.entries(countryDialingCodes).find(
           ([code, value]) =>
-            value === startUpDetails.phone_number?.split(" ")[0]
+            value === startUpDetails.phone_number?.split(' ')[0]
         )?.[0] ?? countryDialingCodes.US,
-      address: startUpDetails.address ?? "",
-      industrySector: startUpDetails.industry_sector ?? "Technology",
-      otherSector: startUpDetails.other_industry_and_sector ?? "",
-    },
+      address: startUpDetails.address ?? '',
+      industrySector: startUpDetails.industry_sector ?? 'Technology',
+      otherSector: startUpDetails.other_industry_and_sector ?? ''
+    }
   });
 
-  form.watch("industrySector");
-  form.watch("businessOwners");
+  form.watch('industrySector');
+  form.watch('businessOwners');
 
-  const ein = form.watch("EIN");
+  const ein = form.watch('EIN');
 
   useEffect(() => {
-    if (ein?.length > 2 && ein?.at(2) !== "-") {
-      form.setValue("EIN", `${ein.slice(0, 2)}-${ein.slice(2)}`);
+    if (ein?.length > 2 && ein?.at(2) !== '-') {
+      form.setValue('EIN', `${ein.slice(0, 2)}-${ein.slice(2)}`);
     }
   }, [ein]);
 
@@ -100,7 +100,7 @@ export default function StartUpDetails({
     if (error) setError(error);
     else setSaveSuccess(true);
 
-    router.push("/startup-details/financial");
+    router.push('/startup-details/financial');
 
     setIsPending(false);
   };
@@ -140,7 +140,7 @@ export default function StartUpDetails({
     // setIsPending(true);
     // await updatePersonalDetails(values);
     // setIsPending(false);
-    router.push("/personal-details");
+    router.push('/personal-details');
   };
 
   return (
@@ -209,10 +209,10 @@ export default function StartUpDetails({
                   </p>
                   <FormControl>
                     <div className="flex flex-col gap-4">
-                      {form.getValues("businessOwners")?.length > 0 && (
+                      {form.getValues('businessOwners')?.length > 0 && (
                         <div className="border border-[#D0D5DD] gap-4 rounded-[2px] flex flex-col px-6 py-6">
                           {form
-                            .getValues("businessOwners")
+                            .getValues('businessOwners')
                             ?.map((owner, index) =>
                               owner.saved ? (
                                 <div
@@ -230,9 +230,9 @@ export default function StartUpDetails({
                                     className="cursor-pointer text-white"
                                     onClick={() =>
                                       form.setValue(
-                                        "businessOwners",
+                                        'businessOwners',
                                         form
-                                          .getValues("businessOwners")
+                                          .getValues('businessOwners')
                                           ?.filter((_, i) => i !== index)
                                       )
                                     }
@@ -255,7 +255,7 @@ export default function StartUpDetails({
                                         )
                                       }
                                       onKeyDown={(e) => {
-                                        if (e.key === "Enter") {
+                                        if (e.key === 'Enter') {
                                           form.setValue(
                                             `businessOwners.${index}.saved`,
                                             true
@@ -275,7 +275,7 @@ export default function StartUpDetails({
                                         )
                                       }
                                       onKeyDown={(e) => {
-                                        if (e.key === "Enter") {
+                                        if (e.key === 'Enter') {
                                           form.setValue(
                                             `businessOwners.${index}.saved`,
                                             true
@@ -301,9 +301,9 @@ export default function StartUpDetails({
                       )}
                       <p
                         onClick={() =>
-                          form.setValue("businessOwners", [
-                            ...(form.getValues("businessOwners") ?? []),
-                            { name: "", share: 25, saved: false },
+                          form.setValue('businessOwners', [
+                            ...(form.getValues('businessOwners') ?? []),
+                            { name: '', share: 25, saved: false }
                           ])
                         }
                         className="text-[#FFD6B0] cursor-pointer"
@@ -312,7 +312,7 @@ export default function StartUpDetails({
                       </p>
                     </div>
                   </FormControl>
-                  {form.getFieldState("businessOwners").error && (
+                  {form.getFieldState('businessOwners').error && (
                     <p className="block text-red-600 -bottom-6">
                       Please enter valid details
                     </p>
@@ -456,7 +456,7 @@ export default function StartUpDetails({
                 </FormItem>
               )}
             />
-            {form.getValues("industrySector") === "Other" && (
+            {form.getValues('industrySector') === 'Other' && (
               <FormField
                 control={form.control}
                 disabled={isPending}
@@ -487,7 +487,7 @@ export default function StartUpDetails({
               {isPending ? (
                 <Loader2 stroke="#fff" className="animate-spin mx-auto" />
               ) : (
-                "Save"
+                'Save'
               )}
             </button>
             {/* || (form.getValues('businessOwners')?.length ?? 0) === 0 */}
@@ -499,7 +499,7 @@ export default function StartUpDetails({
               {isPending ? (
                 <Loader2 stroke="#fff" className="animate-spin mx-auto" />
               ) : (
-                "Continue"
+                'Continue'
               )}
             </button>
           </div>
@@ -518,12 +518,12 @@ export default function StartUpDetails({
           </div>
         )}
       </Form>
-      <button
-        onClick={handleGoBack}
-        className="text-white text-[13px py-2 px-4 bg-transparent font-Montserrat mt-2"
+      <Link
+        href="/personal-details"
+        className="text-white text-[13px py-2 px-4 bg-transparent font-Montserrat mt-2 flex justify-center w-full"
       >
         Go back
-      </button>
+      </Link>
     </>
   );
 }

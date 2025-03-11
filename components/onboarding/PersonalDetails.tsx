@@ -188,7 +188,7 @@ export default function PersonalDetails({ searchParams, user }: Props) {
 
   return (
     <>
-      <div className="max-w-[90vw] flex flex-col pb-8 gap-4 ipfield ">
+      <div className="max-w-[90vw] flex flex-col pb-8 gap-4 ipfield justify-center">
         <div className="flex flex-col relative max-w-[450px] w-full">
           <input
             type="text"
@@ -336,26 +336,12 @@ export default function PersonalDetails({ searchParams, user }: Props) {
         >
           {isPending ? 'Submitting...' : 'Submit'}
         </button>
-      </div>
-      <Link
-        href="/sign-up"
-        className="text-white text-[13px py-2 px-4 bg-transparent font-Montserrat mt-2"
-      >
-        Go back
-      </Link>
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent key={error} className="bg-white rounded-xl">
-          <div className="flex flex-col gap-4 items-center justify-center">
-            <DialogTitle className="text-xl md:text-2xl font-bold text-black text-center">
-              Error
-            </DialogTitle>
-
-            <p className="text-base text-center font-normal text-red-600">
-              {error}
-            </p>
+        {open && (
+          <div className="flex justify-center">
+            <p className="text-red-500 text-xs mt-1">Submit error</p>
           </div>
-        </DialogContent>
-      </Dialog>
+        )}
+      </div>
     </>
   );
 }
