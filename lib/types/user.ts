@@ -40,6 +40,15 @@ export type UserType = {
         company_email: string | null
         company_name: string | null
         company_website: string | null
+        investor_type:
+            | Database["public"]["Enums"]["investor_type"][]
+            | null
+        institution_type:
+            | Database["public"]["Enums"]["institution_types"][]
+            | null
+        future_investment_amount:
+            | Database["public"]["Enums"]["future_investment_amounts"][]
+            | null
         geographies_served:
             | Database["public"]["Enums"]["geographies_served"][]
             | null

@@ -16,11 +16,11 @@ export default async function Requests()
         <>
         
         <section className="relative flex flex-col flex-1 items-center justify-start gap-6 h-screen max-h-screen px-4 overflow-auto pt-8">
-        <div className="flex w-full items-center justify-end">
+        {/* <div className="flex w-full items-center justify-end">
             <Notifications user={user!} notifications={notifications} />
-        </div>
+        </div> */}
                {/* Search Bar */}
-       <div className="relative w-full">
+       <div className="relative w-full mt-24 lg:mt-0">
               <CustomSearch
                 placeholder="Search startups"
                 className="pl-10 bg-white border border-gray-300 text-gray-800 font-Montserrat w-full py-2 rounded-md"

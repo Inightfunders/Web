@@ -73,7 +73,7 @@ export default function StartupSideBarLinks({
             !pathname.startsWith("/referral") &&
             !pathname.startsWith("/earnings") &&
             !pathname.startsWith("/payment-setup")
-            ? "bg-white font-medium text-[#1A1A1A]"
+            ? "bg-white font-medium text-[#1A1A1A] h-fit"
             : "text-white"
         )}
       >
@@ -84,7 +84,7 @@ export default function StartupSideBarLinks({
         className={cn(
           "py-4 text-sm leading-[17px]  w-full",
           pathname.startsWith("/manage")
-            ? "bg-white font-medium text-[#1A1A1A]"
+            ? "bg-white font-medium text-[#1A1A1A] h-fit"
             : "text-white"
         )}
       >
@@ -108,7 +108,7 @@ export default function StartupSideBarLinks({
         className={cn(
           "py-4 text-sm leading-[17px]  w-full",
           pathname.startsWith("/offers")
-            ? "bg-white font-medium text-[#1A1A1A]"
+            ? "bg-white font-medium text-[#1A1A1A] h-fit"
             : "text-white"
         )}
       >

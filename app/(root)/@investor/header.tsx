@@ -23,7 +23,7 @@ export default async function HeaderInvestor() {
       <Notifications user={user!} notifications={notifications!} />
       <Link href="/profile" className="flex items-center gap-3">
           <Avatar className="bg-[#F1F5F9] text-black border border-custom-gray">
-            <AvatarImage src="" alt="company" />
+            <AvatarImage src={user?.userInfo?.profile_img || ""} alt="company" />
             <AvatarFallback className="">
               {user?.userInvestor?.company_name?.slice(0, 1)}
             </AvatarFallback>

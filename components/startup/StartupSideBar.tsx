@@ -54,7 +54,9 @@ export default async function StartupSideBar() {
           nda={nda}
         />
       </div>
-      <LogOutSlider />
+      <div className="hidden lg:flex w-full">
+        <LogOutSlider />
+      </div> 
     </aside> 
   );
 }

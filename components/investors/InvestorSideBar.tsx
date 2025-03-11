@@ -20,7 +20,9 @@ export default async function InvestorSideBar({ user }: Props) {
         </div>
         <InvestorSideBarLinks />
       </div>
-      <LogOutSlider />
+      <div className="hidden lg:flex w-full">
+        <LogOutSlider />
+      </div> 
     </aside>
   );
 }

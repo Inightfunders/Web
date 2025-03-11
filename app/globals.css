@@ -198,7 +198,7 @@ border-radius: 0.4rem;
   .sidebardashboardMenuLinks {
     display: flex;
     justify-content: center;
-    align-items: center;
+    /* align-items: center; */
     flex-direction: row;
     /* margin: auto; */
     /* margin-bottom: 20px; */
