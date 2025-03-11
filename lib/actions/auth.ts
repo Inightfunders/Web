@@ -173,6 +173,36 @@ export const getUser = cache(async () => {
   }
 });
 
+export const updateProfileImage = async (userId: string, fileName: string) => {
+  const supabase = createClient();
+
+  const { error } = await supabase.from('users').update({
+    profile_img: fileName
+  }).eq('id', userId);
+
+  if (error) {
+    console.error(error)
+    return { error: error.message }
+  }
+
+  return { success: true }
+}
+
+export const getProfileImageUrl = async (fileName: string, expiresIn: number = 10) => {
+  const supabase = createClient();
+
+  const { error, data } = await supabase.storage
+    .from('profileImg')
+    .createSignedUrl(fileName, 10);
+
+  if (error) {
+    console.error(error)
+    return null
+  }
+
+  return data.signedUrl
+}
+
 export const getReferredUsers = cache(async (id: string) => {
   const supabase = createClient();
 
