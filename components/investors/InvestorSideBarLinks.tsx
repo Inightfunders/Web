@@ -23,7 +23,7 @@ export default function InvestorSideBarLinks() {
             !pathname.startsWith("/explore") &&
             !pathname.startsWith("/requests") &&
             !pathname.startsWith("/referral")
-            ? "bg-white font-medium text-black"
+            ? "bg-white font-medium text-black h-fit"
             : "text-white"
         )}
       >
@@ -34,7 +34,7 @@ export default function InvestorSideBarLinks() {
         className={cn(
           "py-4 text-sm font-Montserrat w-full px-4 md:px-6 text-left",
           pathname.startsWith("/explore")
-            ? "bg-white font-medium text-black"
+            ? "bg-white font-medium text-black h-fit"
             : "text-white"
         )}
       >
@@ -45,7 +45,7 @@ export default function InvestorSideBarLinks() {
         className={cn(
           "py-4 text-sm font-Montserrat w-full px-4 md:px-6 text-left",
           pathname.startsWith("/requests")
-            ? "bg-white font-medium text-black"
+            ? "bg-white font-medium text-black h-fit"
             : "text-white"
         )}
       >

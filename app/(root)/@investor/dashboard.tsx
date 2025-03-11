@@ -14,7 +14,7 @@ export default async function Dashboard({
   searchParams: { page?: string };
 }) {
   const user = await getUser();
-
+  // console.log(user);
   const investorContracts = await getContracts(user?.userInvestor?.id!);
   // console.log("investorContracts", investorContracts);
 
@@ -44,6 +44,53 @@ export default async function Dashboard({
   ).length;
 
   // console.log({ totalAmountInvested, totalROI, totalStartups });
+  const investmentData = [
+    {
+      name: "Slope AI",
+      category: "Tech",
+      amount: 5000000,
+      apy: "19%",
+      term: "12 months",
+      maturityDate: "05/12/2025",
+      dueDate: "05/12/2024",
+    },
+    {
+      name: "Acme Corp",
+      category: "Fintech",
+      amount: 3000000,
+      apy: "17%",
+      term: "48 months",
+      maturityDate: "03/18/2028",
+      dueDate: "03/18/2024",
+    },
+    {
+      name: "Epsilon Dynamics",
+      category: "Software",
+      amount: 10000000,
+      apy: "18%",
+      term: "36 months",
+      maturityDate: "10/08/2027",
+      dueDate: "10/08/2024",
+    },
+    {
+      name: "Arch",
+      category: "AI",
+      amount: 1000000,
+      apy: "20%",
+      term: "48 months",
+      maturityDate: "09/15/2028",
+      dueDate: "09/15/2024",
+    },
+    {
+      name: "Pharmator",
+      category: "Pharmaceutical",
+      amount: 1000000,
+      apy: "18%",
+      term: "24months",
+      maturityDate: "01/18/2026",
+      dueDate: "01/18/2024",
+    },
+  ];
 
   return (
     <div className="w-full mx-auto space-y-6 my-4 max-w-[90%]">

@@ -55,6 +55,7 @@
     "react-dom": "^18",
     "react-hook-form": "^7.52.0",
     "react-plaid-link": "^3.5.2",
+    "react-share": "^5.2.2",
     "recharts": "^2.12.7",
     "resend": "^4.1.2",
     "server-only": "^0.0.1",

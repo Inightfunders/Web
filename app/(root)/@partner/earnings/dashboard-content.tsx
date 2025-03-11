@@ -3,7 +3,6 @@ import { PieChart, Pie, Cell } from "recharts";
 import { Card } from "@/components/ui/card";
 
 import StartUpsInvestors from "@/components/startup/StartUpsInvestors";
-import { getUser } from "@/lib/actions/auth";
 import { getContracts } from "@/lib/actions/startup";
 import StartUpsChart from "@/components/startup/StartUpsChart";
 import { SearchInput } from "@/components/lenders/SearchInput";
@@ -12,6 +11,8 @@ import { CustomSearch } from "@/components/lenders/CustomSearch";
 import CustomStartupChart from "@/components/startup/CustomStartupChart";
 import DashboardCard from "../../@startup/DashboardCard";
 import Shareable from "./Shareable";
+import { getUser } from "@/lib/actions/auth";
+import { getReferredUsers } from "@/lib/actions/auth";
 
 interface LenderData {
   serial_number: number;
@@ -71,6 +72,12 @@ export default async function DashboardContent({
     },
   ];
 
+  const userData = await getUser();
+    const users = await getReferredUsers(userData?.user?.user_metadata?.sub );
+    const refUser = users.statuses ?? [];
+
+    const TotalEarning = refUser.reduce((acc, user)=>user?.earnings > 0 && user.accepted ? acc+=user?.earnings : acc, 0);
+
   return (
     <div
       className="w-full px-4 sm:px-6 lg:px-8 mx-auto space-y-6 my-8 max-w-[1800px]"
@@ -82,7 +89,7 @@ export default async function DashboardContent({
         <div className="p-4 bg-[#212121] rounded-lg text-center">
           <DashboardCard
             title="Invites"
-            value={`1200`}
+            value={refUser.length}
             className="h-[calc(50%-12px)] text-center content-center"
           />
                   </div>
@@ -90,10 +97,10 @@ export default async function DashboardContent({
             className={`p-4 bg-[#212121] rounded-[8px] h-[calc(50%-12px)] text-center content-center items-center`}
           >
             <p className="text-white text-xs mb-[12px] font-Montserrat leading-[14px]">
-              Earnings
+              Earnings 
             </p>
             <p className="text-white text-xl font-[700] font-Montserrat leading-[22px] mt-3 pb-[12px]">
-              $6,500
+              ${TotalEarning}
             </p>
             <div className="w-full justify-items-center">
               <button

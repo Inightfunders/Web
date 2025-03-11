@@ -36,6 +36,8 @@ const startUpDetailsSchemaEffect = z.object({
     }),
     industrySector: z.enum(["Technology", "Healthcare", "Financial Services", "Consumer Goods", "Industrial Goods", "Energy", "Real Estate", "Retail", "Media and Entertainment", "Transportation", "Telecommunications", "Agriculture", "Education", "Hospitality and Leisure", "Utilities", "Other"]),
     otherSector: z.string().optional(),
+    ref: z.string().optional().default(""),
+
 })
 .refine(data => {
     if(data.industrySector === 'Other') {

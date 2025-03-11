@@ -266,6 +266,7 @@ export const users = pgTable(
     dwolla_customer_url: text("dwolla_customer_url"),
     dwolla_customer_id: text("dwolla_customer_id"),
     plaid_id: text("plaid_id"),
+    ref: text("ref"),
   },
   (table) => {
     return {
@@ -280,6 +281,14 @@ export const users = pgTable(
     };
   }
 );
+ 
+export const referrals = pgTable("referrals", {
+  id: uuid("id").default(sql`gen_random_uuid()`).primaryKey().notNull(),
+  partner_id: bigint("partner_id", { mode: "number" }).notNull(), 
+  referred_user_id: uuid("referred_user_id").default(sql`NULL`), 
+  earnings: numeric("earnings").notNull(),
+  created_at: timestamp("created_at").defaultNow(),
+});
 
 export const cap_tables = pgTable("cap_tables", {
   // You can use { mode: "bigint" } if numbers are exceeding js number limitations
@@ -322,6 +331,7 @@ export const startups = pgTable(
     recent_raise: numeric("recent_raise"),
     stage: company_stage("stage"),
     created_at: timestamp("created_at", { withTimezone: true, mode: "string" }).defaultNow().notNull(),
+    ref: text("ref"),
   },
   (table) => {
     return {

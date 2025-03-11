@@ -7,13 +7,13 @@ import { useState } from "react";
 type Props = {
   user: UserType;
   requestId: number;
-  accepted: boolean;
+  accepted?: boolean | null;
 };
 
-export default function ActionButtons({ user, requestId, accepted  }: Props) {
+export default function ActionButtons({ user, requestId, accepted }: Props) {
   const [loading, setLoading] = useState(false);
 
-  // console.log({ user, requestId });
+  console.log("yoyo",{ user, requestId , accepted});
 
   const handleAccept = async () => {
     setLoading(true);
@@ -29,19 +29,23 @@ export default function ActionButtons({ user, requestId, accepted  }: Props) {
 
   return (
     <div className={cn("flex gap-4", loading && "opacity-50")}>
+      {!accepted && (
       <button
-        onMouseDown={handleReject}
-        disabled={loading || accepted}
-        className="bg-black rounded-[8px] w-24 h-10 text-white font-semibold text-sm"
-      >
-        Decline
-      </button>
+      onMouseDown={handleReject}
+      disabled={!!accepted}
+      className="bg-black rounded-[8px] w-24 h-10 text-white font-semibold text-sm"
+    >
+      Decline
+    </button>
+      )}
+      
       <button
         onMouseDown={handleAccept}
-        disabled={loading || accepted}
-        className={`rounded-[8px] w-24 h-10 text-white font-semibold text-sm ${
-          accepted ? "bg-green-500" : "bg-[#FF7A00]"
-        }`}
+        disabled={!!accepted}
+        className={cn(
+          "rounded-[8px] w-24 h-10 text-white font-semibold text-sm", 
+          accepted ? "bg-green-500" : "bg-[#FF7A00]" 
+        )}
       >
         {accepted ? "Accepted" : "Accept"}
       </button>

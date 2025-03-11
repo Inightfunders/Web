@@ -72,7 +72,7 @@ export default async function StartUpsInvestors({
   const formatCurrency = (value: number) =>
     `$${Intl.NumberFormat("us").format(value)}`;
 
-  console.log({ contractsWithInvestors, contracts });
+  // console.log({ contractsWithInvestors, contracts });
 
   const page = searchParams?.page ? parseInt(searchParams.page) : 1;
 

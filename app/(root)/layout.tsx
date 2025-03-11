@@ -82,7 +82,7 @@ export default async function RootLayout({
 
   const user = await getUser();
 
-  console.log({ user });
+  // console.log({ user });
 
   if (!user)
     return (

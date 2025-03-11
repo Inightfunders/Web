@@ -10,6 +10,7 @@ import { cache } from "react"
 import { getUser } from "./auth"
 import { redirect } from "next/navigation"
 import { createClient } from '@/utils/supabase/server'
+import { referrals } from '@/migrations/schema'
 
 export const getFinancialRounds = cache(async (startupId: number) => {
     return await db.query.financial_rounds.findMany({
@@ -271,7 +272,7 @@ export const updateOwner = cache(async (id: number, name: string, share: number)
     if(ownerInserted.length !== 1) return { error: 'Failed to update owner', success: false }
 
     return { success: true, error: undefined }
-})
+}) 
 
 export const createCapTable = cache(async ({ name, document_link }: { name: string, document_link: string }) => {
     const user = await getUser()
@@ -543,3 +544,42 @@ export const rejectContract = async (contractId: number) => {
     redirect('/')
 }
 
+export const addReferral = async (partner_id: number, referred_user_id: string, earning: number) => {
+    try {
+      if (!partner_id || !referred_user_id) {
+        throw new Error("Both partner_id and referred_user_id are required.");
+      }
+  
+     const profit = earning*0.02;
+     const earnings = profit*0.2;
+      await db.insert(referrals).values({
+        partner_id,
+        referred_user_id,
+        earnings : earnings.toString(),
+      });
+  
+      return { success: true, message: "Referral added successfully." };
+    } catch (error) {
+      console.error("Error adding referral:", error);
+      return { success: false, message: (error as Error).message || "Internal Server Error" };
+    }
+  };
+
+  export const getAllReferredUsers = async () => {
+    try {
+        const referralsData = await db.query.referrals.findMany({
+            columns: {
+                id: true,
+                partner_id: true,
+                referred_user_id: true,
+                earnings: true,
+                created_at: true
+            },
+        });
+
+        return { success: true, data: referralsData };
+    } catch (error) {
+        console.error("Error fetching referrals:", error);
+        return { success: false, message: (error as Error).message || "Internal Server Error" };
+    }
+  };

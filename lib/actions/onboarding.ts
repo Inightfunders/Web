@@ -26,7 +26,7 @@ export const saveStartUpDetails = async (startup_id: number, data: z.infer<typeo
         return acc
     }, {} as any)
 
-    console.log(partialData)
+    // console.log(partialData)
 
     let partialDataShape = Object.keys(partialData).reduce((acc, key) => {
         acc[key] = true
@@ -163,7 +163,7 @@ export const submitApplication = async () => {
 
     const { error: submitError } = await supabase.from('startups').update({
         submitted: true,
-        // accepted: true
+        accepted: true
     }).eq('id', data.id)
 
     if(submitError) return { error: submitError.message }

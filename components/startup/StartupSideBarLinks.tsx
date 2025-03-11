@@ -38,7 +38,7 @@ export default function StartupSideBarLinks({
     const storedData = localStorage.getItem("hamburgerState");
     if (storedData) {
       setData(JSON.parse(storedData));
-      console.log("data", data);
+      // console.log("data", data);
     }
   }, []);
 
@@ -73,7 +73,7 @@ export default function StartupSideBarLinks({
             !pathname.startsWith("/referral") &&
             !pathname.startsWith("/earnings") &&
             !pathname.startsWith("/payment-setup")
-            ? "bg-white font-medium text-[#1A1A1A]"
+            ? "bg-white font-medium text-[#1A1A1A] h-fit"
             : "text-white"
         )}
       >
@@ -84,7 +84,7 @@ export default function StartupSideBarLinks({
         className={cn(
           "py-4 text-sm leading-[17px]  w-full",
           pathname.startsWith("/manage")
-            ? "bg-white font-medium text-[#1A1A1A]"
+            ? "bg-white font-medium text-[#1A1A1A] h-fit"
             : "text-white"
         )}
       >
@@ -108,7 +108,7 @@ export default function StartupSideBarLinks({
         className={cn(
           "py-4 text-sm leading-[17px]  w-full",
           pathname.startsWith("/offers")
-            ? "bg-white font-medium text-[#1A1A1A]"
+            ? "bg-white font-medium text-[#1A1A1A] h-fit"
             : "text-white"
         )}
       >
@@ -133,7 +133,7 @@ export default function StartupSideBarLinks({
         </button>
 
         {isReferralOpen && (
-          <div className="bg-gray-800 absolute w-100 right-1">
+          <div className="bg-gray-800 flex flex-col">
             <Link
               href="/referral"
               className={cn(

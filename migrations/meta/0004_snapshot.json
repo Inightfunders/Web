@@ -1,6 +1,6 @@
 {
-  "id": "cdc9b854-7563-44a5-b102-546a7e93e391",
-  "prevId": "5c537a4e-830f-4731-979c-950443ed9f67",
+  "id": "03fdd7ed-3030-4f9d-bf84-a120ce1d5d7b",
+  "prevId": "c83b1c8c-e9d0-4497-b7c4-2d665a3169e9",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -1025,6 +1025,49 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+    "public.referrals": {
+      "name": "referrals",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "partner_id": {
+          "name": "partner_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "referred_user_id": {
+          "name": "referred_user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "NULL"
+        },
+        "earnings": {
+          "name": "earnings",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "public.startups": {
       "name": "startups",
       "schema": "",
@@ -1116,6 +1159,12 @@
           "name": "stage",
           "type": "company_stage",
           "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ref": {
+          "name": "ref",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         }
@@ -1375,6 +1424,12 @@
         },
         "plaid_id": {
           "name": "plaid_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ref": {
+          "name": "ref",
           "type": "text",
           "primaryKey": false,
           "notNull": false

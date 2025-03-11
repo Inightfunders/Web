@@ -13,7 +13,7 @@ export default async function Dashboard({
   searchParams: { page?: string };
 }) {
   const user = await getUser();
-  console.log(user);
+  // console.log(user);
   const startupContracts = await getContracts(user?.userStartUp?.id!);
 
   // await new Promise(resolve => setTimeout(resolve, 10000))

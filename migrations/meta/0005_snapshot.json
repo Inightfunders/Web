@@ -1,6 +1,6 @@
 {
-  "id": "1ddad829-d46f-4804-9781-c73e23713f23",
-  "prevId": "cdc9b854-7563-44a5-b102-546a7e93e391",
+  "id": "649229ee-9db3-4335-a248-059c3863d949",
+  "prevId": "f317bf1b-5553-4c90-a839-ab447f2463d4",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -788,6 +788,68 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+    "public.nda": {
+      "name": "nda",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "startup_id": {
+          "name": "startup_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "document_link": {
+          "name": "document_link",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "nda_startup_id_startups_id_fk": {
+          "name": "nda_startup_id_startups_id_fk",
+          "tableFrom": "nda",
+          "tableTo": "startups",
+          "columnsFrom": [
+            "startup_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "public.notifications": {
       "name": "notifications",
       "schema": "",
@@ -918,9 +980,10 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "bigint",
+          "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "auth.uid()"
         },
         "user_id": {
           "name": "user_id",
@@ -931,6 +994,18 @@
         },
         "partner_name": {
           "name": "partner_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "occupation": {
+          "name": "occupation",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "company_name": {
+          "name": "company_name",
           "type": "text",
           "primaryKey": false,
           "notNull": false
@@ -1087,6 +1162,49 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+    "public.referrals": {
+      "name": "referrals",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "partner_id": {
+          "name": "partner_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "referred_user_id": {
+          "name": "referred_user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "NULL"
+        },
+        "earnings": {
+          "name": "earnings",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "public.startups": {
       "name": "startups",
       "schema": "",
@@ -1178,6 +1296,12 @@
           "name": "stage",
           "type": "company_stage",
           "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ref": {
+          "name": "ref",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         }
@@ -1437,6 +1561,12 @@
         },
         "plaid_id": {
           "name": "plaid_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ref": {
+          "name": "ref",
           "type": "text",
           "primaryKey": false,
           "notNull": false

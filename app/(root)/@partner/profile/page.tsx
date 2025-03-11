@@ -2,10 +2,8 @@ import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
-import CompanyInfo from "./company-info";
 import BasicInfo from "./basic-info";
-import Financials from "./financials";
-import LogOutSlider from "@/components/investors/LogOutSlider";
+
 
 type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
@@ -17,7 +15,7 @@ export default function OffersPage({ searchParams }: Props) {
 
   return (
     <section className="bg-[#1A1A1A]">
-      <div className="flex flex-1 flex-col gap-6 py-16 dashboardcont">
+      <div className="flex flex-1 flex-col gap-6 h-screen  py-16 dashboardcont userinfospacingcont">
         <div className="flex w-full">
           <Link
             href="/profile?tab=basic-info"
@@ -30,7 +28,7 @@ export default function OffersPage({ searchParams }: Props) {
           >
             Basic Information
           </Link>
-          <Link
+          {/* <Link
             href="/profile?tab=company-info"
             className={cn(
               "text-sm font-semibold font-Montserrat flex-1 text-center border-b-2 pb-2",
@@ -51,19 +49,13 @@ export default function OffersPage({ searchParams }: Props) {
             )}
           >
             Financials
-          </Link>
+          </Link> */}
         </div>
         {tab === "company-info" ? (
           <Suspense
             fallback={<Loader2 className="animate-spin text-white" size={24} />}
           >
-            <CompanyInfo />
-          </Suspense>
-        ) : tab === "financials" ? (
-          <Suspense
-            fallback={<Loader2 className="animate-spin text-white" size={24} />}
-          >
-            <Financials />
+          
           </Suspense>
         ) : (
           <Suspense
@@ -72,9 +64,6 @@ export default function OffersPage({ searchParams }: Props) {
             <BasicInfo />
           </Suspense>
         )}
-      </div>
-      <div className="block lg:hidden">
-        <LogOutSlider />
       </div>
     </section>
   );

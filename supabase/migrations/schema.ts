@@ -26,6 +26,7 @@ export const users = pgTable("users", {
 	first_name: text("first_name").notNull(),
 	last_name: text("last_name"),
 	role: user_role("role"),
+	ref: text("ref"),
 },
 (table) => {
 	return {
