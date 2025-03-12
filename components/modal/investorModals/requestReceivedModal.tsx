@@ -23,7 +23,7 @@ export default function InvestorRequestReceivedModal({ isOpen = false, onClose }
 
         {/* Modal Content */}
         <p className="text-black text-md font-normal text-center py-6 flex-wrap">
-          P.I.P.E has received your request. Upon accepting your request to view their financial details, a
+          This company has received your request. Upon accepting your request to view their financial details, a
           notification will appear in Requests, where you can download their financial details PDF(s).
         </p>
 
