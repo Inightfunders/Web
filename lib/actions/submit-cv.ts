@@ -1,20 +1,14 @@
 import { Resend } from "resend";
 
 export async function submitCV(formData: FormData) {
-    console.log("🟢 Received FormData:", formData);
 
     const name = formData.get("name") as string;
     const email = formData.get("email") as string;
     const jobPosition = formData.get("jobPosition") as string;
     let cvFile = formData.get("cv");
 
-    console.log("📄 CV File Raw Data:", cvFile);
-
-    console.log("cvFile instanceof File:", cvFile instanceof File);
-    console.log("cvFile instanceof Blob:", cvFile instanceof Blob);
-
     if (!name || !email || !jobPosition || !cvFile) {
-        console.error("❌ Missing required fields", { name, email, jobPosition, cvFile });
+        console.error("Missing required fields", { name, email, jobPosition, cvFile });
         return { error: "Missing required fields" };
     }
 
@@ -32,12 +26,6 @@ export async function submitCV(formData: FormData) {
         { type: cvFile.type } // Keep original MIME type
     );
 
-    console.log("✅ CV File Validated:", {
-        name: cvFile.name,
-        size: cvFile.size,
-        type: cvFile.type,
-        lastModified: cvFile.lastModified,
-    });
 
     const resend = new Resend(process.env.RESEND_API_KEY); 
 
@@ -55,10 +43,10 @@ export async function submitCV(formData: FormData) {
             ],
         });
 
-        console.log("✅ Email Sent Successfully!");
+        console.log("Email Sent Successfully!");
         return { success: "CV submitted successfully!", response };
     } catch (error: unknown) {
-        console.error("🚨 Resend Error:", error);
+        console.error("Resend Error:", error);
 
         let errorMessage = "Failed to send email.";
         if (error instanceof Error) {
