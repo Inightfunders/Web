@@ -245,6 +245,7 @@ export const financial_details_requests = pgTable(
       { onDelete: "cascade", onUpdate: "cascade" }
     ),
     accepted: boolean("accepted").default(false),
+    nda_status: boolean("nda_status").default(false).notNull(),
     createdAt: timestamp("createdAt", {
       withTimezone: true,
       mode: "string",

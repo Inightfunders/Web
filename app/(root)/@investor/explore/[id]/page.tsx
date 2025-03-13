@@ -8,6 +8,7 @@ import FinancialRounds from "./financialrounds";
 import RequestMoreFinancialDetailsContainer from "./requestmorefinancialdetails";
 import RequestDataContainer from "./requestDataContainer";
 import FinancialDetails from "./financialDetails";
+import { NonDisclosure } from "./non-disclosure";
 import MakeAnOffer from "./makeAnOffer";
 import { FileText, Eye, Download } from "lucide-react";
 
@@ -122,28 +123,7 @@ export default async function SingleStartUpPage({ params }: Props) {
       </div>
       {/* Additional UI Section */}
       <div className="w-full  py-4 px-2 mt-4 flex flex-col gap-4">
-        <div className="flex justify-between items-center bg-[#313131] p-4 rounded-[4px]">
-          <div className="flex items-center gap-2 text-white rounded-[4px]">
-            {/* <Image
-              src="/icons/file.svg"
-              alt="File Icon"
-              width={20}
-              height={20}
-            /> */}
-            <span>Non disclosure agreement</span>
-            <span className="bg-orange-500 text-xs px-2 py-1 rounded-[4px]">
-              PENDING
-            </span>
-          </div>
-          <div className="flex gap-2">
-            <button className="border border-white text-white px-4 py-2 rounded-[4px] flex items-center gap-2">
-              <Eye size={16} /> <span>View</span>
-            </button>
-            <button className="border border-white text-white px-4 py-2 rounded-[4px] flex items-center gap-2">
-              <Download size={16} /> <span>Download</span>
-            </button>
-          </div>
-        </div>
+        <NonDisclosure investorId={user.userInvestor.id} startupId={startup.id} />
 
         <FinancialDetails investorId={user.userInvestor.id} startupId={startup.id} />
       </div>

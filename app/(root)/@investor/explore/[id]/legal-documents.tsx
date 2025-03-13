@@ -81,9 +81,9 @@ export default function LegalDocuments({ investorId, startupId }: Props) {
 
     return (
         <div>
-            <TableSection title="Financial Statements" data={legalDocument} handleView={handleView} />
+            <TableSection title="Legal Document" data={legalDocument} handleView={handleView} />
             
-            <TableSection title="Financial Projection" data={nda} handleView={handleView} />
+            <TableSection title="NDA" data={nda} handleView={handleView} />
         </div>
     );
 }

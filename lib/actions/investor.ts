@@ -64,6 +64,12 @@ export const getFinancialDetailsRequests = cache(async (investorId: number, star
     })
 })
 
+export const getAllFinancialDetailsRequests = cache(async (investorId: number) => {
+    return await db.query.financial_details_requests.findMany({
+        where: (table, { eq }) => eq(table.investor_id, investorId)
+    })
+})
+
 export const cancelFinancialDetailsRequests = cache(async (investorId: number, requestId: number) => {
     await db.delete(financial_details_requests)
     .where(and(eq(financial_details_requests.id, requestId), eq(financial_details_requests.investor_id, investorId)))
@@ -349,4 +355,15 @@ export const getNda = cache(async (investorId: number, startupId: number) => {
             where: (table, { eq }) => eq(table.startup_id,  startupId),
         })
     }
+})
+
+export const acceptNda = cache(async (investorId: number, requestId: number) => {
+    const updatedNda = await db.update(financial_details_requests).set({ nda_status: true })
+        .where(eq(financial_details_requests.id, requestId)).returning();
+
+    if (updatedNda.length === 0) {
+        throw new Error("NDA request not found");
+    }
+
+    return { success: true, message: "NDA accepted successfully", data: updatedNda };
 })
