@@ -10,9 +10,10 @@ interface InvestorModalProps {
   onClose: () => void;
   investorId: number;
   startupId: number;
+  onRequestSuccess: (newRequest: any) => void;
 }
 
-export default function InvestorModal({ isOpen, onClose, investorId, startupId }: InvestorModalProps) {
+export default function InvestorModal({ isOpen, onClose, investorId, startupId, onRequestSuccess }: InvestorModalProps) {
   if (!isOpen) return null;
 
   const [isModalReceivedOpen, setIsReceivedModalOpen] = useState(false);
@@ -23,11 +24,12 @@ export default function InvestorModal({ isOpen, onClose, investorId, startupId }
     setLoading(true);
 
     try {
-      const { success, error } = await addFinancialDetailsRequest(investorId, startupId);
+      const { success, error, request } = await addFinancialDetailsRequest(investorId, startupId);
 
       if (success) {
         setHasRequested(true); // Change button text
         setIsReceivedModalOpen(true); // Show confirmation modal
+        onRequestSuccess(request); // Notify parent component
       } else {
         console.error("Error sending request:", error);
       }
@@ -57,7 +59,7 @@ export default function InvestorModal({ isOpen, onClose, investorId, startupId }
           <p className="text-black text-lg font-bold text-center py-6">
             {hasRequested
               ? "Are you sure you want to cancel your request?"
-              : "Are you sure you want to send a request to P.I.P.E for more financial data?"}
+              : "Are you sure you want to send a request for more financial data?"}
           </p>
 
           {/* Buttons */}

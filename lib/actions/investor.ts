@@ -58,7 +58,13 @@ export const getExploreStartups = cache(async (investorId: number, params?: { se
                     .where(and(isNull(contracts.id), eq(startups.accepted, true), params?.id ? eq(startups.id, params.id) : sql`true`, params?.search ? ilike(startups.company_name, `%${params?.search}%`) : sql`true`, decodedStage ? eq(startups.stage, decodedStage) : sql`true`, decodedIndustry ? eq(startups.industry_sector, decodedIndustry) : sql`true`))
 })
 
-export const getFinancialDetailsRequests = cache(async (investorId: number) => {
+export const getFinancialDetailsRequests = cache(async (investorId: number, startupId: number) => {
+    return await db.query.financial_details_requests.findMany({
+        where: (table, { eq }) => eq(table.investor_id, investorId) && eq(table.startup_id, startupId)
+    })
+})
+
+export const getAllFinancialDetailsRequests = cache(async (investorId: number) => {
     return await db.query.financial_details_requests.findMany({
         where: (table, { eq }) => eq(table.investor_id, investorId)
     })
@@ -87,7 +93,7 @@ export const getAllRequests = cache(async (investorId: number, select: 'startups
 })
 
 export const addFinancialDetailsRequest = async (investorId: number, startupId: number) => {
-    const [{ length }, startUpUser] = await Promise.all([
+    const [insertedRequest, startUpUser] = await Promise.all([
         db.insert(financial_details_requests).values({
             id: sql`DEFAULT`,
             startup_id: startupId,
@@ -102,7 +108,13 @@ export const addFinancialDetailsRequest = async (investorId: number, startupId: 
                 user_id: true
             }
         })
-    ])
+    ]);
+
+    if (!insertedRequest || insertedRequest.length === 0) {
+        return { error: 'Failed to add financial details request' };
+    }
+
+    const requestId = insertedRequest[0].id; // Extract new request ID
 
     await db.insert(notifications).values({
         id: sql`DEFAULT`,
@@ -111,14 +123,13 @@ export const addFinancialDetailsRequest = async (investorId: number, startupId: 
         created_at: sql`DEFAULT`,
         is_read: false,
         type: 'Request'
-    })
+    });
 
-    revalidatePath(`/explore/${startupId}`)
-    revalidatePath('/requests')
+    revalidatePath(`/explore/${startupId}`);
+    revalidatePath('/requests');
 
-    if(length === 1) return { success: true }
-    return { error: 'Failed to add financial details request' }
-}
+    return { success: true, request: { id: requestId, investor_id: investorId, startup_id: startupId, accepted: false } };
+};
 
 export const createContract = async (data: { amountInvested: number, interestRate: number, investorId: number, maturityDate: Date, paymentInterval: string, startupId: number, termSheet: string }) => {
     const { amountInvested, interestRate, investorId, maturityDate, paymentInterval, startupId, termSheet } = data
@@ -344,4 +355,15 @@ export const getNda = cache(async (investorId: number, startupId: number) => {
             where: (table, { eq }) => eq(table.startup_id,  startupId),
         })
     }
+})
+
+export const acceptNda = cache(async (investorId: number, requestId: number) => {
+    const updatedNda = await db.update(financial_details_requests).set({ nda_status: true })
+        .where(eq(financial_details_requests.id, requestId)).returning();
+
+    if (updatedNda.length === 0) {
+        throw new Error("NDA request not found");
+    }
+
+    return { success: true, message: "NDA accepted successfully", data: updatedNda };
 })

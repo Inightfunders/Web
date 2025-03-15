@@ -1,5 +1,5 @@
 import RequestMoreFinancialDetails from "@/components/investors/RequestMoreFinancialDetails"
-import { getFinancialDetailsRequests, getCapTable, getPitchDeck, getTaxReturns, getFinancialStatements, getLegalDocuments } from "@/lib/actions/investor"
+import { getAllFinancialDetailsRequests, getCapTable, getPitchDeck, getTaxReturns, getFinancialStatements, getLegalDocuments } from "@/lib/actions/investor"
 
 type Props = { 
     investorId: number 
@@ -8,7 +8,7 @@ type Props = {
 
 export default async function RequestMoreFinancialDetailsContainer({ investorId, startupId }: Props)
 {
-    const investorFinancialDetailsRequests = await getFinancialDetailsRequests(investorId)
+    const investorFinancialDetailsRequests = await getAllFinancialDetailsRequests(investorId)
 
     const hasRequested = investorFinancialDetailsRequests.some(request => request.startup_id === startupId)
 

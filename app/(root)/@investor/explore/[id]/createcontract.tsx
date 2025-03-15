@@ -137,7 +137,7 @@ export default function CreateContract({ user, startupId }: Props) {
               onMouseDown={handleSubmitSignature}
               className="w-fit rounded-[5px] bg-black text-white !text-[10px] mt-4 ml-auto text-xs px-2.5 text-nowrap py-1.5"
             >
-              I Agree to all terms & Conditions
+              Proceed
             </button>
           </div>
         </div>

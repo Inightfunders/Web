@@ -418,6 +418,7 @@ export type Database = {
           document_link: string | null
           id: number
           name: string | null
+          nda_status: boolean 
           startup_id: number | null
           updated_at: string | null
         }
@@ -426,6 +427,7 @@ export type Database = {
           document_link?: string | null
           id?: number
           name?: string | null
+          nda_status?: boolean 
           startup_id?: number | null
           updated_at?: string | null
         }
@@ -434,6 +436,7 @@ export type Database = {
           document_link?: string | null
           id?: number
           name?: string | null
+          nda_status?: boolean 
           startup_id?: number | null
           updated_at?: string | null
         }
