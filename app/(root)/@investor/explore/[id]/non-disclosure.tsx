@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { FileText, Eye, Download } from "lucide-react";
 import { getFinancialDetailsRequests, getNda } from "@/lib/actions/investor";
 import { NdaModal } from "@/components/modal/investorModals/ndaModal";
+import { Loader2 } from "lucide-react";
 
 type Props = { 
     investorId: number;
@@ -55,11 +56,15 @@ export const NonDisclosure = ({ investorId, startupId }: Props) => {
     };
 
     if (loading) {
-        return <div className="text-white">...</div>;
+        return (
+            <div className="flex justify-center items-center bg-[#313131] p-4 rounded-[4px]">
+                <Loader2 size={24} className="animate-spin text-white" />
+            </div>
+        );
     }
 
     if (!ndaDoc || ndaDoc.length === 0 || !ndaDoc[0].document_link || !ndaDoc[0].name) {
-        return <div className="text-white">No NDA document available.</div>;
+        return <div className="text-white bg-[#313131] py-4">NDA document not available.</div>;
     }
 
     return (

@@ -109,7 +109,7 @@ export default function UploadNdaDocuments()
                                                 {/* <div className='flex flex-1 px-12 placeholder:font-light py-5 rounded-[2px] bg-white hover:bg-white outline-none cursor-pointer'>Upload Term Sheet</div> */}
                                                 <input
                                                     type='file'
-                                                    // accept='.xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                                                    accept='application/pdf'
                                                     onChange={(e) => field.onChange(e.target.files?.[0] || null)}
                                                     onBlur={field.onBlur}
                                                     name={field.name}

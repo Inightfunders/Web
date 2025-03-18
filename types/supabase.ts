@@ -384,6 +384,7 @@ export type Database = {
       }
       partners: {
         Row: {
+          created_at: string
           id: string
           user_id: string
           partner_name: string | null
@@ -391,12 +392,14 @@ export type Database = {
           company_name: string | null
         }
         Insert: {
+          created_at?: string
           partner_name?: string | null
           occupation?: string | null
           company_name?: string | null
           user_id?: string
         }
         Update: {
+          created_at?: string
           partner_name?: string | null
           occupation?: string | null
           company_name?: string | null

@@ -88,7 +88,7 @@ export default function NdaDocumentsActionBtns({ document_link, ndaId }: { docum
                 <UploadIcon onClick={() => inputRef.current?.click()} className='cursor-pointer' size={24} />
                 <input
                     type='file'
-                    accept='.xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                    accept='application/pdf'
                     onChange={(e) => handleUploadNewDocument(e)}
                     ref={inputRef}
                     className='hidden'

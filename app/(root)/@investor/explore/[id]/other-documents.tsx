@@ -11,7 +11,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatDate } from "@/lib/utils";
-import { Eye } from "lucide-react"
+import { Eye, Loader2 } from "lucide-react"
 
 type Props = { 
     investorId: number;
@@ -60,7 +60,13 @@ export default function OtherDocuments({ investorId, startupId }: Props) {
         document.body.removeChild(link);
       };
   
-      if (loading) return <p className="text-white">Loading...</p>;
+      if (loading) {
+        return (
+          <div className="flex justify-center items-center">
+              <Loader2 size={24} className="animate-spin text-white" />
+          </div>
+        );
+      }
 
   return (
     <section className="flex w-full flex-col gap-4">
