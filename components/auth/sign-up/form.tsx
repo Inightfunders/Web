@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useSearchParams } from 'next/navigation';
 import * as z from 'zod';
 
 import { cn } from '@/lib/utils';
@@ -30,11 +31,17 @@ type Role = 'startup' | 'investor' | 'partner';
 interface Props {
   className?: string;
   role: SignupFormValues['role'];
+  searchParams: { [key: string]: string | string[] | undefined };
 }
 
-export const SignUpForm: React.FC<Props> = ({ className = '', role }) => {
+export const SignUpForm: React.FC<Props> = ({
+  className = '',
+  role,
+  searchParams
+}) => {
   const router = useRouter();
-
+  const ref =
+    typeof searchParams['key'] === 'string' ? searchParams['key'] : undefined;
   const form = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -58,16 +65,16 @@ export const SignUpForm: React.FC<Props> = ({ className = '', role }) => {
         lastName: data.lastName,
         email: data.email,
         password: data.password,
-        role: data.role
+        role: data.role,
+        ref: ref
       });
+
       if (result.error) {
         setError(result.error);
         return;
       }
 
       const role = data.role;
-
-      console.log('role - ', role);
 
       if (role === 'partner') {
         router.push('/sign-up/partner/upload-profile-picture');
