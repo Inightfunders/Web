@@ -3,6 +3,7 @@ import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 import BasicInfo from "./basic-info";
+import LogOutSlider from "@/components/investors/LogOutSlider";
 
 
 type Props = {
@@ -10,6 +11,8 @@ type Props = {
 };
 
 export default function OffersPage({ searchParams }: Props) {
+
+
   const tab =
     typeof searchParams.tab === "string" ? searchParams.tab : undefined;
 
@@ -55,7 +58,7 @@ export default function OffersPage({ searchParams }: Props) {
           <Suspense
             fallback={<Loader2 className="animate-spin text-white" size={24} />}
           >
-          
+
           </Suspense>
         ) : (
           <Suspense
@@ -64,6 +67,9 @@ export default function OffersPage({ searchParams }: Props) {
             <BasicInfo />
           </Suspense>
         )}
+      </div>
+      <div className="m-2 mobile_logo_display_none">
+        <LogOutSlider />
       </div>
     </section>
   );

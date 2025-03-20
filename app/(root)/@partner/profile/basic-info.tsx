@@ -16,7 +16,7 @@ export default function BasicInfo() {
 
   const supabase = createClient();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const router = useRouter(); 
+  const router = useRouter();
 
 
   useEffect(() => {
@@ -26,66 +26,66 @@ export default function BasicInfo() {
       setUser(fetchedUser);
     }
     fetchUser();
-  }, []); 
+  }, []);
 
   const handleUploadNewImage = async (e: ChangeEvent<HTMLInputElement>) => {
     const uploadedFile = e.target.files?.[0];
     if (!uploadedFile) return;
-  
+
     setIsLoading(true);
     const UserId = user?.id;
-    console.log("UserId:",UserId);
-    
+    console.log("UserId:", UserId);
+
     if (!UserId) {
       console.error("User ID is undefined!");
       setIsLoading(false);
       return;
     }
-  
+
     const newFileName = `${nanoid(30)}_${uploadedFile.name}`;
-  
+
     // Upload Image
     const { data: uploadData, error: uploadError } = await supabase.storage
       .from("profileImg")
       .upload(`profile/${newFileName}`, uploadedFile, { upsert: true });
-  
+
     if (uploadError) {
       console.error("Upload Error:", uploadError.message);
       setIsLoading(false);
       return;
     }
-  
+
     // Get Public URL
     const { data } = supabase.storage
       .from("profileImg")
       .getPublicUrl(`profile/${newFileName}`);
     const publicUrl = data?.publicUrl || "";
-  
+
     if (!publicUrl) {
       console.error("Failed to get public URL");
       setIsLoading(false);
       return;
     }
-  
+
     // Update User Profile in Supabase
     const { error: updateError } = await supabase
       .from("users")
       .update({ profile_img: publicUrl })
       .eq("id", user.id);
-  
+
     if (updateError) {
       console.error("Update Error:", updateError.message);
     } else {
       console.log("Profile image updated successfully!");
       setUser((prev: any) => ({ ...prev, profile_img: publicUrl }));
-      
+
       // Ensure that the latest user data is fetched
       router.refresh();
     }
-  
+
     setIsLoading(false);
   };
-  
+
 
   const handleDeleteImage = async () => {
     if (!user?.profile_img) return;
@@ -135,10 +135,13 @@ export default function BasicInfo() {
           Basic Information
         </p>
         <Link
-          href="/profile?edit=true"
+          href={{
+            pathname: "/profile",
+            query: { edit: "true" },
+          }}
           className="w-24 h-10 bg-[#FF7A00] gap-2 text-white text-sm font-semibold rounded-[8px] flex items-center justify-center"
         >
-          <Edit size={16} /> Edit
+          <Edit size={16} /> Edit 1
         </Link>
       </div>
       <BasicInfoDetails user={user} />

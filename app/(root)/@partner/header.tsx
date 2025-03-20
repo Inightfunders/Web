@@ -13,7 +13,7 @@ export default async function HeaderStartUp() {
   return (
     <div className="ml-auto flex sticky items-center top-0 z-30 justify-end h-fit px-12 py-6 bg-[#212121] text-white w-full gap-3 shadow-lg navbarmobilemenu">
       {/* Logo for Small and Medium Screens */}
-      <div className="md:block lg:hidden">
+      <div className="mobile_logo_display_none">
         <Link href="/">
           <Image src="/images/logo.png" width={120} height={30} alt="logo" />
         </Link>
