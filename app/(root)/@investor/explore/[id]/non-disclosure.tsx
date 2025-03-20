@@ -18,6 +18,8 @@ export const NonDisclosure = ({ investorId, startupId }: Props) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [ndaStatus, setNdaStatus] = useState(false);
 
+    const documentLink: string = '/NDA.pdf';
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -45,7 +47,7 @@ export const NonDisclosure = ({ investorId, startupId }: Props) => {
 
         const link = document.createElement('a');
         link.href = documentLink;
-        link.setAttribute('download', '');
+        link.setAttribute('download', 'NDA.pdf');
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -82,7 +84,7 @@ export const NonDisclosure = ({ investorId, startupId }: Props) => {
                 </button>
                 <button
                     className="border border-white text-white px-4 py-2 rounded-[4px] flex items-center gap-2"
-                    onClick={() => handleDownload(ndaDoc[0].document_link)}
+                    onClick={() => handleDownload(documentLink)}
                 >
                     <Download size={16} /> <span>Download</span>
                 </button>

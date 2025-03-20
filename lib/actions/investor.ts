@@ -3,7 +3,7 @@
 import 'server-only'
 import { db } from "@/db"
 import { contracts, financial_details_requests, notifications, startups, transactions, cap_tables, pitch_decks,
-    tax_returns, financial_statements, legal_documents, other_documents, 
+    tax_returns, financial_statements, legal_documents, other_documents, users
  } from "@/migrations/schema"
 import { eq, sql, and, isNull, ilike, or, isNotNull } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
@@ -52,9 +52,10 @@ export const getExploreStartups = cache(async (investorId: number, params?: { se
     const decodedStage = params?.stage ? decodeURIComponent(params?.stage) as 'Pre-seed' | 'Seed' | 'Series A' | 'Series B' | 'Series C' | 'Series D' | 'Series E' | 'Series F' | 'Public' : undefined
     const decodedIndustry = params?.industry ? decodeURIComponent(params?.industry) as 'Technology' | 'Healthcare' | 'Financial Services' | 'Consumer Goods' | 'Industrial Goods' | 'Energy' | 'Real Estate' | 'Retail' | 'Media and Entertainment' | 'Transportation' | 'Telecommunications' | 'Agriculture' | 'Education' | 'Hospitality and Leisure' | 'Utilities' | 'Other' : undefined
     
-    return await db.select({ startup: startups })
+    return await db.select({ startup: startups, profile_img: users.profile_img })
                     .from(startups)
                     .leftJoin(contracts, and(eq(contracts.startup_id, startups.id), eq(contracts.investor_id, investorId), eq(contracts.accepted, true)))
+                    .leftJoin(users, eq(users.id, startups.user_id))
                     .where(and(isNull(contracts.id), eq(startups.accepted, true), params?.id ? eq(startups.id, params.id) : sql`true`, params?.search ? ilike(startups.company_name, `%${params?.search}%`) : sql`true`, decodedStage ? eq(startups.stage, decodedStage) : sql`true`, decodedIndustry ? eq(startups.industry_sector, decodedIndustry) : sql`true`))
 })
 
@@ -81,11 +82,13 @@ export const getAllRequests = cache(async (investorId: number, select: 'startups
                 .select({
                     ...(select === 'all' || select === 'startups' ? { startups } : {}),
                     ...(select === 'all' || select === 'contracts' ? { contracts } : {}),
-                    ...(select === 'all' || select === 'financial_details_requests' ? { financial_details_requests } : {})
+                    ...(select === 'all' || select === 'financial_details_requests' ? { financial_details_requests } : {}),
+                    ...(select === 'all' || select === 'startups' ? { 'profile_img': users.profile_img } : {})
                 })
                 .from(startups)
                 .leftJoin(contracts, and(eq(contracts.investor_id, investorId), eq(contracts.startup_id, startups.id), or(eq(contracts.accepted, false), isNull(contracts.accepted))))
                 .leftJoin(financial_details_requests, and(eq(financial_details_requests.investor_id, investorId), eq(financial_details_requests.startup_id, startups.id), or(eq(financial_details_requests.accepted, false), isNull(financial_details_requests.accepted))))
+                .leftJoin(users, eq(users.id, startups.user_id))
                 .where(or(
                     isNotNull(contracts.startup_id),
                     isNotNull(financial_details_requests.startup_id)

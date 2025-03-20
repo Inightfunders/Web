@@ -46,7 +46,7 @@ export default async function SingleStartUpPage({ params }: Props) {
       <div className="w-full flex gap-8 rounded-[2px] bg-[#313131] p-8 justify-start items-start flex-col sm:flex-row ">
         <div className="flex flex-col items-center justify-start">
           <Image
-            src="/images/placehodler.jpg"
+            src={startUpDetails[0]?.profile_img || '/images/placehodler.jpg'}
             alt={startup?.company_name!}
             width={112}
             height={112}

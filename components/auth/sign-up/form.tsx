@@ -9,6 +9,7 @@ import * as z from 'zod';
 
 import { cn } from '@/lib/utils';
 import { signUp } from '@/lib/actions/auth';
+import { useSearchParams } from "next/navigation";
 
 const signupSchema = z.object({
   firstName: z.string().min(1, 'First name is required.'),
@@ -34,6 +35,8 @@ interface Props {
 
 export const SignUpForm: React.FC<Props> = ({ className = '', role }) => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const value = searchParams.get("key");
 
   const form = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
@@ -58,7 +61,8 @@ export const SignUpForm: React.FC<Props> = ({ className = '', role }) => {
         lastName: data.lastName,
         email: data.email,
         password: data.password,
-        role: data.role
+        role: data.role,
+        ref: value ?? ""
       });
       if (result.error) {
         setError(result.error);
