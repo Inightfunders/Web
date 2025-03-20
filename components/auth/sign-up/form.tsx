@@ -9,7 +9,6 @@ import * as z from 'zod';
 
 import { cn } from '@/lib/utils';
 import { signUp } from '@/lib/actions/auth';
-import { useSearchParams } from "next/navigation";
 
 const signupSchema = z.object({
   firstName: z.string().min(1, 'First name is required.'),
@@ -31,13 +30,17 @@ type Role = 'startup' | 'investor' | 'partner';
 interface Props {
   className?: string;
   role: SignupFormValues['role'];
+  searchParams: { [key: string]: string | string[] | undefined };
 }
 
-export const SignUpForm: React.FC<Props> = ({ className = '', role }) => {
+export const SignUpForm: React.FC<Props> = ({
+  className = '',
+  role,
+  searchParams
+}) => {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const value = searchParams.get("key");
-
+  const ref =
+    typeof searchParams['key'] === 'string' ? searchParams['key'] : undefined;
   const form = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -62,16 +65,15 @@ export const SignUpForm: React.FC<Props> = ({ className = '', role }) => {
         email: data.email,
         password: data.password,
         role: data.role,
-        ref: value ?? ""
+        ref: ref
       });
+
       if (result.error) {
         setError(result.error);
         return;
       }
 
       const role = data.role;
-
-      console.log('role - ', role);
 
       if (role === 'partner') {
         router.push('/sign-up/partner/upload-profile-picture');
