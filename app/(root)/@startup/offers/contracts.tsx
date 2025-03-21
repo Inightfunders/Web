@@ -32,7 +32,8 @@ export default async function Contracts()
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {pendingContracts?.map((contract) => (
+                    {pendingContracts && pendingContracts.length > 0 ?
+                     (pendingContracts?.map((contract) => (
                         <TableRow key={contract.id}>
                             <TableCell className="p-6 border-2 text-center border-[#EAEAEA] font-Montserrat">
                                 {contract?.investor?.user?.first_name} {contract?.investor?.user?.last_name}
@@ -52,7 +53,11 @@ export default async function Contracts()
                                 </Link>
                             </TableCell>
                         </TableRow>
-                    ))}
+                    ))) : (
+                        <TableRow>
+                            <TableCell colSpan={3} className="text-center text-gray-700 font-Montserrat">No contract offer available</TableCell>
+                        </TableRow>
+                    )}
                 </TableBody>
             </Table>
         </section>

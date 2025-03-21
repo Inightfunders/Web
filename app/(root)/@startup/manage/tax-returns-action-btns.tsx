@@ -98,7 +98,7 @@ export default function TaxReturnsActionBtns({ document_link, taxReturnsId }: { 
                 <UploadIcon onClick={() => inputRef.current?.click()} className='cursor-pointer' size={24} />
                 <input
                     type='file'
-                    accept='.xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                    accept='application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                     onChange={(e) => handleUploadNewDocument(e)}
                     ref={inputRef}
                     className='hidden'

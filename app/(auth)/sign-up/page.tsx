@@ -42,7 +42,7 @@ export default function SignUpPage({ searchParams }: Props) {
             Create an account
           </h1>
         </div>
-        <SignUp />
+        <SignUp searchParams={searchParams} />
       </div>
       {/* {message && (
         <div className="flex gap-1.5 border border-[#E9D7FE] rounded-[10px] bg-light-purple w-fit items-center justify-center px-3 py-2">

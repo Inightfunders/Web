@@ -27,6 +27,8 @@ export const NdaModal = ({ isOpen = false, onClose, investorId, startupId, reque
           console.error("Error accepting NDA:", error);
       }
     };
+
+    const pdfUrl = '/NDA.pdf';
     
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
@@ -38,7 +40,7 @@ export const NdaModal = ({ isOpen = false, onClose, investorId, startupId, reque
         <div className="w-full h-3/4 my-8">
         { documentLink ? (
           <Worker workerUrl="/pdfjs/pdf.worker.min.js">
-            <Viewer fileUrl={documentLink} />
+            <Viewer fileUrl={pdfUrl} />
           </Worker>
         ) : (<p className="text-center">NDA document not available</p>) }
         </div>

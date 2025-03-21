@@ -1,12 +1,49 @@
+"use client";
+
+import { useState, useEffect } from "react";  
 import { getFinancialRounds } from "@/lib/actions/startup";
 import { cn } from "@/lib/utils";
+import { Loader2 } from "lucide-react"
 
-export default async function FinancialRounds({
+interface FinancialRound {
+  investor: string[];
+  date: string | null;
+  id: number;
+  round: "Pre-seed" | "Seed" | "Series A" | "Series B" | "Series C" | "Series D" | "Series E" | "Series F" | "Public" | null;
+  amount: string | null;
+  startup_id: number | null;
+}
+
+export default function FinancialRounds({
   startupId,
 }: {
   startupId: number;
 }) {
-  const financialRounds = await getFinancialRounds(startupId);
+  const [financialRounds, setFinancialRounds] = useState<FinancialRound[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getFinancialRounds(startupId);
+        setFinancialRounds(data);
+      } catch (error) {
+        console.error("Failed to fetch financial rounds:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [startupId]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center">
+        <Loader2 className="animate-spin h-8 w-8 text-white" />
+      </div>
+    );
+  }
 
   return (
     <div className="w-full overflow-auto bg-white rounded-md">

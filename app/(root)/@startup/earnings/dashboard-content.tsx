@@ -3,7 +3,7 @@ import { PieChart, Pie, Cell } from "recharts";
 import { Card } from "@/components/ui/card";
 
 import StartUpsInvestors from "@/components/startup/StartUpsInvestors";
-import { getUser } from "@/lib/actions/auth";
+import { getUser, getReferredUsers } from "@/lib/actions/auth";
 import { getContracts } from "@/lib/actions/startup";
 import StartUpsChart from "@/components/startup/StartUpsChart";
 import { SearchInput } from "@/components/lenders/SearchInput";
@@ -11,7 +11,7 @@ import { Search } from "lucide-react";
 import { CustomSearch } from "@/components/lenders/CustomSearch";
 import CustomStartupChart from "@/components/startup/CustomStartupChart";
 import DashboardCard from "../../@startup/DashboardCard";
-import Shareable from "./Shareable";
+import Shareable from "../referral/Shareable";
 
 interface LenderData {
   serial_number: number;
@@ -26,6 +26,11 @@ export default async function DashboardContent({
 }: {
   searchParams: { page?: string };
 }) {
+
+  const userData = await getUser();
+  const users = await getReferredUsers(userData?.user?.user_metadata?.sub );
+  const refUser = users.statuses ?? [];
+
   const lendersData: LenderData[] = [
     {
       serial_number: 1,
@@ -70,6 +75,7 @@ export default async function DashboardContent({
       payment_method: "Card",
     },
   ];
+  const TotalEarning = refUser.reduce((acc, user)=>user?.earnings > 0 && user.accepted ? acc+=user?.earnings : acc, 0);
 
   return (
     <div className="w-full px-4 sm:px-6 lg:px-8 mx-auto space-y-6 my-8 max-w-[1800px]">
@@ -78,7 +84,7 @@ export default async function DashboardContent({
         {/* Left Stats */}
         <div className="flex flex-col w-full md:w-1/3 space-y-4">
           <div className="p-4 bg-[#212121] rounded-lg text-center">
-            <DashboardCard title="Invites" value="1200" />
+            <DashboardCard title="Invites" value={refUser.length} />
           </div>
           <div
             className={`p-4 bg-[#212121] rounded-[8px] h-[calc(50%-12px)] text-center content-center items-center`}
@@ -87,7 +93,7 @@ export default async function DashboardContent({
               Earnings
             </p>
             <p className="text-white text-xl font-[700] font-Montserrat leading-[22px] mt-3 pb-[12px]">
-              $6,500
+              {TotalEarning}
             </p>
             <div className="w-full justify-items-center">
               <button

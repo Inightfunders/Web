@@ -7,7 +7,11 @@ import '../../../app/globals.css';
 import { SignUpForm } from './form';
 import { RoleSelector, Role } from '@/components/auth/sign-up/role-selector';
 
-export default function SignUp() {
+interface Props {
+  searchParams: { [key: string]: string | string[] | undefined };
+}
+
+export default function SignUp({ searchParams }: Props) {
   const [rolePage, setRolePage] = useState(true);
   const [role, setRole] = useState<Role>('startup');
 
@@ -45,7 +49,7 @@ export default function SignUp() {
         </>
       ) : (
         <>
-          <SignUpForm role={role} />
+          <SignUpForm role={role} searchParams={searchParams} />
           <p className="text-white font-normal !mt-4 text-sm font-Montserrat mx-auto">
             Already have an account?{' '}
             <Link

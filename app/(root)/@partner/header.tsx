@@ -26,7 +26,7 @@ export default async function HeaderStartUp() {
           className="flex items-center justify-center gap-3"
         >
           <Avatar className="bg-[#F1F5F9] text-black border border-custom-gray">
-            <AvatarImage src="" alt="company" />
+            <AvatarImage src={user?.userInfo?.profile_img || ""} alt="company" />
             <AvatarFallback className="">
               {user?.user?.user_metadata?.first_name.slice(0, 1)}
             </AvatarFallback>
