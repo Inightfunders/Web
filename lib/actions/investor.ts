@@ -61,7 +61,7 @@ export const getExploreStartups = cache(async (investorId: number, params?: { se
 
 export const getFinancialDetailsRequests = cache(async (investorId: number, startupId: number) => {
     return await db.query.financial_details_requests.findMany({
-        where: (table, { eq }) => eq(table.investor_id, investorId) && eq(table.startup_id, startupId)
+        where: (table, { eq, and }) => and(eq(table.investor_id, investorId), eq(table.startup_id, startupId))
     })
 })
 
