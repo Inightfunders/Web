@@ -455,6 +455,7 @@ export const partners = pgTable("partners", {
     partner_name: text("partner_name"),
     occupation: text("occupation"),
     company_name: text("company_name"),
+    created_at: timestamp("created_at", { withTimezone: true, mode: "string" }).defaultNow().notNull(),
   },
   (table) => {
     return {

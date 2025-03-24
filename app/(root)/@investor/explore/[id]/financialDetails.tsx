@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Eye } from "lucide-react";
+import { Eye, Loader2 } from "lucide-react";
 import { getFinancialDetailsRequests } from "@/lib/actions/investor";
 import CapTable from "./cap-table";
 import PitchDeck from "./pitch-deck";
@@ -20,6 +20,7 @@ const FinancialDetails = ({ investorId, startupId }: Props) => {
     const [activeTab, setActiveTab] = useState<string>("capTable");
     const [status, setStatus] = useState<"PENDING" | "APPROVED">("PENDING");
     const [isContentVisible, setIsContentVisible] = useState<boolean>(false);
+    const [loading, setLoading] = useState(true);
 
     const tabs = [
         { key: "capTable", label: "Cap Table" },
@@ -32,14 +33,20 @@ const FinancialDetails = ({ investorId, startupId }: Props) => {
 
     useEffect(() => {
         const fetchFinancialDetails = async () => {
-            const financialDetailRequest = await getFinancialDetailsRequests(investorId, startupId);
+            try {
+                const financialDetailRequest = await getFinancialDetailsRequests(investorId, startupId);
             
-            const newStatus = 
-                financialDetailRequest.length === 0 || !financialDetailRequest.some(req => req.accepted)
-                ? "PENDING"
-                : "APPROVED";
+                const newStatus = 
+                    financialDetailRequest.length === 0 || !financialDetailRequest.some(req => req.accepted)
+                    ? "PENDING"
+                    : "APPROVED";
 
-            setStatus(newStatus);
+                setStatus(newStatus);
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setLoading(false);
+            }            
         };
 
         fetchFinancialDetails();
@@ -48,6 +55,14 @@ const FinancialDetails = ({ investorId, startupId }: Props) => {
     const toggleContentVisibility = () => {
         setIsContentVisible(prevState => !prevState);
     };
+
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center bg-[#313131] p-4 rounded-[4px]">
+                <Loader2 size={24} className="animate-spin text-white" />
+            </div>
+        );
+    }
 
     return (
         <div className="flex flex-col gap-6 items-center bg-[#313131] p-4 rounded-[4px]">

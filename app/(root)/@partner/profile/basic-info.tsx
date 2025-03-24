@@ -33,7 +33,7 @@ export default function BasicInfo() {
     if (!uploadedFile) return;
   
     setIsLoading(true);
-    const UserId = user?.id;
+    const UserId = user?.user?.id;
     console.log("UserId:",UserId);
     
     if (!UserId) {
@@ -59,7 +59,8 @@ export default function BasicInfo() {
     const { data } = supabase.storage
       .from("profileImg")
       .getPublicUrl(`profile/${newFileName}`);
-    const publicUrl = data?.publicUrl || "";
+    
+      let publicUrl = data?.publicUrl || "";
   
     if (!publicUrl) {
       console.error("Failed to get public URL");
@@ -71,13 +72,14 @@ export default function BasicInfo() {
     const { error: updateError } = await supabase
       .from("users")
       .update({ profile_img: publicUrl })
-      .eq("id", user.id);
+      .eq("id", UserId);
   
     if (updateError) {
       console.error("Update Error:", updateError.message);
     } else {
       console.log("Profile image updated successfully!");
-      setUser((prev: any) => ({ ...prev, profile_img: publicUrl }));
+      setUser((prev: any) => ({...prev, userInfo: { ...prev?.userInfo, profile_img: publicUrl},
+      }));
       
       // Ensure that the latest user data is fetched
       router.refresh();
@@ -88,12 +90,12 @@ export default function BasicInfo() {
   
 
   const handleDeleteImage = async () => {
-    if (!user?.profile_img) return;
+    if (!user?.userInfo?.profile_img) return;
 
     setIsLoading(true);
 
     // Extract the file name from the URL
-    const fileName = user.profile_img.split("/").pop();
+    const fileName = user.userInfo.profile_img.split("/").pop();
 
     if (!fileName) {
       console.error("Invalid file path");
@@ -116,13 +118,13 @@ export default function BasicInfo() {
     const { error: updateError } = await supabase
       .from("users")
       .update({ profile_img: null })
-      .eq("id", user.id);
+      .eq("id", user?.user?.id);
 
     if (updateError) {
       console.error("Update Error:", updateError.message);
     } else {
       console.log("Profile image deleted successfully!");
-      setUser((prev: any) => ({ ...prev, profile_img: null }));
+      setUser((prev: any) => ({ ...prev, userInfo: { ...prev?.userInfo, profile_img: null },}));
     }
 
     setIsLoading(false);
