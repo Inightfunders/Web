@@ -30,6 +30,7 @@ export default function OffersPage({ searchParams }: Props) {
             )}
           >
             Basic Information
+            
           </Link>
           {/* <Link
             href="/profile?tab=company-info"

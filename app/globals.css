@@ -172,6 +172,23 @@ border-radius: 0.4rem;
       margin-top: 6rem;
     }
 }
+@media (max-width:1030px){
+
+  .display_none_1030 {
+    display: none !important;
+  }
+  .userinfospacingcont {
+    padding-top: 50px;
+  }
+}
+@media (min-width:1030px){
+
+  .mobile_logo_display_none {
+    display: none !important;
+  }
+  
+}
+
 @media (max-width: 1030px) {
   .logoutButn {
     margin-right: 20px;

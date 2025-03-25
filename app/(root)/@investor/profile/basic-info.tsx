@@ -130,7 +130,7 @@ export default function BasicInfo() {
           href="/profile?edit=true"
           className="w-24 h-10 bg-[#FF7A00] gap-2 text-white text-sm font-semibold rounded-[8px] flex items-center justify-center"
         >
-          <Edit size={16} /> Edit
+          <Edit size={16} /> Edit 123
         </Link>
       </div>
       <BasicInfoDetails user={user} />

@@ -15,7 +15,7 @@ console.log("getUser:", user);
     <div className="sticky top-0 z-30 flex items-center justify-between h-fit px-6 md:px-12 py-4 bg-[#212121] text-white w-full gap-3 shadow-lg">
       
     {/* Logo for Small and Medium Screens */}
-    <div className="md:block lg:hidden">
+    <div className="mobile_logo_display_none">
       <Link href="/">
         <Image src="/images/logo.png" width={120} height={30} alt="logo" />
       </Link>
