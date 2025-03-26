@@ -26,7 +26,7 @@ export default function PaymentSetup({
           <div className="space-y-[24px]">
             {/* Savings Account */}
             <div className="bg-[#ffffff] rounded-[8px] p-[20px]">
-              <div className="flex items-start justify-between">
+              <div className="md:flex items-start justify-between">
                 <div className="flex items-center gap-4">
                   <div className="w-[70px] h-[70px] rounded-lg flex items-center justify-center">
                     <Image
@@ -73,7 +73,7 @@ export default function PaymentSetup({
 
             {/* Current Account */}
             <div className="bg-[#ffffff] rounded-[8px] p-[20px]">
-              <div className="flex items-start justify-between">
+              <div className="md:flex items-start justify-between">
                 <div className="flex items-center gap-4">
                   <div className="w-[70px] h-[70px] rounded-lg flex items-center justify-center">
                     <Image
@@ -128,7 +128,7 @@ export default function PaymentSetup({
         </div>
 
         {/* Other Payment Section */}
-        <div className="md:w-1/3 bg-[#212121] rounded-lg py-6 px-6 sm:py-8 sm:px-8">
+        <div className="md:w-1/3 bg-[#212121] rounded-lg py-6 md:px-6 sm:py-8 sm:px-8">
           <div className="mb-[24px] text-left">
             <h2 className="text-white text-[20px] font-bold mb-[8px] font-Montserrat">
               Other payment
