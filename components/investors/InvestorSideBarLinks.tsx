@@ -76,7 +76,7 @@ export default function InvestorSideBarLinks() {
             <Link
               href="/referral"
               className={cn(
-                "py-3 text-sm font-Montserrat w-full px-6 block",
+                "py-3 text-sm font-Montserrat w-full px-2 block",
                 pathname === "/referral"
                   ? "bg-white font-medium text-black"
                   : "text-white"
@@ -87,7 +87,7 @@ export default function InvestorSideBarLinks() {
             <Link
               href="/earnings"
               className={cn(
-                "py-3 text-sm font-Montserrat w-full px-6 block",
+                "py-3 text-sm font-Montserrat w-full px-2 block",
                 pathname === "/earnings"
                   ? "bg-white font-medium text-black"
                   : "text-white"
@@ -98,7 +98,7 @@ export default function InvestorSideBarLinks() {
             <Link
               href="/payment-setup"
               className={cn(
-                "py-3 text-sm font-Montserrat w-full px-6 block",
+                "py-3 text-sm font-Montserrat w-full px-2 block",
                 pathname === "/payment-setup"
                   ? "bg-white font-medium text-black"
                   : "text-white"
