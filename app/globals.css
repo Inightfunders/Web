@@ -250,7 +250,7 @@ border-radius: 0.4rem;
     width: 100%;
     top: 0;
     height: 180px;
-    z-index: 0;
+    z-index: 9;
   }
   .sidebardashboardopen {
     position: absolute;
