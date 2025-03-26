@@ -28,7 +28,7 @@ export default function LogOutSlider() {
       </button>
       <Dialog open={loading}>
         <DialogContent className="flex items-center justify-center bg-transparent border-none shadow-none outline-none">
-          <Loader2 className="animate-spin" size={42} color="#000" />
+          <Loader2 className="animate-spin" size={42} color="#74c1ed" />
         </DialogContent>
       </Dialog>
     </div>

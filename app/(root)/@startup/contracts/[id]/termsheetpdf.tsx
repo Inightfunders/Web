@@ -41,7 +41,7 @@ export default function TermSheetPDF({ url }: { url: string | null })
     return (
         <iframe 
             src={pdfUrl!} 
-            width="90%"
+            width="100%"
             height="400px"
             title="PDF Viewer" 
             className='mx-auto'

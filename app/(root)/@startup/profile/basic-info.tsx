@@ -165,10 +165,10 @@ export default function BasicInfo() {
           Profile picture
         </p>
       </div>
-      <div className="text-left">
+      <div className="flex flex-col items-center w-full sm:w-1/2 border border-gray-500 py-2">
         <h4 className="text-lg text-white font-Montserrat mb-5">Brand logo</h4>
         <label htmlFor="upload-image" className="cursor-pointer">
-          <Avatar className="bg-[#F1F5F9] text-black border-4 border-[#FF7A00]">
+          <Avatar className="bg-[#F1F5F9] text-black border-4 border-[#FF7A00] w-24 h-24">
             <AvatarImage
               src={user?.userInfo?.profile_img || ""}
               alt="company"

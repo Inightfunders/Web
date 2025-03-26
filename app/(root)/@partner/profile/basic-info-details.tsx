@@ -13,9 +13,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
-import { Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react"; 
 
 const editBasicInfoSchema = z.object({
   firstName: z.string().min(1),
@@ -23,7 +23,13 @@ const editBasicInfoSchema = z.object({
   email: z.string().email(),
 });
 
-export default function BasicInfoDetails({ user }: { user: UserType }) {
+export default function BasicInfoDetails({ 
+  user,
+  onUpdate 
+}: { 
+  user: UserType;
+  onUpdate?: (updatedUser: Partial<UserType>) => void;
+}) {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -36,37 +42,69 @@ export default function BasicInfoDetails({ user }: { user: UserType }) {
   const form = useForm<z.infer<typeof editBasicInfoSchema>>({
     resolver: zodResolver(editBasicInfoSchema),
     defaultValues: {
-      firstName: user?.userInfo?.first_name ?? "",
-      lastName: user?.userInfo?.last_name ?? "",
-      email: user?.user?.email ?? "",
+      firstName: user?.userInfo?.first_name || "",
+      lastName: user?.userInfo?.last_name || "",
+      email: user?.user?.email || "",
     },
   });
 
+  useEffect(() => {
+      if (user) {
+        form.reset({
+          firstName: user.userInfo?.first_name || "",
+          lastName: user.userInfo?.last_name || "",
+          email: user.user?.email || ""
+        });
+      }
+    }, [user, form]);
+
   const onSubmit = async (values: z.infer<typeof editBasicInfoSchema>) => {
+    if (!user) return;
+    
     setIsLoading(true);
+    setError("");
+    setEmailChanged(false);
 
     const supabase = createClient();
 
-    const [
+    try {
+      const [
       { error: updateUserError, data },
-      { error: updateStartUpUserError },
-    ] = await Promise.all([
-      supabase.auth.updateUser({
-        email: values.email,
-      }),
-      supabase
-        .from("users")
-        .update({
-          first_name: values.firstName,
-          last_name: values.lastName,
-        })
-        .eq("id", user?.user?.id!),
-    ]);
+        { error: updateStartUpUserError },
+      ] = await Promise.all([
+        supabase.auth.updateUser({
+          email: values.email,
+        }),
+        supabase
+          .from("users")
+          .update({
+            first_name: values.firstName,
+            last_name: values.lastName,
+          })
+          .eq("id", user?.user?.id!),
+      ]);      
+      if (updateUserError) setError(updateUserError.message);
+      if (updateStartUpUserError) setError(updateStartUpUserError.message);
 
+      // Update local state
+      if (onUpdate) {
+        onUpdate({
+          user: {
+            ...user.user, email: values.email,
+          },
+          userInfo: {
+            ...user.userInfo,
+            first_name: values.firstName,
+            last_name: values.lastName,
+            role: user?.userInfo?.role ?? null,
+            profile_img: user?.userInfo?.profile_img ?? null,
+            plaid_id: user?.userInfo?.plaid_id ?? null,
+            dwolla_customer_id: user?.userInfo?.dwolla_customer_id ?? null,
+            dwolla_customer_url: user?.userInfo?.dwolla_customer_url ?? null,
+          }
+        });
+      }
 
-    if (updateUserError) setError(updateUserError.message);
-    else if (updateStartUpUserError) setError(updateStartUpUserError.message);
-    else {
       if (values.email !== user?.user?.email) {
         setEmailChanged(true);
         setTimeout(() => {
@@ -79,9 +117,11 @@ export default function BasicInfoDetails({ user }: { user: UserType }) {
         router.push("/profile");
         router.refresh();
       }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred");
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   };
 
   return edit ? (
@@ -181,7 +221,7 @@ export default function BasicInfoDetails({ user }: { user: UserType }) {
           Your Name
         </p>
         <p className="text-white font-bold text-base font-Montserrat">
-          {user?.user?.user_metadata?.first_name} {user?.user?.user_metadata?.last_name}
+          {user?.userInfo?.first_name} {user?.userInfo?.last_name}
         </p>
       </div>
       <div className="flex flex-col flex-1 gap-2 items-start justify-center">

@@ -11,7 +11,7 @@ export default async function DataRequests() {
   // console.log("requestsssss",requests);
 
   return (
-    <section className="flex flex-1 items-start justify-between gap-6 h-screen py-12 px-12 flex-wrap">
+    <section className="flex flex-1 items-start gap-6 h-screen py-12 px-6 flex-wrap">
       {requests.length ? (
         requests.map(({ investor, id, accepted }) => (
           <div className="flex flex-col gap-4 px-6 items-start justify-center bg-white w-[310px] rounded-[8px] h-[150px] py-4">

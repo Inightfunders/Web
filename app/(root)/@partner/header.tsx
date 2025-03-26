@@ -36,7 +36,7 @@ export default async function HeaderStartUp() {
               {user?.user?.user_metadata?.first_name}{" "}
               {user?.user?.user_metadata?.last_name}
             </span>
-            <span>{user?.user?.user_metadata?.role}</span>
+            <span className="text-xs">{user?.user?.user_metadata?.role}</span>
           </p>
         </Link>
       </div>

@@ -322,8 +322,8 @@ export const getReferredUsers = cache(async (id: string) => {
     };
   });
 
-  console.log('Referred Contracts:', referredCombine);
-  console.log('Statuses:', statuses);
+  // console.log('Referred Contracts:', referredCombine);
+  // console.log('Statuses:', statuses);
 
   return { referredUsers, referredStartups, referredInvestors, statuses };
 });

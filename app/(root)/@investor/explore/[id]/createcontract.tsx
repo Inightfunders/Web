@@ -53,8 +53,8 @@ export default function CreateContract({ user, startupId }: Props) {
     defaultValues: {
       investorId: user?.userInvestor?.id!,
       startupId,
-      amountInvested: 0,
-      interestRate: 0,
+      amountInvested: undefined,
+      interestRate: undefined,
       maturityDate: new Date(new Date().setDate(new Date().getDate() + 7)),
       paymentInterval: undefined,
       termSheet: new File([], ""),
@@ -143,7 +143,7 @@ export default function CreateContract({ user, startupId }: Props) {
         </div>
       ) : (
         <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col items-center justify-center gap-6 p-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col items-center justify-center gap-6 p-0 sm:p-4">
           <div className="flex flex-wrap justify-center gap-6 w-full max-w-2xl">
             {/* Amount Invested */}
             <FormField
@@ -155,7 +155,7 @@ export default function CreateContract({ user, startupId }: Props) {
                   <FormLabel className="text-left text-gray-700">Amount Invested</FormLabel>
                   <FormControl>
                     <input
-                      className="w-full px-4 py-3 border rounded-md outline-none"
+                      className="w-full px-4 py-3 border rounded-xl !border-gray-500"
                       placeholder="Enter amount"
                       {...field}
                       value={field.value ?? ""}
@@ -182,7 +182,7 @@ export default function CreateContract({ user, startupId }: Props) {
                   <FormLabel className="text-left text-gray-700">Interest Rate</FormLabel>
                   <FormControl>
                     <input
-                      className="w-full px-4 py-3 border rounded-md outline-none"
+                      className="w-full px-4 py-3 border rounded-xl !border-gray-500"
                       placeholder="Enter interest rate"
                       {...field}
                       value={field.value ?? ""}
@@ -208,7 +208,7 @@ export default function CreateContract({ user, startupId }: Props) {
                 <FormItem className="relative flex flex-col gap-1 w-full">
                   <FormLabel className="text-left text-gray-700">Payment Interval</FormLabel>
                   <FormControl>
-                    <select className="w-full px-4 py-3 border rounded-md outline-none" {...field}>
+                    <select className="w-full px-4 py-3 border rounded-xl !border-gray-500 " {...field}>
                       <option value="">Select Payment Interval</option>
                       <option value="month">Month</option>
                       <option value="week">Week</option>
@@ -232,7 +232,7 @@ export default function CreateContract({ user, startupId }: Props) {
                   <FormControl>
                     <Popover>
                       <PopoverTrigger asChild>
-                        <Button variant="outline" className="w-full px-4 py-3 border rounded-md bg-white outline-none">
+                        <Button variant="outline" className="w-full px-4 py-3 border bg-white rounded-xl !border-gray-500">
                           {field.value ? format(field.value, "PPP") : "Pick a date"}
                           <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                         </Button>
@@ -267,14 +267,14 @@ export default function CreateContract({ user, startupId }: Props) {
                 <FormItem className="relative flex flex-col gap-1 w-full">
                   <FormLabel className="text-left text-gray-700">Term Sheet</FormLabel>
                   <FormControl>
-                    <div className="border rounded-md px-4 py-3 flex items-center justify-between bg-white">
+                    <div className="border border-gray-500 rounded-xl px-4 py-3 flex items-center justify-between bg-white">
                       <input
                         type="file"
                         onChange={(e) => field.onChange(e.target.files?.[0] || null)}
                         className="hidden"
                         id="upload"
                       />
-                      <label htmlFor="upload" className="cursor-pointer text-blue-600">
+                      <label htmlFor="upload" className="cursor-pointer">
                         Choose File
                       </label>
                       <span className="text-sm text-gray-500">
@@ -289,7 +289,7 @@ export default function CreateContract({ user, startupId }: Props) {
           </div>
   
           {/* Submit Button */}
-          <button type="submit" className="bg-blue-600 text-white px-6 py-2 rounded-[5px] text-sm mt-4">
+          <button type="submit" className="bg-orange-500 text-white px-6 py-2 rounded-[5px] text-sm mt-4">
             Submit Contract
           </button>
         </form>
@@ -298,7 +298,7 @@ export default function CreateContract({ user, startupId }: Props) {
       )}
       <Dialog open={isLoading}>
         <DialogContent className="flex items-center justify-center bg-transparent border-none shadow-none outline-none">
-          <Loader2 className="animate-spin" size={42} color="#000" />
+          <Loader2 className="animate-spin" size={42} color="#74c1ed" />
         </DialogContent>
       </Dialog>
       <Dialog open={success}>

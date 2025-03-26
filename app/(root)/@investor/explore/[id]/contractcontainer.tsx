@@ -36,7 +36,7 @@ export default function ContractContainer({ startupId, onClose }: ContractContai
   }, [startupId]);
 
   return (
-    <div className="flex flex-col p-4 bg-white rounded-lg">
+    <div className="flex flex-col bg-white rounded-lg">
       <button onClick={onClose} className="self-end text-gray-500 hover:text-gray-800">
         ✕
       </button>

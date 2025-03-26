@@ -140,7 +140,7 @@ export default async function StartUpsInvestors({
                 ))
             ) : (
               <tr>
-                <td colSpan={5} className="py-8 font-Montserrat text-white">
+                <td colSpan={5} className="py-6 font-normal font-Montserrat bg-[#EAEAEA]">
                   No data
                 </td>
               </tr>

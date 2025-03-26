@@ -18,7 +18,7 @@ export default async function ContractPage({ params }: Props)
     if(!contract || contract?.accepted) return null
 
     return (
-        <section className='flex flex-1 gap-4 flex-col justify-start pt-12 px-12'>
+        <section className='flex flex-1 gap-4 flex-col justify-start pt-12 px-2 sm:px-12 mt-20'>
             <div className="flex w-full items-center justify-between">
                 <div className="flex gap-1 flex-col items-start justify-center text-left text-white">
                     <p className='text-sm font-medium font-Montserrat'>
@@ -33,26 +33,28 @@ export default async function ContractPage({ params }: Props)
                     <button className='rounded-[4px] bg-white text-sm w-32 font-extralight text-black h-9'>Negotiate</button>
                 </div> */}
             </div>
-            <div className='flex flex-col w-full bg-[#313131] rounded-[4px] py-4 px-8 gap-4'>
-                <div className='flex flex-wrap w-full gap-4'>
-                    <div className='flex flex-col min-w-[40%] items-start justify-center gap-2 flex-1 py-2 px-4 bg-[#202020] rounded-[8px]'>
-                        <p className='text-white font-light text-base'>Amount Invested</p>
-                        <p className='text-white font-bold text-xl'>${contract.amount_invested}</p>
+            <div className='flex flex-col w-full bg-[#313131] rounded-[4px] py-4 px-2 sm:px-8 gap-4'>
+                <div className='flex flex-col w-full gap-8'>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className='flex flex-col items-start justify-center gap-2 flex-1 p-4 bg-[#202020] rounded-[8px]'>
+                            <p className='text-white font-light text-base'>Amount Invested</p>
+                            <p className='text-white font-bold text-xl'>${contract.amount_invested}</p>
+                        </div>
+                        <div className='flex flex-col items-start justify-center gap-2 flex-1 p-4 bg-[#202020] rounded-[8px]'>
+                            <p className='text-white font-light text-base'>Interest Rate</p>
+                            <p className='text-white font-bold text-xl'>{contract.interest_rate}%</p>
+                        </div>
+                        <div className='flex flex-col items-start justify-center gap-2 flex-1 p-4 bg-[#202020] rounded-[8px]'>
+                            <p className='text-white font-light text-base'>Maturity Date</p>
+                            <p className='text-white font-bold text-xl'>{format(new Date(contract.maturity_date!), "MMMM, do, yyyy")}</p>
+                        </div>
+                        <div className='flex flex-col items-start justify-center gap-2 flex-1 p-4 bg-[#202020] rounded-[8px]'>
+                            <p className='text-white font-light text-base'>Payment Interval</p>
+                            <p className='text-white font-bold text-xl'>{contract.payment_interval}</p>
+                        </div>
                     </div>
-                    <div className='flex flex-col min-w-[40%] items-start justify-center gap-2 flex-1 py-2 px-4 bg-[#202020] rounded-[8px]'>
-                        <p className='text-white font-light text-base'>Interest Rate</p>
-                        <p className='text-white font-bold text-xl'>{contract.interest_rate}%</p>
-                    </div>
-                    <div className='flex flex-col min-w-[40%] items-start justify-center gap-2 flex-1 py-2 px-4 bg-[#202020] rounded-[8px]'>
-                        <p className='text-white font-light text-base'>Maturity Date</p>
-                        <p className='text-white font-bold text-xl'>{format(new Date(contract.maturity_date!), "MMMM, do, yyyy")}</p>
-                    </div>
-                    <div className='flex flex-col min-w-[40%] items-start justify-center gap-2 flex-1 py-2 px-4 bg-[#202020] rounded-[8px]'>
-                        <p className='text-white font-light text-base'>Payment Interval</p>
-                        <p className='text-white font-bold text-xl'>{contract.payment_interval}</p>
-                    </div>
-                    <div className='flex flex-col min-w-[40%] items-start justify-center gap-2 flex-1 py-2 px-4 bg-[#202020] rounded-[8px]'>
-                        <p className='text-white font-light text-base'>Term Sheet</p>
+                    <div className='flex flex-col items-start justify-center gap-2 flex-1 py-4 bg-[#202020] rounded-[8px]'>
+                        <p className='text-white font-light text-base px-4'>Term Sheet</p>
                         <TermSheetPDF url={contract.term_sheet} />
                     </div>
                 </div>

@@ -32,14 +32,14 @@ export default function AgreeToContract({ contractId, user }: Props)
 
     return (
         <>
-            <div className='mt-4 relative flex flex-col ml-auto'>
-                <input type='text' placeholder="Signature" className='bg-transparent border-b border-white text-white w-[294px] outline-none py-1.5' value={signature} onChange={(e) => setSignature(e.target.value)} />
-                {signatureError && <p className='text-red-500 text-left mr-auto mt-[2px] text-[10px]'>{signatureError}</p>}
-                <button onMouseDown={handleSubmitSignature} className='w-fit rounded-[2px] bg-white text-black !text-[10px] mt-4 ml-auto text-xs px-2.5 text-nowrap py-1.5'>I Agree to all terms & Conditions</button>
+            <div className='mt-4 relative flex gap-2 flex-col items-end'>
+                <input type='text' placeholder="Signature" className='bg-transparent border-b border-white text-white' value={signature} onChange={(e) => setSignature(e.target.value)} />
+                {signatureError && <p className='text-red-500 mr-12 mt-[2px] text-[10px]'>{signatureError}</p>}
+                <button onMouseDown={handleSubmitSignature} className='w-fit rounded-[2px] bg-white text-black !text-[10px] text-xs px-2.5 text-nowrap py-1.5'>I Agree to all terms & Conditions</button>
             </div>
             <Dialog open={loading}>
                 <DialogContent className='flex items-center justify-center bg-transparent border-none shadow-none outline-none'>
-                    <Loader2 className='animate-spin' size={42} color="#000" />
+                    <Loader2 className='animate-spin' size={42} color="#74c1ed" />
                 </DialogContent>
             </Dialog>
         </>
