@@ -4,6 +4,9 @@ import { UserType } from "@/lib/types/user";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 
+// grid grid-cols-2 md:grid-cols-3 gap-6 w-full
+
+
 type Props = {
   user: UserType;
   requestId: number;

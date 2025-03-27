@@ -178,7 +178,7 @@ border-radius: 0.4rem;
     display: none !important;
   }
   .userinfospacingcont {
-    padding-top: 50px;
+    padding-top: 50px !important;
   }
 }
 @media (min-width:1030px){
@@ -281,7 +281,7 @@ border-radius: 0.4rem;
     width: 90%;
   }
   .userinfospacingcont {
-    padding-top: 150px;
+    padding-top: 80px;
   }
 }
 

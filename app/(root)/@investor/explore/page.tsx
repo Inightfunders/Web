@@ -35,7 +35,7 @@ export default async function ExplorePage({ searchParams }: Props) {
 <div className="bg-[#1A1A1A] flex items-center justify-center w-full sticky top-0 pb-2">
         <SearchStartupsBar />
       </div>
-      <div className="grid grid-cols-3 gap-6 w-full">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 w-full">
         {exploreStartups.map(({ startup }) => (
           <Link
             href={`/explore/${startup.id}`}
