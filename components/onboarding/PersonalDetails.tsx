@@ -30,6 +30,7 @@ export default function PersonalDetails({ searchParams, user }: Props) {
     ssn?: string;
     dob?: string;
   }>({});
+  const [submitError, setSubmitError] = useState<string>('');
 
   const validateFields = () => {
     let validationErrors: {
@@ -90,6 +91,7 @@ export default function PersonalDetails({ searchParams, user }: Props) {
     if (response.error) {
       console.log('personal details error: ', error);
       setOpen(true);
+      setSubmitError(response.error);
     } else {
       const user = await getUser();
       if (
@@ -338,7 +340,7 @@ export default function PersonalDetails({ searchParams, user }: Props) {
         </button>
         {open && (
           <div className="flex justify-center">
-            <p className="text-red-500 text-xs mt-1">Submit error</p>
+            <p className="text-red-500 text-xs mt-1">{submitError}</p>
           </div>
         )}
       </div>
