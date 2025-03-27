@@ -116,7 +116,7 @@ export default function InvestorsChart({ contracts, totalROI }: Props)
     } satisfies ChartConfig
 
     return (
-        <div className="bg-[#212121] whiteText flex">
+        <div className="bg-[#212121] whiteText md:flex">
            {/* Highcharts Pie Chart */}
       <div className="w-[250px] h-[250px]">
         <HighchartsReact highcharts={Highcharts} options={options} />

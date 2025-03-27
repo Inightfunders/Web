@@ -13,17 +13,17 @@ export default async function InvestorLayout({
 }>) {
   const user = await getUser();
 
-  if (!user?.userInvestor?.accepted) {
-    return (
-      <div className="w-screen h-screen flex flex-col items-center justify-center text-center gap-12 max-w-[920px] mx-auto">
-        <p className="text-3xl font-semibold leading-[3rem]">
-          Thank you for your application. We will match you with our network of
-          lenders and notify you once they express interest.
-        </p>
-        <SignOutBtn />
-      </div>
-    );
-  }
+  // if (!user?.userInvestor?.accepted) {
+  //   return (
+  //     <div className="w-screen h-screen flex flex-col items-center justify-center text-center gap-12 max-w-[920px] mx-auto">
+  //       <p className="text-3xl font-semibold leading-[3rem]">
+  //         Thank you for your application. We will match you with our network of
+  //         lenders and notify you once they express interest.
+  //       </p>
+  //       <SignOutBtn />
+  //     </div>
+  //   );
+  // }
 
   const investorBankAccount = await getBankAccount(user?.user.id!);
 
@@ -40,7 +40,7 @@ export default async function InvestorLayout({
 
   return (
     <section className="min-w-screen min-h-screen flex items-center justify-center text-center bg-[#1A1A1A]">
-      <InvestorSideBar user={user} />
+      <InvestorSideBar />
       <section className="flex flex-1 flex-col h-screen overflow-x-auto">
         <HeaderInvestor />
         {children}

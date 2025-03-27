@@ -137,7 +137,7 @@ export default function StartupSideBarLinks({
             <Link
               href="/referral"
               className={cn(
-                "py-3 text-sm font-Montserrat w-full px-8 block",
+                "py-3 text-sm font-Montserrat w-full block",
                 pathname === "/referral"
                   ? "bg-white font-medium text-black"
                   : "text-white"
@@ -148,7 +148,7 @@ export default function StartupSideBarLinks({
             <Link
               href="/earnings"
               className={cn(
-                "py-3 text-sm font-Montserrat w-full px-8 block",
+                "py-3 text-sm font-Montserrat w-full block",
                 pathname === "/earnings"
                   ? "bg-white font-medium text-black"
                   : "text-white"
@@ -159,7 +159,7 @@ export default function StartupSideBarLinks({
             <Link
               href="/payment-setup"
               className={cn(
-                "py-3 text-sm font-Montserrat w-full px-8 block",
+                "py-3 text-sm font-Montserrat w-full block",
                 pathname === "/payment-setup"
                   ? "bg-white font-medium text-black"
                   : "text-white"

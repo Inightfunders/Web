@@ -13,11 +13,11 @@ export default function InvestorSideBarLinks() {
   const isReferralActive = pathname.startsWith("/referral");
 
   return (
-    <div className="flex flex-col w-full mt-8 gap-2 sidebardashboardMenuLinks">
+    <div className="flex flex-col w-full mt-8 sidebardashboardMenuLinks">
       <Link
         href="/"
         className={cn(
-          "py-4 text-sm font-Montserrat w-full px-4 md:px-6 text-left",
+          "py-4 text-sm font-Montserrat w-full px-2 md:px-6 text-left",
           !pathname.startsWith("/earnings") &&
             !pathname.startsWith("/payment-setup") &&
             !pathname.startsWith("/explore") &&
@@ -32,7 +32,7 @@ export default function InvestorSideBarLinks() {
       <Link
         href="/explore"
         className={cn(
-          "py-4 text-sm font-Montserrat w-full px-4 md:px-6 text-left",
+          "py-4 text-sm font-Montserrat w-full px-2 md:px-6 text-left",
           pathname.startsWith("/explore")
             ? "bg-white font-medium text-black h-fit"
             : "text-white"
@@ -43,7 +43,7 @@ export default function InvestorSideBarLinks() {
       <Link
         href="/requests"
         className={cn(
-          "py-4 text-sm font-Montserrat w-full px-4 md:px-6 text-left",
+          "py-4 text-sm font-Montserrat w-full px-2 md:px-6 text-left",
           pathname.startsWith("/requests")
             ? "bg-white font-medium text-black h-fit"
             : "text-white"
@@ -57,7 +57,7 @@ export default function InvestorSideBarLinks() {
         <button
           onClick={() => setIsReferralOpen(!isReferralOpen)}
           className={cn(
-            "py-4 text-sm font-Montserrat w-full px-4 md:px-6 flex justify-between items-center text-left",
+            "py-4 text-sm font-Montserrat w-full px-2 md:px-6 flex justify-between items-center text-left",
             pathname.startsWith("/referral") && !isReferralOpen
               ? "bg-white font-medium text-black"
               : "text-white"
@@ -76,7 +76,7 @@ export default function InvestorSideBarLinks() {
             <Link
               href="/referral"
               className={cn(
-                "py-3 text-sm font-Montserrat w-full px-6 block",
+                "py-3 text-sm font-Montserrat w-full px-2 block",
                 pathname === "/referral"
                   ? "bg-white font-medium text-black"
                   : "text-white"
@@ -87,7 +87,7 @@ export default function InvestorSideBarLinks() {
             <Link
               href="/earnings"
               className={cn(
-                "py-3 text-sm font-Montserrat w-full px-6 block",
+                "py-3 text-sm font-Montserrat w-full px-2 block",
                 pathname === "/earnings"
                   ? "bg-white font-medium text-black"
                   : "text-white"
@@ -98,7 +98,7 @@ export default function InvestorSideBarLinks() {
             <Link
               href="/payment-setup"
               className={cn(
-                "py-3 text-sm font-Montserrat w-full px-6 block",
+                "py-3 text-sm font-Montserrat w-full px-2 block",
                 pathname === "/payment-setup"
                   ? "bg-white font-medium text-black"
                   : "text-white"

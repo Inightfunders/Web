@@ -176,7 +176,7 @@ export default function BasicInfoDetails({ user }: { user: UserType }) {
       </form>
     </Form>
   ) : (
-    <div className="flex flex-wrap gap-4">
+    <div className="sm:flex flex-wrap gap-4">
       <div className="flex flex-col flex-1 gap-2 items-start justify-center">
         <p className="font-normal font-Montserrat text-white text-xs">
           Your Name
@@ -185,7 +185,7 @@ export default function BasicInfoDetails({ user }: { user: UserType }) {
           {user?.userInfo?.first_name} {user?.userInfo?.last_name}
         </p>
       </div>
-      <div className="flex flex-col flex-1 gap-2 items-start justify-center">
+      <div className="flex flex-col mt-2 flex-1 gap-2 items-start justify-center">
         <p className="font-normal font-Montserrat text-white text-xs">
           Your Email
         </p>

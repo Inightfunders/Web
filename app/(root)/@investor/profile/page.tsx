@@ -65,7 +65,7 @@ export default function OffersPage({ searchParams }: Props) {
           </Suspense>
         )}
       </div>
-      <div className="block lg:hidden">
+      <div className="block lg:hidden mt-2">
         <LogOutSlider />
       </div>
     </section>

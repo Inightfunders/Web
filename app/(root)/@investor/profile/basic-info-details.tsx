@@ -28,7 +28,13 @@ const editBasicInfoSchema = z.object({
   future_investment_amount: z.string().min(1),
 });
 
-export default function BasicInfoDetails({ user }: { user: UserType }) {
+export default function BasicInfoDetails({ 
+  user,
+  onUpdate 
+}: { 
+  user: UserType;
+  onUpdate?: (updatedUser: Partial<UserType>) => void;
+}) {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -66,6 +72,10 @@ export default function BasicInfoDetails({ user }: { user: UserType }) {
   }, [user, form]);
 
   const onSubmit = async (values: z.infer<typeof editBasicInfoSchema>) => {
+    if (!user || !user.userInvestor?.id) {
+      return;
+    }
+
     setIsLoading(true);
     setError("");
   
@@ -111,15 +121,60 @@ export default function BasicInfoDetails({ user }: { user: UserType }) {
   
       if (updateUserTableError) {
         setError(updateUserTableError.message);
-      } else if (updateInvestorError) {
+      }
+      if (updateInvestorError) {
         setError(updateInvestorError.message);
-      } else {
-        if (values.email !== user?.user?.email) {
-          setEmailChanged(true);
-        } else {
+      }
+
+      if (onUpdate) {
+        onUpdate({
+          user: {
+            ...user.user, email: values.email,
+          },
+          userInfo: {
+            ...user.userInfo,
+            first_name: values.firstName,
+            last_name: values.lastName,
+            role: user?.userInfo?.role ?? null,
+            profile_img: user?.userInfo?.profile_img ?? null,
+            plaid_id: user?.userInfo?.plaid_id ?? null,
+            dwolla_customer_id: user?.userInfo?.dwolla_customer_id ?? null,
+            dwolla_customer_url: user?.userInfo?.dwolla_customer_url ?? null,
+          },
+          userInvestor: {
+            ...user.userInvestor,
+            accepted: user.userInvestor?.accepted ?? true,
+            company_website: user.userInvestor?.company_website ?? null,
+            company_name: values.company_name,
+            company_email: values.company_email,
+            institution_type: values.institution_type as
+              | "Other"
+              | "Corporation"
+              | "Family Office"
+              | "Fund"
+              | "Registered Investment Advisor (RIA)"
+              | null,
+            future_investment_amount: values.future_investment_amount as
+              | "Less than $250K"
+              | "$250K - $1M"
+              | "S1M - $5M"
+              | "$5M+"
+              | "Not sure"
+              | null,
+          }
+        });
+      }
+      
+      if (values.email !== user?.user?.email) {
+        setEmailChanged(true);
+        setTimeout(() => {
+          setError("");
           router.push("/profile");
           router.refresh();
-        }
+        }, 1000);
+      } else {
+        router.push("/profile");
+        router.refresh();
       }
     } catch (err) {
       setError("An unexpected error occurred.");

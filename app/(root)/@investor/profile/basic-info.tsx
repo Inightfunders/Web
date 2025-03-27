@@ -133,7 +133,11 @@ export default function BasicInfo() {
           <Edit size={16} /> Edit
         </Link>
       </div>
-      <BasicInfoDetails user={user} />
+      <BasicInfoDetails user={user} onUpdate={(updatedUser) => {
+        setUser((prev: any) => ({
+          ...prev,...updatedUser
+        }));
+      }} />
       <div className="flex items-center justify-between gap-4 border-b border-[#808080] py-4">
         <p className="font-bold font-Montserrat text-white text-xl">
           Profile picture

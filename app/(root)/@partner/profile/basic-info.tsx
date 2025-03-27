@@ -137,7 +137,10 @@ export default function BasicInfo() {
           Basic Information
         </p>
         <Link
-          href="/profile?edit=true"
+          href={{
+            pathname: "/profile",
+            query: { edit: "true" },
+          }}
           className="w-24 h-10 bg-[#FF7A00] gap-2 text-white text-sm font-semibold rounded-[8px] flex items-center justify-center"
         >
           <Edit size={16} /> Edit

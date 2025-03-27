@@ -12,7 +12,7 @@ export default function PaymentSetup({
     <div className="w-full mx-auto space-y-6 my-8 px-4 max-w-[1200px] lg:max-w-[1500px] xl:max-w-[1700px]">
       <div className="flex flex-col md:flex-row gap-6">
         {/* Payment Method Section */}
-        <div className="md:w-2/3 bg-[#212121] rounded-lg py-6 px-6 sm:py-8 sm:px-8">
+        <div className="md:w-2/3 bg-[#212121] rounded-lg py-6 md:px-6 sm:py-8 sm:px-8">
           <div className="mb-[24px] text-left">
             <h2 className="text-white text-[20px] font-bold mb-[8px] font-Montserrat">
               Payment method
@@ -26,7 +26,7 @@ export default function PaymentSetup({
           <div className="space-y-[24px]">
             {/* Savings Account */}
             <div className="bg-[#ffffff] rounded-[8px] p-[20px]">
-              <div className="flex items-start justify-between">
+              <div className="md:flex items-start justify-between">
                 <div className="flex items-center gap-4">
                   <div className="w-[70px] h-[70px] rounded-lg flex items-center justify-center">
                     <Image
@@ -50,7 +50,7 @@ export default function PaymentSetup({
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center gap-[16px]">
+                <div className="flex items-center gap-[16px] mt-2">
                   <button
                     type="button"
                     className="flex text-[14px] font-medium rounded-[8px] items-center gap-2 sm:gap-[10px] !border !border-[#696CFF] text-[#696CFF] px-[20px] sm:px-[10px] py-[7px]"
@@ -73,7 +73,7 @@ export default function PaymentSetup({
 
             {/* Current Account */}
             <div className="bg-[#ffffff] rounded-[8px] p-[20px]">
-              <div className="flex items-start justify-between">
+              <div className="md:flex items-start justify-between">
                 <div className="flex items-center gap-4">
                   <div className="w-[70px] h-[70px] rounded-lg flex items-center justify-center">
                     <Image
@@ -97,7 +97,7 @@ export default function PaymentSetup({
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center gap-[16px]">
+                <div className="flex items-center gap-[16px] mt-2">
                   <button
                     type="button"
                     className="flex text-[14px] font-medium rounded-[8px] items-center gap-2 sm:gap-[10px] !border !border-[#696CFF] text-[#696CFF] px-[20px] sm:px-[10px] py-[7px]"
@@ -128,7 +128,7 @@ export default function PaymentSetup({
         </div>
 
         {/* Other Payment Section */}
-        <div className="md:w-1/3 bg-[#212121] rounded-lg py-6 px-6 sm:py-8 sm:px-8">
+        <div className="md:w-1/3 bg-[#212121] rounded-lg py-6 md:px-6 sm:py-8 sm:px-8">
           <div className="mb-[24px] text-left">
             <h2 className="text-white text-[20px] font-bold mb-[8px] font-Montserrat">
               Other payment

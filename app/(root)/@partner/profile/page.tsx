@@ -3,7 +3,7 @@ import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 import BasicInfo from "./basic-info";
-
+import LogOutSlider from "@/components/investors/LogOutSlider";
 
 type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
@@ -15,7 +15,7 @@ export default function OffersPage({ searchParams }: Props) {
 
   return (
     <section className="bg-[#1A1A1A]">
-      <div className="flex flex-1 flex-col gap-6 h-screen  py-16 dashboardcont userinfospacingcont">
+      <div className="flex flex-1 flex-col gap-6 h-screen dashboardcont !mt-24">
         <div className="flex w-full">
           <Link
             href="/profile?tab=basic-info"
@@ -64,6 +64,9 @@ export default function OffersPage({ searchParams }: Props) {
             <BasicInfo />
           </Suspense>
         )}
+      </div>
+      <div className="m-2 mobile_logo_display_none">
+        <LogOutSlider />
       </div>
     </section>
   );
