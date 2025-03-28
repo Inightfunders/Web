@@ -11,7 +11,13 @@ type Props = {
 export default async function ExplorePage({ searchParams }: Props) {
   const user = await getUser();
 
-  if (!user?.userInvestor?.accepted) return null;
+  if (!user?.userInvestor?.accepted) {
+    return (
+      <div className="flex items-center justify-center text-white h-28 mt-28 lg:mt-0">
+        Wait for Admin's approval to see listed Borrower's in your explore page.
+      </div>
+    )
+  }
 
   const search =
     typeof searchParams.search === "string" ? searchParams.search : undefined;
@@ -35,7 +41,7 @@ export default async function ExplorePage({ searchParams }: Props) {
 <div className="bg-[#1A1A1A] flex items-center justify-center w-full sticky top-0 pb-2">
         <SearchStartupsBar />
       </div>
-      <div className="grid grid-cols-3 gap-6 w-full">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full">
         {exploreStartups.map(({ startup }) => (
           <Link
             href={`/explore/${startup.id}`}

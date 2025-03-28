@@ -28,7 +28,8 @@ export default async function Requests()
             </div>
         {/* Grid Layout for Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-            {requests.map(({ startups, profile_img }) => (
+            {requests?.length > 0 ?
+              (requests.map(({ startups, profile_img }) => (
                 <Link 
                     href={`/explore/${startups?.id}`} 
                     key={startups?.id} 
@@ -74,7 +75,9 @@ export default async function Requests()
                         </div>
                     </div>
                 </Link>
-            ))}
+            ))) : (
+                <div className="col-span-full h-20 text-white w-full flex justify-center items-center">No requests found</div>
+            )}
         </div>
     </section>
     </>

@@ -69,33 +69,33 @@ const Shareable = () => {
             </div>
           ))}
         </div> */}
-        <div className="flex  gap-4 items-center  p-3 rounded-[12px]">
+        <div className="flex  gap-4 items-center rounded-[12px]">
           <LinkedinShareButton url={referralLink} title={title}>
-            <div className="flex items-center bg-[#FF7A0014] p-3 rounded-[12px]">
+            <div className="flex items-center bg-[#FF7A0014] sm:p-3 rounded-[12px]">
             <img src={linkdin} alt={`Share on ${linkdin}`} />
             </div>
           </LinkedinShareButton>
           
           <FacebookShareButton url={referralLink} title={title}>
-            <div className="flex items-center bg-[#FF7A0014] p-3 rounded-[12px]">
+            <div className="flex items-center bg-[#FF7A0014] sm:p-3 rounded-[12px]">
               <img src={chat} alt={`Share on ${chat}`} />
             </div>
           </FacebookShareButton>
 
           <WhatsappShareButton url={referralLink} title={title}>
-            <div className="flex items-center bg-[#FF7A0014] p-3 rounded-[12px]">
+            <div className="flex items-center bg-[#FF7A0014] sm:p-3 rounded-[12px]">
               <img src={whatsapp} alt={`Share on ${whatsapp}`} />
             </div>
           </WhatsappShareButton>
 
           <EmailShareButton url={referralLink} title={title}>
-            <div className="flex items-center bg-[#FF7A0014] p-3 rounded-[12px]">
+            <div className="flex items-center bg-[#FF7A0014] sm:p-3 rounded-[12px]">
               <img src={mail} alt={`Share on ${mail}`} />
             </div>
           </EmailShareButton>
 
           <TwitterShareButton url={referralLink} title={title}>
-            <div className="flex items-center bg-[#FF7A0014] p-3 rounded-[12px]">
+            <div className="flex items-center bg-[#FF7A0014] sm:p-3 rounded-[12px]">
             <img src={x} alt={`Share on ${x}`} />
             </div>
           </TwitterShareButton>

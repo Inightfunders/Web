@@ -26,8 +26,8 @@ export default function PaymentSetup({
           <div className="space-y-[24px]">
             {/* Savings Account */}
             <div className="bg-[#ffffff] rounded-[8px] p-[20px]">
-              <div className="md:flex items-start justify-between">
-                <div className="flex items-center gap-4">
+              <div className="flex flex-col sm:flex-row gap-4 items-center justify-center sm:justify-between">
+                <div className="flex flex-col sm:flex-row items-center gap-4">
                   <div className="w-[70px] h-[70px] rounded-lg flex items-center justify-center">
                     <Image
                       src="/paymentsetup/c2.svg"
@@ -50,7 +50,7 @@ export default function PaymentSetup({
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center gap-[16px]">
+                <div className="flex justify-center items-center gap-[16px]">
                   <button
                     type="button"
                     className="flex text-[14px] font-medium rounded-[8px] items-center gap-2 sm:gap-[10px] !border !border-[#696CFF] text-[#696CFF] px-[20px] sm:px-[10px] py-[7px]"
@@ -73,8 +73,8 @@ export default function PaymentSetup({
 
             {/* Current Account */}
             <div className="bg-[#ffffff] rounded-[8px] p-[20px]">
-              <div className="md:flex items-start justify-between">
-                <div className="flex items-center gap-4">
+              <div className="flex flex-col sm:flex-row gap-4 items-center justify-center sm:justify-between">
+                <div className="flex flex-col sm:flex-row items-center gap-4">
                   <div className="w-[70px] h-[70px] rounded-lg flex items-center justify-center">
                     <Image
                       src="/paymentsetup/c1.svg"
@@ -97,7 +97,7 @@ export default function PaymentSetup({
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center gap-[16px]">
+                <div className="flex justify-center items-center gap-[16px]">
                   <button
                     type="button"
                     className="flex text-[14px] font-medium rounded-[8px] items-center gap-2 sm:gap-[10px] !border !border-[#696CFF] text-[#696CFF] px-[20px] sm:px-[10px] py-[7px]"

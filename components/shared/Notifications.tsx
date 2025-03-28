@@ -75,7 +75,7 @@ export default function Notifications({ user, notifications }: Props) {
   return (
     <Popover>
       <PopoverTrigger>
-        <div className="flex items-center justify-center p-2.5  relative w-[38]">
+        <div className="flex items-center justify-center p-2.5  relative">
           {/* <Bell stroke="#fff" size={18} /> */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -97,7 +97,7 @@ export default function Notifications({ user, notifications }: Props) {
         </div>
       </PopoverTrigger>
       <PopoverContent
-        className="w-[520px] gap-8 bg-black text-white rounded-[12px] max-h-[400px] !py-0 overflow-auto px-4 border-none divide-y notifications"
+        className=" gap-8 bg-gray-800 text-white rounded-[12px] max-h-[400px] !py-0 overflow-auto px-4 border-none divide-y notifications"
         align="end"
       >
         {notificationsData.length ? (

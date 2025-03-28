@@ -60,12 +60,12 @@ export default async function SingleStartUpPage({ params }: Props) {
               {financialDetailRequest.length > 0 && (
                 <>
                   {financialDetailRequest[0].accepted === false && (
-                    <span className="flex items-center text-xs px-2 py-1 rounded-xl bg-orange-500 text-white">
+                    <span className="flex items-center whitespace-nowrap text-xs px-2 py-1 rounded-xl bg-orange-500 text-white">
                       REQUEST PENDING
                     </span>
                   )}
                   {financialDetailRequest[0].accepted === true && (
-                    <span className="flex items-center text-xs px-2 py-1 rounded-xl bg-orange-500 text-white">
+                    <span className="flex items-center whitespace-nowrap text-xs px-2 py-1 rounded-xl bg-orange-500 text-white">
                       REQUEST APPROVED
                     </span>
                   )}
@@ -146,7 +146,7 @@ export default async function SingleStartUpPage({ params }: Props) {
       )}
 
       {/* Financial Details */}
-      <div className="w-full mt-6 px-8 py-4 rounded-md">
+      <div className="w-full mt-6 sm:px-8 py-4 rounded-md">
         <div className="flex items-center justify-between flex-col sm:flex-row gap-2">
           <div>
             <h2 className="font-bold text-white text-sm flex-1">
@@ -164,7 +164,7 @@ export default async function SingleStartUpPage({ params }: Props) {
             <MakeAnOffer startupId={startup.id} />
           </div>
         </div>
-        <div className="p-4 rounded-md mt-2">
+        <div className="sm:p-4 rounded-md mt-2">
           <Suspense fallback={<Loader2 className="w-6 h-6 animate-spin" />}>
             <FinancialRounds startupId={startup.id} />
           </Suspense>

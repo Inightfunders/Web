@@ -65,11 +65,11 @@ const FinancialDetails = ({ investorId, startupId }: Props) => {
     }
 
     return (
-        <div className="flex flex-col gap-6 items-center bg-[#313131] p-4 rounded-[4px]">
-            <div className="w-full flex justify-between items-center">
-                <div className="flex items-center gap-2 text-white">
+        <div className="flex flex-col gap-6 items-center bg-[#313131] py-4 px-0 sm:px-4 rounded-[4px]">
+            <div className="w-full flex flex-col sm:flex-row justify-between items-center">
+                <div className="flex flex-col sm:flex-row items-center gap-2 text-white">
                     <span>Financial details</span>
-                    <span className={`text-xs px-2 py-1 rounded-[4px] ${status === "PENDING" ? "bg-orange-500" : "bg-green-500"}`}>
+                    <span className={`text-xs px-2 py-1 mb-4 sm:mb-0 rounded-[4px] ${status === "PENDING" ? "bg-orange-500" : "bg-green-500"}`}>
                         {status}
                     </span>
                 </div>
@@ -85,7 +85,7 @@ const FinancialDetails = ({ investorId, startupId }: Props) => {
 
             {isContentVisible && (
                 <div className="flex flex-col w-full">
-                    <div className="flex gap-2 mb-4">
+                    <div className="flex flex-wrap gap-2 mb-4">
                         {tabs.map(tab => (
                         <button
                             key={tab.key}

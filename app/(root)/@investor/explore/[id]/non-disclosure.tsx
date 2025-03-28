@@ -70,8 +70,8 @@ export const NonDisclosure = ({ investorId, startupId }: Props) => {
     }
 
     return (
-        <div className="flex justify-between items-center bg-[#313131] p-4 rounded-[4px]">
-            <div className="flex items-center gap-2 text-white rounded-[4px]">
+        <div className="flex flex-col sm:flex-row justify-between items-center bg-[#313131] p-4 rounded-[4px]">
+            <div className="flex flex-col sm:flex-row items-center gap-2 text-white rounded-[4px] mb-4">
                 <FileText />
                 <span>Non disclosure agreement</span>
                 <span className={`text-xs px-2 py-1 rounded-[4px] ${ndaStatus ? "bg-green-500" : "bg-orange-500"}`}>

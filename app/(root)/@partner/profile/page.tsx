@@ -15,7 +15,7 @@ export default function OffersPage({ searchParams }: Props) {
 
   return (
     <section className="bg-[#1A1A1A]">
-      <div className="flex flex-1 flex-col gap-6 h-screen dashboardcont !mt-24">
+      <div className="flex flex-1 flex-col gap-6 dashboardcont !mt-24">
         <div className="flex w-full">
           <Link
             href="/profile?tab=basic-info"

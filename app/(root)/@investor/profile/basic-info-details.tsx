@@ -195,7 +195,7 @@ export default function BasicInfoDetails({
             disabled={isLoading}
             name="firstName"
             render={({ field }) => (
-              <FormItem className="relative flex flex-col gap-1 w-screen max-w-[384px]">
+              <FormItem className="relative flex flex-col gap-1 w-11/12 max-w-[384px]">
                 <FormLabel className="text-left text-white">
                   First Name
                 </FormLabel>
@@ -215,7 +215,7 @@ export default function BasicInfoDetails({
             disabled={isLoading}
             name="lastName"
             render={({ field }) => (
-              <FormItem className="relative flex flex-col gap-1 w-screen max-w-[384px]">
+              <FormItem className="relative flex flex-col gap-1 w-11/12 max-w-[384px]">
                 <FormLabel className="text-left text-white  ">
                   Last Name
                 </FormLabel>
@@ -235,7 +235,7 @@ export default function BasicInfoDetails({
             disabled={isLoading}
             name="email"
             render={({ field }) => (
-              <FormItem className="relative flex flex-col gap-1 w-screen max-w-[384px]">
+              <FormItem className="relative flex flex-col gap-1 w-11/12 max-w-[384px]">
                 <FormLabel className="text-left text-white ">Email</FormLabel>
                 <FormControl>
                   <input
@@ -253,7 +253,7 @@ export default function BasicInfoDetails({
             disabled={isLoading}
             name="company_name"
             render={({ field }) => (
-              <FormItem className="relative flex flex-col gap-1 w-screen max-w-[384px]">
+              <FormItem className="relative flex flex-col gap-1 w-11/12 max-w-[384px]">
                 <FormLabel className="text-left text-white ">Company Name</FormLabel>
                 <FormControl>
                   <input
@@ -271,7 +271,7 @@ export default function BasicInfoDetails({
             disabled={isLoading}
             name="company_email"
             render={({ field }) => (
-              <FormItem className="relative flex flex-col gap-1 w-screen max-w-[384px]">
+              <FormItem className="relative flex flex-col gap-1 w-11/12 max-w-[384px]">
                 <FormLabel className="text-left text-white ">Company Email</FormLabel>
                 <FormControl>
                   <input
@@ -289,7 +289,7 @@ export default function BasicInfoDetails({
             disabled={isLoading}
             name="institution_type"
             render={({ field }) => (
-              <FormItem className="relative flex flex-col gap-1 w-screen max-w-[384px]">
+              <FormItem className="relative flex flex-col gap-1 w-11/12 max-w-[384px]">
                 <FormLabel className="text-left text-white ">Institution Type</FormLabel>
                 <FormControl>
                     <select
