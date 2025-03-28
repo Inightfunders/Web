@@ -21,7 +21,7 @@ export default async function SubmitStartUpDetailsPage() {
   )
     return redirect('/personal-details');
 
-  if (user.userInfo.role === "startup") {
+  if (user.userInfo.role === 'startup') {
     // console.log(user.userStartUp?.stage);
     // user?.userStartUpOwners?.length === 0 ||
     if (
@@ -43,7 +43,7 @@ export default async function SubmitStartUpDetailsPage() {
     <section className="w-full flex flex-col bg-[#1A1A1A] min-h-screen">
       <header className="flex justify-start text-sm lg:text-base items-center py-4 px-2 lg:px-8 text-white gap-2 lg:gap-4 font-semibold">
         <Link
-          href="/"
+          href="https://insightfunders.com/"
           className="font-IntegralCF font-medium uppercase text-xs text-white"
         >
           <Image src="/images/iflogo.png" alt="logo" width={153} height={35} />
