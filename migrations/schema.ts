@@ -825,3 +825,12 @@ export const transactionsRelations = relations(transactions, ({ one }) => ({
     relationName: "transactions_sender_id_users_id",
   }),
 }));
+
+export const job_applications = pgTable("job_applications", {
+	id: bigint("id", { mode: "number" }).primaryKey().notNull(),
+	name: text("name").notNull(),
+	email: text("email").notNull(),
+	job_position: text("job_position").notNull(),
+	cv_url: text("cv_url").notNull(),
+	submitted_at: timestamp("submitted_at", { withTimezone: true }).defaultNow().notNull(),
+  });
